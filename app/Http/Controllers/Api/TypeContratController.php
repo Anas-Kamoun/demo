@@ -42,8 +42,9 @@ class TypeContratController extends Controller
      * @param  \App\Models\TypeContrat  $typeContrat
      * @return \Illuminate\Http\Response
      */
-    public function show(TypeContrat $typeContrat)
+    public function show(TypeContrat $typeContrat,$id)
     {
+        $typeContrat = TypeContrat::findOrFail($id);
         return new TypeContratR($typeContrat);
     }
 
@@ -58,7 +59,7 @@ class TypeContratController extends Controller
     public function update(UpdateTypeContratRequest $request, TypeContrat $typeContrat)
     {
         $data=$request->validated();
-        $typeContrat->update($data);
+        $typeContrat->update($request);
         return new TypeContratR($typeContrat);
     }
 

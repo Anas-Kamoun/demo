@@ -1,24 +1,4 @@
-// import './css/NotFound.css'
-// export default function NotFound(){
-//     return(
-//         <div className="NotFound">
-//             <h1 className="NotFound-title">404 Not Found</h1>
-//             <p className="NotFound-description">The requested page could not be found on the server.</p>
-//         </div>
-//     )
-// }
 
-
-// import { Button, Result } from 'antd';
-// const App = () => (
-//   <Result
-//     status="404"
-//     title="404"
-//     subTitle="Sorry, the page you visited does not exist."
-//     extra={<Button type="primary">Back Home</Button>}
-//   />
-// );
-// export default App;
 
 
 import React from 'react';
@@ -29,7 +9,7 @@ const App = () => (
     status="404"
     title="404"
     subTitle="Sorry, the page you visited does not exist."
-    extra={<Button type="primary">Back Home</Button>}
+    extra={<Button type="primary" href='/'>Back Home</Button>}
   />
 );
 

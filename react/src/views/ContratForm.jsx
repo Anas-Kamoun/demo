@@ -25,7 +25,7 @@ export default function ContratForm() {
     } else {
       if (id) {
         axiosClient
-          .get(`/users/${id}`)
+          .get(`/contrats/${id}`)
           .then(({ data }) => {
             setLoading(false);
             setContrat(data.data);
