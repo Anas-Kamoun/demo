@@ -12,6 +12,7 @@ import Demande from "./views/Demande";
 import TypeConge from "./views/TypeConge";
 import Contrat from "./views/Contrat";
 import ContratForm from "./views/ContratForm";
+import Profile from "./views/Profile";
 
 
 const router = createBrowserRouter([
@@ -56,9 +57,10 @@ const router = createBrowserRouter([
                 element:<ContratForm key="contratCreate"/>
             },
             {
-                path:'/contrat/:id',
-                element:<ContratForm key="contratUpdate"/>
+                path:'/profile',
+                element:<Profile/>
             },
+
         ]
     },
     {
