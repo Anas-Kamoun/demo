@@ -51,16 +51,21 @@ class TypeContratController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
+     * @param  int  $id
      * @param  \App\Http\Requests\UpdateTypeContratRequest  $request
      * @param  \App\Models\TypeContrat  $typeContrat
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTypeContratRequest $request, TypeContrat $typeContrat)
+    public function update(UpdateTypeContratRequest $request, TypeContrat $typeContrat,$id)
     {
-        $data=$request->validated();
-        $typeContrat->update($request);
-        return new TypeContratR($typeContrat);
+        $typeContrat =TypeContrat::whereId($id)->first();
+        $typeContrat->update([
+            'name' => $request['name'],
+            'soldec' => $request['soldec'],
+            'autorisation' => $request['autorisation'],
+            'created_at' => $request['created_at'],
+        ]);
+        return response()->json('$data, 200, $headers');
     }
 
     /**

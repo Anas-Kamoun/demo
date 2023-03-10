@@ -26,7 +26,7 @@ class UpdateTypeContratRequest extends FormRequest
         return [
             'name'=>'required|string|max:55',
             'soldec'=>'required|numeric',
-            'autorisation'=>'required|numeric'
+            'autorisation'=>'required|numeric',
         ];
     }
 }

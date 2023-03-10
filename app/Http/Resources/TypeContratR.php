@@ -19,7 +19,7 @@ class TypeContratR extends JsonResource
             'name'=>$this->name,
             'soldec'=>$this->soldec,
             'autorisation'=>$this->autorisation,
-            'created_at'=>$this->created_at->format('Y-m-d H:i:s'),
+            'created_at'=>$this->created_at->format('Y-m-d H:i:s')
         ];
     }
 }

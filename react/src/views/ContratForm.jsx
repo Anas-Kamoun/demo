@@ -117,5 +117,4 @@ export default function ContratForm() {
       </div>
     </div>
   );
-  console.log(contratValue);
 }
