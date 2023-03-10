@@ -369,12 +369,12 @@ const ProfilePage = () => {
   const classes = useStyles();
   const [avatarUrl, setAvatarUrl] = useState('');
   const user = {
-    name: 'John Doe',
+    name: 'Zaghmi Mehdi',
     title: 'Software Engineer',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eleifend semper nunc at imperdiet. Sed venenatis tellus vitae diam bibendum congue. Nam vel hendrerit odio.',
-    email: 'johndoe@gmail.com',
-    phone: '+1 (555) 123-4567',
-    address: '123 Main Street, Anytown USA',
+    bio: 'bla bla ',
+    email: 'mehdyz@gmail.com',
+    phone: '+216 22147589',
+    address: 'tunis',
   };
 
   const handleAvatarChange = (event) => {
