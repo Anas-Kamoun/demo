@@ -313,58 +313,74 @@ export default function DefaultLayout() {
     <div id="defaultLayout">
 
 <aside>
-<Link to="/dashboard">
-    <Stack direction="row" alignItems='center'>
-        <DashboardIcon style={{marginRight:5}} />
-            Dashboard
-    </Stack>
-</Link>
 
-<Link to="/users">
-    <Stack direction="row" alignItems='center'>
-        <AccountBoxIcon style={{marginRight:5}} />
-            Users
-    </Stack>
-</Link>
+
+
+        <Link to="/dashboard">
+            <Stack direction="row" alignItems='center'>
+                <DashboardIcon style={{marginRight:5}} />
+                    Dashboard
+            </Stack>
+        </Link>
 
 
 
 
-<Link to="/demande">
-  <Stack direction="row" alignItems='center'>
-        <AdjustIcon style={{ marginRight: 5 }} />
-            Demandes de Congés
-  </Stack>
-</Link>
+        <Link to="/users">
+            <Stack direction="row" alignItems='center'>
+                <AccountBoxIcon style={{marginRight:5}} />
+                    Users
+            </Stack>
+        </Link>
 
 
-<Link to="/conge">
-    <Stack direction="row" alignItems='center'>
-        <AccountBalanceSharpIcon style={{marginRight:5}} />
-            Types de congés
-    </Stack>
-</Link>
 
 
-<Link to="/contrat">
-    <Stack direction="row" alignItems='center'>
-        <AssignmentIcon style={{marginRight:5}} />
-            Types de contrats
-    </Stack>
-</Link>
+        <Link to="/demande">
+          <Stack direction="row" alignItems='center'>
+                <AdjustIcon style={{ marginRight: 5 }} />
+                    Demandes de Congés
+          </Stack>
+        </Link>
+
+
+
+
+        <Link to="/conge">
+            <Stack direction="row" alignItems='center'>
+                <AccountBalanceSharpIcon style={{marginRight:5}} />
+                    Types de congés
+            </Stack>
+        </Link>
+
+
+
+
+        <Link to="/contrat">
+            <Stack direction="row" alignItems='center'>
+                <AssignmentIcon style={{marginRight:5}} />
+                    Types de contrats
+            </Stack>
+        </Link>
 
 
 
 </aside>
+
 <div className="content">
         <header>
+
           <div>
+
             <Stack direction="row" alignItems="center">
               <img src={Logo} width="70" alt="logo" style={{ marginRight: 5 }} /> &nbsp;
               <h1>GRH</h1>
             </Stack>
+
           </div>
+
           <div>
+            
             <IconButton onClick={handleMenuClick}>
               <Avatar />
               &nbsp;

@@ -57,6 +57,10 @@ const router = createBrowserRouter([
                 element:<ContratForm key="contratCreate"/>
             },
             {
+                path:'/contrat/:id',
+                element:<ContratForm key="contratUpdate"/>
+            },
+            {
                 path:'/profile',
                 element:<Profile/>
             },
