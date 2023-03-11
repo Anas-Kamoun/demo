@@ -10,7 +10,6 @@ export default function ContratForm() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const { user, setNotification } = useStateContext();
-//   const [userValue, setUser] = useState({
   const [contratValue, setContrat] = useState({
     id: "",
     name: "",
