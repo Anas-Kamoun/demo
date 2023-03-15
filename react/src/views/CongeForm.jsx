@@ -124,11 +124,12 @@ export default function CongeForm() {
                     setConge({
                       ...CongeValue,
                       id_contrat: ev.target.value,
-                    })
+                    },
+                    setContrat(ev.target.value),)
                   }
                 >
                   <MenuItem value="" disabled>
-                  Type contrat
+                  Type contrat ?
                   </MenuItem>
               {contrats.map(c => {
                 return(

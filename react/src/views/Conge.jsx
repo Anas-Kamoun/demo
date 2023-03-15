@@ -42,7 +42,7 @@ export default function Contrat(){
     return(
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <h1>types des contrats</h1>
+                <h1>Types des Conge</h1>
                 {user.role == 'super_admin' && <Link to="/conge/new" className="btn-add">Add New</Link>}
             </div>
             <div className="card animated fadeInDown">
