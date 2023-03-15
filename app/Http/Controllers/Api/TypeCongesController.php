@@ -23,16 +23,6 @@ class TypeCongesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreTypeCongesRequest  $request
@@ -40,7 +30,9 @@ class TypeCongesController extends Controller
      */
     public function store(StoreTypeCongesRequest $request)
     {
-        //
+        $data=$request->validated();
+        $Conges=TypeConges::create($data);
+        return response(new TypeCongesR($Conges),201); 
     }
 
     /**
@@ -51,18 +43,8 @@ class TypeCongesController extends Controller
      */
     public function show(TypeConges $typeConges)
     {
+        $typeConges = TypeConges::findOrFail($id);
         return new TypeCongesR($typeConges);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TypeConges  $typeConges
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TypeConges $typeConges)
-    {
-        //
     }
 
     /**
@@ -83,8 +65,10 @@ class TypeCongesController extends Controller
      * @param  \App\Models\TypeConges  $typeConges
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TypeConges $typeConges)
+    public function destroy($id)
     {
-        //
+        $typeConges = TypeConges::find($id);
+        $typeConges->delete(); // Easy right?
+        return Response("",204);
     }
 }

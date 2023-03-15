@@ -10,11 +10,17 @@ export default function CongeForm() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const { user, setNotification } = useStateContext();
-  const [CongeValue, setConge] = useState(
-  
-    "")
-    
-  ;
+  const [CongeValue, setConge] = useState({
+    id: "",
+    name: "",
+    id_contrat:"",
+
+  })
+
+  // const [CongeValue, setConge] = useState("");
+
+
+
   const [ContratValue, setContrat] = useState('')
   const [contrats,setContrats] = useState([])
       
@@ -47,13 +53,14 @@ export default function CongeForm() {
   }, [id, user]);
 
   const onSubmit = (ev) => {
+
     ev.preventDefault();
-    if (userValue.id) {
+    if (CongeValue.id) {
       axiosClient
-        .put(`/users/${userValue.id}`, userValue)
+        .put(`/conges/${userValue.id}`, userValue)
         .then(() => {
           setNotification("User was updated successfully");
-          navigate("/users");
+          navigate("/conge");
         })
         .catch((err) => {
           const response = err.response;
@@ -64,10 +71,10 @@ export default function CongeForm() {
         });
     } else {
       axiosClient
-        .post(`/users/`, userValue)
+        .post(`/conges/`, CongeValue)
         .then(() => {
-          setNotification("User was created successfully");
-          navigate("/users");
+          setNotification("Conge was created successfully");
+          navigate("/conge");
         })
         .catch((err) => {
           const response = err.response;
@@ -93,13 +100,13 @@ export default function CongeForm() {
           </div>
         )}
         {!loading && (
-          <form onSubmit={(e)=> {
-            e.preventDefault()
-            console.log('l name :', CongeValue, ' contrat selected ', ContratValue)}         }>
+          <form onSubmit={onSubmit}>
             <input
               type="text"
               onChange={(ev) =>
-                setConge( ev.target.value )
+                setConge( {
+                  ...CongeValue,
+                  name:ev.target.value })
               }
               value={CongeValue.name}
               placeholder="Name"
@@ -114,7 +121,10 @@ export default function CongeForm() {
                   value={ContratValue}
                   placeholder="type contrat"
                   onChange={(ev) =>
-                    setContrat(ev.target.value)
+                    setConge({
+                      ...CongeValue,
+                      id_contrat: ev.target.value,
+                    })
                   }
                 >
                   <MenuItem value="" disabled>

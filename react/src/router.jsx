@@ -9,7 +9,7 @@ import Signup from "./views/Signup";
 import UserForm from "./views/UserForm";
 import Users from "./views/Users";
 import Demande from "./views/Demande";
-import TypeConge from "./views/TypeConge";
+import TypeConge from "./views/Conge";
 import CongeForm from "./views/CongeForm";
 import Contrat from "./views/Contrat";
 import ContratForm from "./views/ContratForm";
