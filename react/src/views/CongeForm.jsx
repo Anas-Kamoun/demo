@@ -3,240 +3,139 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
-import {
-    Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,Table,TableBody,
-    TableCell,TableContainer,TableHead,TableRow,TextField,
-        } from '@material-ui/core';
-        import { isEditMode  } from "editmode-react";
-import { List } from "antd";
 
-export default function ContratForm() {
+export default function CongeForm() {
+  const navigate = useNavigate();
+   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(null);
+  const { user, setNotification } = useStateContext();
+  const [CongeValue, setConge] = useState(
+  
+    "")
     
-    const navigate = useNavigate();
-    const { id } = useParams();
-    const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState(null);
-    const { user, setNotification } = useStateContext();
-  //   const [userValue, setUser] = useState({
-    const [congeValue, setConge] = useState({
-      id: "",
-      nature_conge: "",
-      couleur:"",
+  ;
+  const [ContratValue, setContrat] = useState('')
+  const [contrats,setContrats] = useState([])
       
-    });
-  
-    useEffect(() => {
-      setLoading(true);
-      if (user.role === "user") {
-        navigate("/dashboard");
-      } else {
-        if (id) {
-          axiosClient
-            .get(`/conges/${id}`)
-            .then(({ data }) => {
-              setLoading(false);
-              setConge(data.data);
-            })
-            .catch(() => {
-              setLoading(false);
-            });
-        } else {
-          setLoading(false);
-        }
-      }
-    }, [id, user]);
-  
-    const onSubmit = (ev) => {
-      ev.preventDefault();
-      if (congeValue.id) {
+  useEffect(() => {
+    setLoading(true);
+    if (user.role === "user") {
+      navigate("/dashboard");
+    } else {
+      axiosClient
+      .get(`/contrats/`)
+      .then(({ data }) => {
+        setLoading(false);
+        setContrats(data.data);
+        console.log("aaa" ,data.data)
+      })
+      if (id) {
         axiosClient
-          .put(`/conges/${congeValue.id}`, congeValue)
-          .then(() => {
-            setNotification("conges was updated successfully");
-            navigate("/conges");
+          .get(`/conges/${id}`)
+          .then(({ data }) => {
+            setLoading(false);
+            setContrats(data.data);
           })
-          .catch((err) => {
-            const response = err.response;
-            if (response && response.status === 422) {
-              setErrors(response.data.errors);
-              console.log(response.data.errors);
-            }
+          .catch(() => {
+            setLoading(false);
           });
       } else {
-        axiosClient
-          .post("/conges", congeValue)
-          .then(() => {
-            setNotification("Conge was created successfully");
-            navigate("/conge");
-          })
-          .catch((err) => {
-            const response = err.response;
-            if (response && response.status === 422) {
-              setErrors(response.data.errors);
-              console.log(response.data.errors);
-            }
-          });
+        setLoading(false);
       }
-    };
+    }
+  }, [id, user]);
 
+  const onSubmit = (ev) => {
+    ev.preventDefault();
+    if (userValue.id) {
+      axiosClient
+        .put(`/users/${userValue.id}`, userValue)
+        .then(() => {
+          setNotification("User was updated successfully");
+          navigate("/users");
+        })
+        .catch((err) => {
+          const response = err.response;
+          if (response && response.status === 422) {
+            setErrors(response.data.errors);
+            console.log(response.data.errors);
+          }
+        });
+    } else {
+      axiosClient
+        .post(`/users/`, userValue)
+        .then(() => {
+          setNotification("User was created successfully");
+          navigate("/users");
+        })
+        .catch((err) => {
+          const response = err.response;
+          if (response && response.status === 422) {
+            setErrors(response.data.errors);
+            console.log(response.data.errors);
+          }
+        });
+    }
+  };
 
-
-
-    const [color, setColor] = useState('#000000');
-
-
-    const [natures, setNatures] = useState([]);
-    const [open, setOpen] = useState(false);
-    const [name, setName] = useState('');
-    const [natureToEdit, setNatureToEdit] = useState(null);
-  
-
-
-
-
-
-
-    const handleClickOpen = (nature) => {
-        if (nature) {
-          setName(nature.name);
-          setColor(nature.color);
-          setNatureToEdit(nature);
-        } else {
-          setName('');
-          setColor('#000000');
-          setNatureToEdit(null);
-        }
-        setOpen(true);
-      };
-    
-      const handleClose = () => {
-        setOpen(false);
-      };
-    
-      const handleNameChange = (event) => {
-        setName(event.target.value);
-      };
-    
-      const handleColorChange = (event) => {
-        setColor(event.target.value);
-      };
-    
-      const handleCreateNature = () => {
-        setNatures((prevNatures) => [
-          ...prevNatures,
-          {
-            id: prevNatures.length + 1,
-            name,
-            color,
-          },
-        ]);
-        setName('');
-        setColor('#000000');
-        handleClose();
-      };
-    
-      const handleEditNature = () => {
-        setNatures((prevNatures) =>
-          prevNatures.map((nature) => (nature.id === natureToEdit.id ? { ...nature, name, color } : nature))
-        );
-        setName('');
-        setColor('#000000');
-        handleClose();
-      };
-    
-      const handleDeleteNature = (natureToDelete) => {
-        setNatures((prevNatures) => prevNatures.filter((nature) => nature.id !== natureToDelete.id));
-      };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    return (
-      <div>
-        {congeValue.id && <h1>Update conge : {congeValue.name}</h1>}
-        {!congeValue.id && <h1>New conge</h1>}
-        <div className="card animated fadeInDown">
-          {loading && <div className="text-center">Loading...</div>}
-          {errors && (
-            <div className="alert">
-              {Object.keys(errors).map((key) => (
-                <p key={key}>{errors[key][0]}</p>
-              ))}
-            </div>
-          )}
-          {!loading && (
-            <form onSubmit={onSubmit}>
-              {/* <input
-                type="text"
-                onChange={(ev) =>
-                  setConge({ ...congeValue, nature_conge: ev.target.value })
-                }
-                value={congeValue.nature_conge}
-                placeholder="Name"
-              /> */}
-
-
-
-
-  <DialogContent>
-  <FormControl fullWidth>
+  return (
+    <div>
+      {CongeValue.id && <h1>Update Conge : {CongeValue.name}</h1>}
+      {!CongeValue.id && <h1>New Conge</h1>}
+      <div className="card animated fadeInDown">
+        {loading && <div className="text-center">Loading...</div>}
+        {errors && (
+          <div className="alert">
+            {Object.keys(errors).map((key) => (
+              <p key={key}>{errors[key][0]}</p>
+            ))}
+          </div>
+        )}
+        {!loading && (
+          <form onSubmit={(e)=> {
+            e.preventDefault()
+            console.log('l name :', CongeValue, ' contrat selected ', ContratValue)}         }>
+            <input
+              type="text"
+              onChange={(ev) =>
+                setConge( ev.target.value )
+              }
+              value={CongeValue.name}
+              placeholder="Name"
+            />
+            <div>
+              <FormControl fullWidth>
                 <Select
                   fullWidth
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={congeValue.role}
-                  placeholder="Role"
+                  value={ContratValue}
+                  placeholder="type contrat"
                   onChange={(ev) =>
-                    setConge({
-                      ...congeValue,
-                      contrat: ev.target.value,
-                    })
+                    setContrat(ev.target.value)
                   }
                 >
                   <MenuItem value="" disabled>
-                    Contrat ?
+                  Type contrat
                   </MenuItem>
-                  <MenuItem >CDD</MenuItem>
-                  <MenuItem >CDI</MenuItem>
-                  <MenuItem >CIVP</MenuItem>
+              {contrats.map(c => {
+                return(
+                  <MenuItem value={c.id} key={c.id}>
+                  {c.name}
+                  </MenuItem>
+                )
+              })}
                 </Select>
               </FormControl>
-    <TextField label="Nature de congé" required value={name} onChange={handleNameChange} fullWidth margin="normal" />
-    <TextField label="Couleur" type="color" value={color} onChange={handleColorChange} fullWidth margin="normal" />
-  </DialogContent>
-  <br/>
-
-
-
-  &nbsp;  &nbsp;
-  &nbsp;   &nbsp;
-
-
-
-
-              
-              <button className="btn">Save</button>
-            </form>
-          )}
-        </div>
+              &nbsp;
+              <br />
+            </div>
+            <button className="btn">Save</button>
+          </form>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
+}
