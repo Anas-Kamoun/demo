@@ -69,7 +69,7 @@ export default function Contrat(){
                             <tr key={u.id}>
                                 <td>{u.id}</td>
                                 <td>{u.name}</td>
-                                <td>{u.name}</td>
+                                <td>{u.contrat_id}</td>
                                 <td>{u.created_at}</td>
                                 <td>
                                     <Link className="btn-edit" to={'/contrat/'+u.id}>Edit</Link>

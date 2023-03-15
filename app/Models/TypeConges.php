@@ -16,5 +16,6 @@ class TypeConges extends Model
      */
     protected $fillable = [
         'name',
+        'contrat_id'
     ];
 }

@@ -15,8 +15,13 @@ return new class extends Migration
     {
         Schema::create('type_conges', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('contrat_id');
             $table->string('name');
             $table->timestamps();
+            $table->foreign('contrat_id')
+                 ->references('id')
+                 ->on('type_contrats');
+
         });
     }
 

@@ -11,9 +11,8 @@ export default function CongeForm() {
   const [errors, setErrors] = useState(null);
   const { user, setNotification } = useStateContext();
   const [CongeValue, setConge] = useState({
-    id: "",
     name: "",
-    id_contrat:"",
+    contrat_id:"",
 
   })
 
@@ -123,7 +122,7 @@ export default function CongeForm() {
                   onChange={(ev) =>
                     setConge({
                       ...CongeValue,
-                      id_contrat: ev.target.value,
+                      contrat_id: ev.target.value,
                     },
                     setContrat(ev.target.value),)
                   }

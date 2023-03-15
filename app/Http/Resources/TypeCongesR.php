@@ -16,8 +16,8 @@ class TypeCongesR extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->name,
-            // 'coleur'=>$this->coleur,
+            'name'=>$this->name, 
+            'contrat_id'=>$this->contrat_id,
             'created_at'=>$this->created_at->format('Y-m-d H:i:s'),
         ];
     }
