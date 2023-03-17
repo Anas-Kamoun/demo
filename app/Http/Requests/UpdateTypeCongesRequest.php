@@ -13,7 +13,7 @@ class UpdateTypeCongesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class UpdateTypeCongesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|string|max:55|unique:type_conges,name,'.$this->id,
+            'contrat_id'=>'exists:App\Models\TypeContrat,id',
         ];
     }
 }

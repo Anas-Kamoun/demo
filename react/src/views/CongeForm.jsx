@@ -6,41 +6,41 @@ import { useStateContext } from "../Contexts/ContextProvider";
 
 export default function CongeForm() {
   const navigate = useNavigate();
-   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(null);
   const { user, setNotification } = useStateContext();
   const [CongeValue, setConge] = useState({
     name: "",
-    contrat_id:"",
-
-  })
+    contrat_id: "",
+  });
 
   // const [CongeValue, setConge] = useState("");
 
+  const [ContratValue, setContrat] = useState("");
+  const [contrats, setContrats] = useState([]);
+  const currentContrat = contrats.find(
+    (el) => el.id === CongeValue.contrat_id
+  ) || {
+    name: "",
+    id: "",
+  };
 
-
-  const [ContratValue, setContrat] = useState('')
-  const [contrats,setContrats] = useState([])
-      
   useEffect(() => {
     setLoading(true);
     if (user.role === "user") {
       navigate("/dashboard");
     } else {
-      axiosClient
-      .get(`/contrats/`)
-      .then(({ data }) => {
+      axiosClient.get(`/contrats/`).then(({ data }) => {
         setLoading(false);
         setContrats(data.data);
-        console.log("aaa" ,data.data)
-      })
+      });
       if (id) {
         axiosClient
           .get(`/conges/${id}`)
           .then(({ data }) => {
             setLoading(false);
-            setContrats(data.data);
+            setConge(data.data);
           })
           .catch(() => {
             setLoading(false);
@@ -49,16 +49,15 @@ export default function CongeForm() {
         setLoading(false);
       }
     }
-  }, [id, user]);
+  }, [id]);
 
   const onSubmit = (ev) => {
-
     ev.preventDefault();
     if (CongeValue.id) {
       axiosClient
-        .put(`/conges/${userValue.id}`, userValue)
+        .put(`/conges/${CongeValue.id}`, CongeValue)
         .then(() => {
-          setNotification("User was updated successfully");
+          setNotification("Conge was updated successfully");
           navigate("/conge");
         })
         .catch((err) => {
@@ -103,9 +102,10 @@ export default function CongeForm() {
             <input
               type="text"
               onChange={(ev) =>
-                setConge( {
+                setConge({
                   ...CongeValue,
-                  name:ev.target.value })
+                  name: ev.target.value,
+                })
               }
               value={CongeValue.name}
               placeholder="Name"
@@ -117,26 +117,28 @@ export default function CongeForm() {
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={ContratValue}
+                  value={currentContrat.id}
                   placeholder="type contrat"
                   onChange={(ev) =>
-                    setConge({
-                      ...CongeValue,
-                      contrat_id: ev.target.value,
-                    },
-                    setContrat(ev.target.value),)
+                    setConge(
+                      {
+                        ...CongeValue,
+                        contrat_id: ev.target.value,
+                      },
+                      setContrat(ev.target.value)
+                    )
                   }
                 >
                   <MenuItem value="" disabled>
-                  Type contrat ?
+                    Type contrat ?
                   </MenuItem>
-              {contrats.map(c => {
-                return(
-                  <MenuItem value={c.id} key={c.id}>
-                  {c.name}
-                  </MenuItem>
-                )
-              })}
+                  {contrats.map((c) => {
+                    return (
+                      <MenuItem value={c.id} key={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    );
+                  })}
                 </Select>
               </FormControl>
               &nbsp;

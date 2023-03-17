@@ -21,7 +21,7 @@ export default function Contrat(){
         }
         axiosClient.delete(`conges/${u.id}`)
         .then(()=>{
-            setNotification('Contrat was deleted successfully')
+            setNotification('Conge was deleted successfully')
             getConge()
         })
     }
@@ -72,7 +72,7 @@ export default function Contrat(){
                                 <td>{u.contrat_id}</td>
                                 <td>{u.created_at}</td>
                                 <td>
-                                    <Link className="btn-edit" to={'/contrat/'+u.id}>Edit</Link>
+                                    <Link className="btn-edit" to={'/conge/'+u.id}>Edit</Link>
                                     &nbsp;
                                     <button onClick={ev=>onDelete(u)}className="btn-delete">Delete</button>
                                 </td>

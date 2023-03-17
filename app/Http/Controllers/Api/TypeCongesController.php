@@ -41,7 +41,7 @@ class TypeCongesController extends Controller
      * @param  \App\Models\TypeConges  $typeConges
      * @return \Illuminate\Http\Response
      */
-    public function show(TypeConges $typeConges)
+    public function show(TypeConges $typeConges,$id)
     {
         $typeConges = TypeConges::findOrFail($id);
         return new TypeCongesR($typeConges);
@@ -54,9 +54,15 @@ class TypeCongesController extends Controller
      * @param  \App\Models\TypeConges  $typeConges
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTypeCongesRequest $request, TypeConges $typeConges)
+    public function update(UpdateTypeCongesRequest $request, TypeConges $typeConges,$id)
     {
-        //
+        $typeContrat =TypeConges::whereId($id)->first();
+        $typeContrat->update([
+            'name' => $request['name'],
+            'contrat_id' => $request['contrat_id'],
+            'created_at' => $request['created_at'],
+        ]);
+        return response()->json("",204);
     }
 
     /**
