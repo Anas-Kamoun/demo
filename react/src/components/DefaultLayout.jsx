@@ -365,6 +365,16 @@ export default function DefaultLayout() {
 
 
 
+        
+        <Link to="/demande_user">
+            <Stack direction="row" alignItems='center'>
+                <AdjustIcon style={{marginRight:5}} />
+                    Demande Congé
+            </Stack>
+        </Link>
+
+
+
 </aside>
 
 <div className="content">
