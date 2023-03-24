@@ -15,6 +15,7 @@ import Contrat from "./views/Contrat";
 import ContratForm from "./views/ContratForm";
 import Profile from "./views/Profile";
 import DemandeUser from "./views/DemandeUser";
+import DemandeFromUser from "./views/DemandeFromUser"
 
 
 
@@ -76,8 +77,12 @@ const router = createBrowserRouter([
                 element:<Profile/>
             },
             {
-                path:'/demande_user',
+                path:'/demandeuser',
                 element:<DemandeUser/>
+            },
+            {
+                path:'/demandeuser/new',
+                element:<DemandeFromUser/>
             },
 
         ]

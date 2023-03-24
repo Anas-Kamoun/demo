@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./css/style.css";
+import { useStateContext } from "../Contexts/ContextProvider";
+
 
 const LeaveRequestForm = () => {
   const [name, setName] = useState("");
@@ -9,6 +11,8 @@ const LeaveRequestForm = () => {
   const [leaveType, setLeaveType] = useState("");
   const [reason, setReason] = useState("");
   const [attachment, setAttachment] = useState(null);
+  const {user,setNotification}=useStateContext()
+
 
   const handleSubmit = (event) => {
     event.preventDefault();

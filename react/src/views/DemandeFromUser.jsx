@@ -11,8 +11,9 @@ export default function CongeForm() {
   const [errors, setErrors] = useState(null);
   const { user, setNotification } = useStateContext();
   const [CongeValue, setConge] = useState({
-    name: "",
+    user_id:"",
     contrat_id: "",
+    conge_id:"",
   });
   const [ContratValue, setContrat] = useState("");
   const [contrats, setContrats] = useState([]);
@@ -48,38 +49,38 @@ export default function CongeForm() {
     }
   }, [id]);
 
-  const onSubmit = (ev) => {
-    ev.preventDefault();
-    if (CongeValue.id) {
-      axiosClient
-        .put(`/conges/${CongeValue.id}`, CongeValue)
-        .then(() => {
-          setNotification("Conge was updated successfully");
-          navigate("/conge");
-        })
-        .catch((err) => {
-          const response = err.response;
-          if (response && response.status === 422) {
-            setErrors(response.data.errors);
-            console.log(response.data.errors);
-          }
-        });
-    } else {
-      axiosClient
-        .post(`/conges/`, CongeValue)
-        .then(() => {
-          setNotification("Conge was created successfully");
-          navigate("/conge");
-        })
-        .catch((err) => {
-          const response = err.response;
-          if (response && response.status === 422) {
-            setErrors(response.data.errors);
-            console.log(response.data.errors);
-          }
-        });
-    }
-  };
+  // const onSubmit = (ev) => {
+  //   ev.preventDefault();
+  //   if (CongeValue.id) {
+  //     axiosClient
+  //       .put(`/conges/${CongeValue.id}`, CongeValue)
+  //       .then(() => {
+  //         setNotification("Conge was updated successfully");
+  //         navigate("/conge");
+  //       })
+  //       .catch((err) => {
+  //         const response = err.response;
+  //         if (response && response.status === 422) {
+  //           setErrors(response.data.errors);
+  //           console.log(response.data.errors);
+  //         }
+  //       });
+  //   } else {
+  //     axiosClient
+  //       .post(`/conges/`, CongeValue)
+  //       .then(() => {
+  //         setNotification("Conge was created successfully");
+  //         navigate("/conge");
+  //       })
+  //       .catch((err) => {
+  //         const response = err.response;
+  //         if (response && response.status === 422) {
+  //           setErrors(response.data.errors);
+  //           console.log(response.data.errors);
+  //         }
+  //       });
+  //   }
+  // };
 
   return (
     <div>

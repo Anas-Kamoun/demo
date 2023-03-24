@@ -75,7 +75,7 @@ export default function Users() {
           alignItems: "center",
         }}
       >
-        <h2>Liste des demandes de Congés</h2>
+        <h1>Liste des demandes de Congés</h1>
       </div>
       <div className="card animated fadeInDown">
         <table>

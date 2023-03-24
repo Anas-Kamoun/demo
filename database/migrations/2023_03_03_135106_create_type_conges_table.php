@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreign('contrat_id')
                  ->references('id')
                  ->on('type_contrats');
-
         });
     }
 

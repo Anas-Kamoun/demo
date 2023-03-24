@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->tinyInteger('solde')->nullable();
             $table->string('role')->nullable();
+            $table->unsignedBigInteger('contrat_id')->nullable();
+            $table->foreign('contrat_id')
+                 ->references('id')
+                 ->on('type_contrats');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
