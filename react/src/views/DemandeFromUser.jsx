@@ -10,23 +10,22 @@ export default function CongeForm() {
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(null);
   const { user, setNotification } = useStateContext();
-  const [CongeValue, setConge] = useState({
-    user_id:"",
+  const [DCongeeValue, setConge] = useState({
+    user_id: "",
     contrat_id: "",
-    conge_id:"",
+    conge_id: "",
+    autorisation:"",
+    TypeCongee:"",
   });
-  const [ContratValue, setContrat] = useState("");
   const [contrats, setContrats] = useState([]);
-  const currentContrat = contrats.find(
-    (el) => el.id === CongeValue.contrat_id
-  ) || {
+  const currentContrat = contrats.find((el) => el.id === user.contrat_id) || {
     name: "",
     id: "",
   };
 
   useEffect(() => {
     setLoading(true);
-    if (user.role === "user") {
+    if ((user.role = !"user")) {
       navigate("/dashboard");
     } else {
       axiosClient.get(`/contrats/`).then(({ data }) => {
@@ -49,43 +48,43 @@ export default function CongeForm() {
     }
   }, [id]);
 
-  // const onSubmit = (ev) => {
-  //   ev.preventDefault();
-  //   if (CongeValue.id) {
-  //     axiosClient
-  //       .put(`/conges/${CongeValue.id}`, CongeValue)
-  //       .then(() => {
-  //         setNotification("Conge was updated successfully");
-  //         navigate("/conge");
-  //       })
-  //       .catch((err) => {
-  //         const response = err.response;
-  //         if (response && response.status === 422) {
-  //           setErrors(response.data.errors);
-  //           console.log(response.data.errors);
-  //         }
-  //       });
-  //   } else {
-  //     axiosClient
-  //       .post(`/conges/`, CongeValue)
-  //       .then(() => {
-  //         setNotification("Conge was created successfully");
-  //         navigate("/conge");
-  //       })
-  //       .catch((err) => {
-  //         const response = err.response;
-  //         if (response && response.status === 422) {
-  //           setErrors(response.data.errors);
-  //           console.log(response.data.errors);
-  //         }
-  //       });
-  //   }
-  // };
+  const onSubmit = (ev) => {
+    // ev.preventDefault();
+    // if (CongeValue.id) {
+    //   axiosClient
+    //     .put(`/conges/${CongeValue.id}`, CongeValue)
+    //     .then(() => {
+    //       setNotification("Conge was updated successfully");
+    //       navigate("/conge");
+    //     })
+    //     .catch((err) => {
+    //       const response = err.response;
+    //       if (response && response.status === 422) {
+    //         setErrors(response.data.errors);
+    //         console.log(response.data.errors);
+    //       }
+    //     });
+    // } else {
+    //   axiosClient
+    //     .post(`/conges/`, CongeValue)
+    //     .then(() => {
+    //       setNotification("Conge was created successfully");
+    //       navigate("/conge");
+    //     })
+    //     .catch((err) => {
+    //       const response = err.response;
+    //       if (response && response.status === 422) {
+    //         setErrors(response.data.errors);
+    //         console.log(response.data.errors);
+    //       }
+    //     });
+    // }
+  };
 
   return (
     <div>
-      {CongeValue.id && <h1>Update Conge : {CongeValue.name}</h1>}
-      {!CongeValue.id && <h1>New Conge</h1>}
+      {DCongeeValue.id && <h1>Update Conge : {DCongeeValue.name}</h1>}
+      {!DCongeeValue.id && <h1>New Demande Conge</h1>}
       <div className="card animated fadeInDown">
         {loading && <div className="text-center">Loading...</div>}
         {errors && (
@@ -97,50 +96,48 @@ export default function CongeForm() {
         )}
         {!loading && (
           <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              onChange={(ev) =>
-                setConge({
-                  ...CongeValue,
-                  name: ev.target.value,
-                })
-              }
-              value={CongeValue.name}
-              placeholder="Name"
-            />
             <div>
-              <FormControl fullWidth>
+              <h3>Votre Solde ({user.solde}jr|{user.autorisation}h) Votre Contrat ({currentContrat.name})</h3>
+              <br />
+            </div>
+            <div>
+            <FormControl fullWidth>
                 <Select
                   fullWidth
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={currentContrat.id}
-                  placeholder="type contrat"
+                  value={DCongeeValue.TypeCongee}
+                  placeholder="TypeCongee"
                   onChange={(ev) =>
-                    setConge(
-                      {
-                        ...CongeValue,
-                        contrat_id: ev.target.value,
-                      },
-                      setContrat(ev.target.value)
-                    )
+                    setConge({
+                      ...DCongeeValue,
+                      TypeCongee: ev.target.value,
+                    })
                   }
                 >
                   <MenuItem value="" disabled>
-                    Type contrat ?
+                    Type Congee ?
                   </MenuItem>
-                  {contrats.map((c) => {
-                    return (
-                      <MenuItem value={c.id} key={c.id}>
-                        {c.name}
-                      </MenuItem>
-                    );
-                  })}
+                  <MenuItem value={"autorisation"}>Autorisation</MenuItem>
+                  <MenuItem value={"Congee"}>Congee</MenuItem>
                 </Select>
               </FormControl>
               &nbsp;
               <br />
+              {DCongeeValue.TypeCongee==="autorisation" &&
+              <input
+              type="number" min="0"
+              onChange={(ev) =>
+                setConge({
+                  ...DCongeeValue,
+                  autorisation: ev.target.value,
+                })
+              }
+              placeholder="Nombre d'heure"
+            />
+              }
+              {DCongeeValue.TypeCongee==="Congee" &&<h1>Update Conge</h1>}
             </div>
             <button className="btn">Save</button>
           </form>

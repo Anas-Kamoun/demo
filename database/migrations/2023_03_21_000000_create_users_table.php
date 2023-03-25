@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->tinyInteger('solde')->nullable();
+            $table->tinyInteger('autorisation')->nullable();
             $table->string('role')->nullable();
             $table->unsignedBigInteger('contrat_id')->nullable();
             $table->foreign('contrat_id')
