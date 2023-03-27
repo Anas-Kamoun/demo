@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('/users',UserController::class);
     Route::apiResource('/conges',TypeCongesController::class);
     Route::apiResource('/contrats',TypeContratController::class);
+    Route::apiResource('/dconges',DemandeCongesController::class);
 });
 
 Route::middleware(['cors'])->group(function () {

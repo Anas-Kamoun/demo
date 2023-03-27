@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
+import * as React from "react";
+
+import { DatePicker } from "antd";
+const { RangePicker } = DatePicker;
+import { InboxOutlined } from "@ant-design/icons";
+import { message, Upload } from "antd";
 
 export default function CongeForm() {
   const navigate = useNavigate();
@@ -12,10 +18,12 @@ export default function CongeForm() {
   const { user, setNotification } = useStateContext();
   const [DCongeeValue, setConge] = useState({
     user_id: "",
-    contrat_id: "",
     conge_id: "",
-    autorisation:"",
-    TypeCongee:"",
+    type: "",
+    start_date:"",
+    end_date:"",
+    description:"",
+    file:"",
   });
   const [contrats, setContrats] = useState([]);
   const currentContrat = contrats.find((el) => el.id === user.contrat_id) || {
@@ -49,36 +57,74 @@ export default function CongeForm() {
   }, [id]);
 
   const onSubmit = (ev) => {
-    // ev.preventDefault();
-    // if (CongeValue.id) {
-    //   axiosClient
-    //     .put(`/conges/${CongeValue.id}`, CongeValue)
-    //     .then(() => {
-    //       setNotification("Conge was updated successfully");
-    //       navigate("/conge");
-    //     })
-    //     .catch((err) => {
-    //       const response = err.response;
-    //       if (response && response.status === 422) {
-    //         setErrors(response.data.errors);
-    //         console.log(response.data.errors);
-    //       }
-    //     });
-    // } else {
-    //   axiosClient
-    //     .post(`/conges/`, CongeValue)
-    //     .then(() => {
-    //       setNotification("Conge was created successfully");
-    //       navigate("/conge");
-    //     })
-    //     .catch((err) => {
-    //       const response = err.response;
-    //       if (response && response.status === 422) {
-    //         setErrors(response.data.errors);
-    //         console.log(response.data.errors);
-    //       }
-    //     });
-    // }
+    ev.preventDefault();
+    if (DCongeeValue.id) {
+      axiosClient
+        .put(`/dconges/${DCongeeValue.id}`, DCongeeValue)
+        .then(() => {
+          setNotification("Conge was updated successfully");
+          navigate("/conge");
+        })
+        .catch((err) => {
+          const response = err.response;
+          if (response && response.status === 422) {
+            setErrors(response.data.errors);
+            console.log(response.data.errors);
+          }
+        });
+    } else {
+      axiosClient
+        .post(`/dconges/`, DCongeeValue)
+        .then(() => {
+          setNotification("Demnade Conge was created successfully");
+          navigate("/demandeuser");
+        })
+        .catch((err) => {
+          const response = err.response;
+          if (response && response.status === 422) {
+            setErrors(response.data.errors);
+            console.log(response.data.errors);
+          }
+        });
+    }
+  };
+
+  const [dates, setDates] = useState(null);
+  const [value, setValue] = useState(null);
+  const disabledDate = (current) => {
+    if (!dates) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], "days") >= user.solde;
+    const tooEarly = dates[1] && dates[1].diff(current, "days") >= user.solde;
+    return !!tooEarly || !!tooLate;
+  };
+  const onOpenChange = (open) => {
+    if (open) {
+      setDates([null, null]);
+    } else {
+      setDates(null);
+    }
+  };
+  const { Dragger } = Upload;
+  const props = {
+    name: "file",
+    multiple: true,
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    onChange(info) {
+      const { status } = info.file;
+      if (status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (status === "done") {
+        message.success(`${info.file.name} file uploaded successfully.`);
+      } else if (status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onDrop(e) {
+      console.log("Dropped files", e.dataTransfer.files);
+    },
   };
 
   return (
@@ -97,22 +143,25 @@ export default function CongeForm() {
         {!loading && (
           <form onSubmit={onSubmit}>
             <div>
-              <h3>Votre Solde ({user.solde}jr|{user.autorisation}h) Votre Contrat ({currentContrat.name})</h3>
+              <h3>
+                Votre Solde ({user.solde} jr|{user.autorisation} h:m:s) Votre Contrat
+                ({currentContrat.name})
+              </h3>
               <br />
             </div>
             <div>
-            <FormControl fullWidth>
+              <FormControl fullWidth>
                 <Select
                   fullWidth
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={DCongeeValue.TypeCongee}
+                  value={DCongeeValue.type}
                   placeholder="TypeCongee"
                   onChange={(ev) =>
                     setConge({
                       ...DCongeeValue,
-                      TypeCongee: ev.target.value,
+                      type: ev.target.value,
                     })
                   }
                 >
@@ -125,19 +174,68 @@ export default function CongeForm() {
               </FormControl>
               &nbsp;
               <br />
-              {DCongeeValue.TypeCongee==="autorisation" &&
-              <input
-              type="number" min="0"
-              onChange={(ev) =>
-                setConge({
-                  ...DCongeeValue,
-                  autorisation: ev.target.value,
-                })
-              }
-              placeholder="Nombre d'heure"
-            />
-              }
-              {DCongeeValue.TypeCongee==="Congee" &&<h1>Update Conge</h1>}
+              {DCongeeValue.type === "autorisation" && (
+                <div>
+                  <input
+                    type="time"
+                    min="01:00"
+                    max={user.autorisation}
+                    onChange={(ev) =>
+                      setConge({
+                        ...DCongeeValue,
+                        autorisation: ev.target.value,
+                      })
+                    }
+                    placeholder="Nombre d'heure"
+                  />
+                  <textarea
+                    id="motif"
+                    name="motif"
+                    rows="5"
+                    cols="33"
+                    placeholder="Description"
+                  ></textarea>
+                  &nbsp;
+                </div>
+              )}
+              {DCongeeValue.type === "Congee" && (
+                <div>
+                  <div>
+                    <RangePicker
+                      value={dates || value}
+                      disabledDate={disabledDate}
+                      onCalendarChange={(val) => setDates(val)}
+                      onChange={(val) => setValue(val)}
+                      onOpenChange={onOpenChange}
+                    />
+                  </div>
+                  &nbsp;
+                  <textarea
+                    id="motif"
+                    name="motif"
+                    rows="5"
+                    cols="33"
+                    placeholder="Description"
+                  ></textarea>
+                  &nbsp;
+                  <div>
+                    <Dragger {...props}>
+                      <p className="ant-upload-drag-icon">
+                        <InboxOutlined />
+                      </p>
+                      <p className="ant-upload-text">
+                        Click or drag file to this area to upload
+                      </p>
+                      <p className="ant-upload-hint">
+                        Support for a single or bulk upload. Strictly prohibited
+                        from uploading company data or other banned files.
+                      </p>
+                    </Dragger>
+                  </div>
+                  &nbsp;
+                </div>
+                
+              )}
             </div>
             <button className="btn">Save</button>
           </form>
