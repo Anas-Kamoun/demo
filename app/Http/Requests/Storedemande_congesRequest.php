@@ -13,7 +13,7 @@ class Storedemande_congesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,14 @@ class Storedemande_congesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id'=>'exists:App\Models\User,id',
+            'type'=>'required|string',
+            'conge_id'=>'nullable|required_if:type,Congee|exists:App\Models\TypeConges,id',
+            'autorisation'=>'nullable|required_if:type,autorisation',
+            'start_date'=>'nullable|required_if:type,Congee|date',
+            'end_date'=>'nullable|required_if:type,Congee|date',
+            'description'=>'nullable|string',
+            'file'=>'nullable|string',
         ];
     }
 }

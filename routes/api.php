@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TypeCongesController;
 use App\Http\Controllers\Api\TypeContratController;
+use App\Http\Controllers\Api\DemandeCongesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes

@@ -19,10 +19,12 @@ class demande_congesR extends JsonResource
             'user_id'=>$this->user_id,
             'conge_id'=>$this->conge_id,
             'type'=>$this->type,
+            'autorisation'=>$this->autorisation,
             'start_date'=>$this->start_date,
             'end_date'=>$this->end_date,
             'description'=>$this->description,
             'file'=>$this->file,
+            'etat'=>$this->etat,
             'created_at'=>$this->created_at->format('Y-m-d H:i:s')
         ];
     }

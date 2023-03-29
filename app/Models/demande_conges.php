@@ -17,6 +17,8 @@ class demande_conges extends Model
         'user_id',
         'conge_id',
         'type',
+        'autorisation',
+        'etat', 
         'start_date',
         'end_date',
         'description',

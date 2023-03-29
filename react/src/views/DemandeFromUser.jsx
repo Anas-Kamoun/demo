@@ -20,10 +20,12 @@ export default function CongeForm() {
     user_id: "",
     conge_id: "",
     type: "",
+    autorisation:"",
     start_date:"",
     end_date:"",
     description:"",
     file:"",
+    etat:"",
   });
   const [contrats, setContrats] = useState([]);
   const currentContrat = contrats.find((el) => el.id === user.contrat_id) || {
@@ -162,6 +164,8 @@ export default function CongeForm() {
                     setConge({
                       ...DCongeeValue,
                       type: ev.target.value,
+                      user_id: user.id,
+
                     })
                   }
                 >
@@ -194,6 +198,12 @@ export default function CongeForm() {
                     rows="5"
                     cols="33"
                     placeholder="Description"
+                    onChange={(ev) =>
+                      setConge({
+                        ...DCongeeValue,
+                        description: ev.target.value,
+                      })
+                    }
                   ></textarea>
                   &nbsp;
                 </div>

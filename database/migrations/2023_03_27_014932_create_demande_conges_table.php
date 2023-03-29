@@ -18,10 +18,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('conge_id')->nullable();
             $table->string('type');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->time('autorisation')->nullable();;
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->longText('description')->nullable();
             $table->longText('file')->nullable();
+            $table->string('etat')->default('En Cours');
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
