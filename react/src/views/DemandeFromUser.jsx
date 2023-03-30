@@ -27,8 +27,8 @@ export default function CongeForm() {
     file:"",
     etat:"",
   });
-  const [contrats, setContrats] = useState([]);
-  const currentContrat = contrats.find((el) => el.id === user.contrat_id) || {
+  const [conges, setConges] = useState([]);
+  const currentConges = conges.find((el) => el.contrat_id === user.contrat_id) || {
     name: "",
     id: "",
   };
@@ -38,9 +38,9 @@ export default function CongeForm() {
     if ((user.role = !"user")) {
       navigate("/dashboard");
     } else {
-      axiosClient.get(`/contrats/`).then(({ data }) => {
+      axiosClient.get(`/conges/`).then(({ data }) => {
         setLoading(false);
-        setContrats(data.data);
+        setConges(data.data);
       });
       if (id) {
         axiosClient
@@ -128,7 +128,7 @@ export default function CongeForm() {
       console.log("Dropped files", e.dataTransfer.files);
     },
   };
-
+  console.log(currentConges);
   return (
     <div>
       {DCongeeValue.id && <h1>Update Conge : {DCongeeValue.name}</h1>}
@@ -146,8 +146,7 @@ export default function CongeForm() {
           <form onSubmit={onSubmit}>
             <div>
               <h3>
-                Votre Solde ({user.solde} jr|{user.autorisation} h:m:s) Votre Contrat
-                ({currentContrat.name})
+                Votre Solde ({user.solde} jr|{user.autorisation} h:m:s)
               </h3>
               <br />
             </div>
@@ -161,16 +160,16 @@ export default function CongeForm() {
                   value={DCongeeValue.type}
                   placeholder="TypeCongee"
                   onChange={(ev) =>
-                    setConge({
+                    setConge(
+                      {
                       ...DCongeeValue,
                       type: ev.target.value,
                       user_id: user.id,
-
                     })
                   }
                 >
                   <MenuItem value="" disabled>
-                    Type Congee ?
+                    Type Demande ?
                   </MenuItem>
                   <MenuItem value={"autorisation"}>Autorisation</MenuItem>
                   <MenuItem value={"Congee"}>Congee</MenuItem>
@@ -210,6 +209,35 @@ export default function CongeForm() {
               )}
               {DCongeeValue.type === "Congee" && (
                 <div>
+                  <Select
+                  fullWidth
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={DCongeeValue.conge_id}
+                  placeholder="TypeCongee"
+                  onChange={(ev) =>
+                    setConge(
+                      {
+                      ...DCongeeValue,
+                      conge_id: ev.target.value,
+                    })
+                  }
+                >
+                  <MenuItem value="" disabled>
+                    Type Congee ?
+                  </MenuItem>
+                  {conges.map((c) => {
+                    if(c.contrat_id === user.contrat_id){
+                      return (
+                        <MenuItem value={c.id} key={c.id}>
+                          {c.name}
+                        </MenuItem>)
+                    }}
+                    
+                  )}
+                </Select>
+                &nbsp;
                   <div>
                     <RangePicker
                       value={dates || value}
@@ -218,6 +246,7 @@ export default function CongeForm() {
                       onChange={(val) => setValue(val)}
                       onOpenChange={onOpenChange}
                     />
+                    {console.log(value)}
                   </div>
                   &nbsp;
                   <textarea
