@@ -30,7 +30,6 @@ export default function Contrat(){
         setLoading(true);
         axiosClient.get('/contrats')
         .then(({data})=>{
-            console.log(data);
             setLoading(false);
             setContrat(data.data)
         })

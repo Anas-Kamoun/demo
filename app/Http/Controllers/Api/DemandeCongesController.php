@@ -18,7 +18,7 @@ class DemandeCongesController extends Controller
     public function index()
     {
         return demande_congesR::collection(
-            demande_congesR::query()->orderBy('id','desc')->paginate(10)
+            demande_conges::query()->orderBy('id','desc')->paginate(10)
         );
     }
 
@@ -41,21 +41,12 @@ class DemandeCongesController extends Controller
      * @param  \App\Models\demande_conges  $demande_conges
      * @return \Illuminate\Http\Response
      */
-    public function show(demande_conges $demande_conges)
+    public function show(demande_conges $demande_conges,$id)
     {
-        //
+        $demande_conges = demande_conges::findOrFail($id);
+        return new demande_congesR($demande_conges);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\demande_conges  $demande_conges
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(demande_conges $demande_conges)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

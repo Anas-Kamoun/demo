@@ -4,7 +4,7 @@ import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
 
 export default function Users(){
-    const [Users,setUsers]= useState([]);
+    const [DCongee,setDCongee]= useState([]);
     const [loading,setLoading]=useState(false);
     const {user,setNotification}=useStateContext()
 
@@ -12,7 +12,7 @@ export default function Users(){
 
 
     useEffect(()=>{
-        getUsers();
+        getDCongee();
     },[])
 
     const onDelete=(u)=>{
@@ -22,16 +22,21 @@ export default function Users(){
         axiosClient.delete(`users/${u.id}`)
         .then(()=>{
             setNotification('User was deleted successfully')
-            getUsers()
+            getDCongee()
         })
     }
 
-    const getUsers=()=>{
+    const getDCongee=()=>{
         setLoading(true);
-        axiosClient.get('/users')
+        axiosClient.get(`/conges/`).then(({ data }) => {
+            setLoading(false);
+            setConges(data.data);
+          });
+        axiosClient.get('/dconges')
         .then(({data})=>{
             setLoading(false);
-            setUsers(data.data)
+            setDCongee(data.data)
+            console.log(data.data);
         })
         .catch(()=>{
             setLoading(false);
@@ -41,7 +46,7 @@ export default function Users(){
     return(
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <h1>Demande Cogee</h1>
+                <h1>Vos demandes de Congé</h1>
                 {user.role == 'user' && <Link to="/demandeuser/new" className="btn-add">Add New</Link>}
             </div>
             <div className="card animated fadeInDown">
@@ -49,7 +54,7 @@ export default function Users(){
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
+                            <th>Type Congé</th>
                             <th>Email</th>
                             <th>Create Date</th>
                             <th>Actions</th>
@@ -64,11 +69,11 @@ export default function Users(){
                     </tbody>
                     }
                     {!loading && <tbody>
-                        {Users.map(u=>(
+                        {DCongee.map(u=>(
                             <tr key={u.id}>
                                 <td>{u.id}</td>
-                                <td>{u.name}</td>
-                                <td>{u.email}</td>
+                                <td>{u.type}</td>
+                                <td>{u.user_id}</td>
                                 <td>{u.created_at}</td>
                                 <td>
                                     <Link className="btn-edit" to={'/users/'+u.id}>Edit</Link>

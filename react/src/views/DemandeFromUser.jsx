@@ -5,10 +5,12 @@ import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
 import * as React from "react";
 
-import { DatePicker } from "antd";
-const { RangePicker } = DatePicker;
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
+
+import { DatePicker } from "antd";
+const { RangePicker } = DatePicker;
+import moment from 'moment';
 
 export default function CongeForm() {
   const navigate = useNavigate();
@@ -20,17 +22,47 @@ export default function CongeForm() {
     user_id: "",
     conge_id: "",
     type: "",
-    autorisation:"",
-    start_date:"",
-    end_date:"",
-    description:"",
-    file:"",
-    etat:"",
+    autorisation: "",
+    start_date: "",
+    end_date: "",
+    description: "",
+    file: "",
+    etat: "",
   });
   const [conges, setConges] = useState([]);
-  const currentConges = conges.find((el) => el.contrat_id === user.contrat_id) || {
+  const currentConges = conges.find(
+    (el) => el.contrat_id === user.contrat_id
+  ) || {
     name: "",
     id: "",
+  };
+
+  const [dates, setDates] = useState(null);
+  const [value, setValue] = useState(null);
+  const disabledDate = (current) => {
+    if (!dates) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], "days") >= user.solde;
+    const tooEarly = dates[1] && dates[1].diff(current, "days") >= user.solde;
+    return !!tooEarly || !!tooLate;
+  };
+  const onOpenChange = (open) => {
+    if (open) {
+      setDates([null, null]);
+    } else {
+      setDates(null);
+    }
+  };
+  const dateFormat = 'YYYY-MM-DD';
+  const onChange = (date, dateString) => {
+    setValue(date)
+    setConge({
+      ...DCongeeValue,
+      start_date: dateString[0],
+      end_date: dateString[1]
+    })
+    console.log(DCongeeValue.start_date);
   };
 
   useEffect(() => {
@@ -91,23 +123,6 @@ export default function CongeForm() {
     }
   };
 
-  const [dates, setDates] = useState(null);
-  const [value, setValue] = useState(null);
-  const disabledDate = (current) => {
-    if (!dates) {
-      return false;
-    }
-    const tooLate = dates[0] && current.diff(dates[0], "days") >= user.solde;
-    const tooEarly = dates[1] && dates[1].diff(current, "days") >= user.solde;
-    return !!tooEarly || !!tooLate;
-  };
-  const onOpenChange = (open) => {
-    if (open) {
-      setDates([null, null]);
-    } else {
-      setDates(null);
-    }
-  };
   const { Dragger } = Upload;
   const props = {
     name: "file",
@@ -128,7 +143,6 @@ export default function CongeForm() {
       console.log("Dropped files", e.dataTransfer.files);
     },
   };
-  console.log(currentConges);
   return (
     <div>
       {DCongeeValue.id && <h1>Update Conge : {DCongeeValue.name}</h1>}
@@ -160,8 +174,7 @@ export default function CongeForm() {
                   value={DCongeeValue.type}
                   placeholder="TypeCongee"
                   onChange={(ev) =>
-                    setConge(
-                      {
+                    setConge({
                       ...DCongeeValue,
                       type: ev.target.value,
                       user_id: user.id,
@@ -210,43 +223,45 @@ export default function CongeForm() {
               {DCongeeValue.type === "Congee" && (
                 <div>
                   <Select
-                  fullWidth
-                  displayEmpty
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={DCongeeValue.conge_id}
-                  placeholder="TypeCongee"
-                  onChange={(ev) =>
-                    setConge(
-                      {
-                      ...DCongeeValue,
-                      conge_id: ev.target.value,
-                    })
-                  }
-                >
-                  <MenuItem value="" disabled>
-                    Type Congee ?
-                  </MenuItem>
-                  {conges.map((c) => {
-                    if(c.contrat_id === user.contrat_id){
-                      return (
-                        <MenuItem value={c.id} key={c.id}>
-                          {c.name}
-                        </MenuItem>)
-                    }}
-                    
-                  )}
-                </Select>
-                &nbsp;
+                    fullWidth
+                    displayEmpty
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={DCongeeValue.conge_id}
+                    placeholder="TypeCongee"
+                    onChange={(ev) =>
+                      setConge({
+                        ...DCongeeValue,
+                        conge_id: ev.target.value,
+                      })
+                    }
+                  >
+                    <MenuItem value="" disabled>
+                      Type Congee ?
+                    </MenuItem>
+                    {conges.map((c) => {
+                      if (c.contrat_id === user.contrat_id) {
+                        return (
+                          <MenuItem value={c.id} key={c.id}>
+                            {c.name}
+                          </MenuItem>
+                        );
+                      }
+                    })}
+                  </Select>
+                  &nbsp;
                   <div>
-                    <RangePicker
-                      value={dates || value}
-                      disabledDate={disabledDate}
-                      onCalendarChange={(val) => setDates(val)}
-                      onChange={(val) => setValue(val)}
-                      onOpenChange={onOpenChange}
-                    />
-                    {console.log(value)}
+                  <RangePicker
+                  size="large"
+    format={dateFormat}
+      value={dates || value}
+      disabledDate={disabledDate}
+      minDates={moment()}
+      onCalendarChange={(val) => setDates(val)}
+      onChange={
+        onChange}
+      onOpenChange={onOpenChange}
+    />
                   </div>
                   &nbsp;
                   <textarea
@@ -273,7 +288,6 @@ export default function CongeForm() {
                   </div>
                   &nbsp;
                 </div>
-                
               )}
             </div>
             <button className="btn">Save</button>
