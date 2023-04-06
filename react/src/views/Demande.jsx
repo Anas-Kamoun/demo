@@ -12,7 +12,7 @@ import {
   DialogActions,
 } from "@material-ui/core";
 
-export default function Users() {
+export default function Demande() {
   const [Users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { setNotification } = useStateContext();

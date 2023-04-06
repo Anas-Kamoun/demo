@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
 
-export default function Contrat(){
+export default function Conge(){
     const [Conge,setConge]= useState([]);
     const [loading,setLoading]=useState(false);
     const {user,setNotification}=useStateContext()
