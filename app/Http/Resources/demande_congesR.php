@@ -20,6 +20,7 @@ class demande_congesR extends JsonResource
             'conge_id'=>$this->conge_id,
             'type'=>$this->type,
             'autorisation'=>$this->autorisation,
+            'start_autorisation'=>$this->start_autorisation,
             'start_date'=>$this->start_date,
             'end_date'=>$this->end_date,
             'description'=>$this->description,

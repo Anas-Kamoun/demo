@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('conge_id')->nullable();
             $table->string('type');
             $table->time('autorisation')->nullable();;
+            $table->dateTime('start_autorisation')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->longText('description')->nullable();

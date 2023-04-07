@@ -204,7 +204,7 @@ export default function DemandeFromUser() {
                 <div>
                   <div>
                     <Space direction="horizontal" size={12}>
-                      <DatePicker showTime format='DD-MM-YYYY HH:mm'
+                      <DatePicker showTime format='YYYY-MM-DD HH:mm'
                       onChange={onChangeau}/>
                       <TimePicker
                         format={format}

@@ -28,6 +28,7 @@ class Storedemande_congesRequest extends FormRequest
             'type'=>'required|string',
             'conge_id'=>'nullable|required_if:type,Congee|exists:App\Models\TypeConges,id',
             'autorisation'=>'nullable|required_if:type,autorisation',
+            'start_autorisation'=>'nullable|required_if:type,autorisation',
             'start_date'=>'nullable|required_if:type,Congee|date',
             'end_date'=>'nullable|required_if:type,Congee|date',
             'description'=>'nullable|string',
