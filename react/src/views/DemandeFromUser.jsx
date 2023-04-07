@@ -7,10 +7,10 @@ import * as React from "react";
 
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
-
-import { DatePicker } from "antd";
+import dayjs from "dayjs";
+import { DatePicker, Space, TimePicker } from "antd";
 const { RangePicker } = DatePicker;
-import moment from 'moment';
+import moment from "moment";
 
 export default function DemandeFromUser() {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ export default function DemandeFromUser() {
     conge_id: "",
     type: "",
     autorisation: "",
+    start_autorisation:"",
     start_date: "",
     end_date: "",
     description: "",
@@ -54,15 +55,23 @@ export default function DemandeFromUser() {
       setDates(null);
     }
   };
-  const dateFormat = 'YYYY-MM-DD';
+  const format = "HH:mm";
+  const dateFormat = "YYYY-MM-DD";
   const onChange = (date, dateString) => {
-    setValue(date)
+    setValue(date);
     setConge({
       ...DCongeeValue,
       start_date: dateString[0],
-      end_date: dateString[1]
-    })
+      end_date: dateString[1],
+    });
     console.log(DCongeeValue.start_date);
+  };
+
+  const onChangeau = (value, dateString) => {
+    setConge({
+      ...DCongeeValue,
+      start_autorisation: dateString,
+    });
   };
 
   useEffect(() => {
@@ -143,6 +152,7 @@ export default function DemandeFromUser() {
       console.log("Dropped files", e.dataTransfer.files);
     },
   };
+
   return (
     <div>
       {DCongeeValue.id && <h1>Update Conge : {DCongeeValue.name}</h1>}
@@ -192,18 +202,23 @@ export default function DemandeFromUser() {
               <br />
               {DCongeeValue.type === "autorisation" && (
                 <div>
-                  <input
-                    type="time"
-                    min="01:00"
-                    max={user.autorisation}
-                    onChange={(ev) =>
-                      setConge({
-                        ...DCongeeValue,
-                        autorisation: ev.target.value,
-                      })
-                    }
-                    placeholder="Nombre d'heure"
-                  />
+                  <div>
+                    <Space direction="horizontal" size={12}>
+                      <DatePicker showTime format='DD-MM-YYYY HH:mm'
+                      onChange={onChangeau}/>
+                      <TimePicker
+                        format={format}
+                        onChange={(time,timeString) =>
+                          setConge({
+
+                            ...DCongeeValue,
+                            autorisation: timeString,
+                          })
+                        }
+                      />
+                    </Space>
+                  </div>
+                  &nbsp;
                   <textarea
                     id="motif"
                     name="motif"
@@ -251,17 +266,16 @@ export default function DemandeFromUser() {
                   </Select>
                   &nbsp;
                   <div>
-                  <RangePicker
-                  size="large"
-    format={dateFormat}
-      value={dates || value}
-      disabledDate={disabledDate}
-      minDates={moment()}
-      onCalendarChange={(val) => setDates(val)}
-      onChange={
-        onChange}
-      onOpenChange={onOpenChange}
-    />
+                    <RangePicker
+                      size="large"
+                      format={dateFormat}
+                      value={dates || value}
+                      disabledDate={disabledDate}
+                      minDates={moment()}
+                      onCalendarChange={(val) => setDates(val)}
+                      onChange={onChange}
+                      onOpenChange={onOpenChange}
+                    />
                   </div>
                   &nbsp;
                   <textarea
