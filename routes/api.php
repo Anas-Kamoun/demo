@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
 Route::middleware(['cors'])->group(function () {
 Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/image',[DemandeCongesController::class, 'imageStore']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

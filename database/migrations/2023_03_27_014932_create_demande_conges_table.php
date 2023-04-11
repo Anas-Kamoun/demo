@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->longText('description')->nullable();
+            $table->string('image')->nullable();
             $table->longText('file')->nullable();
             $table->string('etat')->default('En Cours');
             $table->timestamps();

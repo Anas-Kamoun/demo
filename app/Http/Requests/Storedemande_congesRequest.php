@@ -32,6 +32,7 @@ class Storedemande_congesRequest extends FormRequest
             'start_date'=>'nullable|required_if:type,Congee|date',
             'end_date'=>'nullable|required_if:type,Congee|date',
             'description'=>'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'file'=>'nullable|string',
         ];
     }

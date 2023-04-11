@@ -7,7 +7,9 @@ use App\Models\demande_conges;
 use App\Http\Requests\Storedemande_congesRequest;
 use App\Http\Requests\Updatedemande_congesRequest;
 use App\Http\Resources\demande_congesR;
-
+use App\Models\Image;
+use App\Http\Requests\ImageStoreRequest;
+use Symfony\Component\HttpFoundation\Response;
 class DemandeCongesController extends Controller
 {
     /**
@@ -33,6 +35,13 @@ class DemandeCongesController extends Controller
         $data=$request->validated();
         $Conges=demande_conges::create($data);
         return response(new demande_congesR($Conges),201); 
+    }
+    public function imageStore(ImageStoreRequest $request)
+    {
+        $validatedData['image'] = $request->file('image')->store('public');
+        $data = Image::create($validatedData);
+
+        return response($data, Response::HTTP_CREATED);
     }
 
     /**

@@ -134,9 +134,9 @@ export default function DemandeFromUser() {
 
   const { Dragger } = Upload;
   const props = {
-    name: "file",
+    name: "image",
     multiple: true,
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    action: `${import.meta.env.VITE_API_BASE_URL}/api/image/`,
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {
@@ -145,7 +145,7 @@ export default function DemandeFromUser() {
       if (status === "done") {
         message.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+        message.error(`${info.file.response.errors.image[1]} file upload failed.`);
       }
     },
     onDrop(e) {
