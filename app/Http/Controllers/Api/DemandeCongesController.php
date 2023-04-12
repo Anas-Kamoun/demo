@@ -75,8 +75,10 @@ class DemandeCongesController extends Controller
      * @param  \App\Models\demande_conges  $demande_conges
      * @return \Illuminate\Http\Response
      */
-    public function destroy(demande_conges $demande_conges)
+    public function destroy($id)
     {
-        //
+        $typeConges = demande_conges::find($id);
+        $typeConges->delete(); // Easy right?
+        return Response("",204);
     }
 }

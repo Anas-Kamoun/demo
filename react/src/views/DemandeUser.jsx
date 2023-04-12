@@ -16,22 +16,18 @@ export default function DemnadeUser(){
     },[])
 
     const onDelete=(u)=>{
-        if(!window.confirm("Are you sure you want to delet this user ?")){
+        if(!window.confirm("Are you sure you want to delet this Demnade Congee ?")){
             return
         }
-        axiosClient.delete(`users/${u.id}`)
+        axiosClient.delete(`dconges/${u.id}`)
         .then(()=>{
-            setNotification('User was deleted successfully')
+            setNotification('Demnade Congee was deleted successfully')
             getDCongee()
         })
     }
 
     const getDCongee=()=>{
         setLoading(true);
-        axiosClient.get(`/conges/`).then(({ data }) => {
-            setLoading(false);
-            setConges(data.data);
-          });
         axiosClient.get('/dconges')
         .then(({data})=>{
             setLoading(false);
