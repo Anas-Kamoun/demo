@@ -64,7 +64,7 @@ export default function DemandeFromUser() {
       start_date: dateString[0],
       end_date: dateString[1],
     });
-    console.log(DCongeeValue.start_date);
+    console.log(date);
   };
 
   const onChangeau = (value, dateString) => {
@@ -85,7 +85,7 @@ export default function DemandeFromUser() {
       });
       if (id) {
         axiosClient
-          .get(`/conges/${id}`)
+          .get(`/dconges/${id}`)
           .then(({ data }) => {
             setLoading(false);
             setConge(data.data);
@@ -144,6 +144,11 @@ export default function DemandeFromUser() {
       }
       if (status === "done") {
         message.success(`${info.file.name} file uploaded successfully.`);
+        setConge({
+          ...DCongeeValue,
+          file:`${import.meta.env.VITE_API_BASE_URL}/storage/${info.file.response.image}`.replace('public/', '')
+
+        })
       } else if (status === "error") {
         message.error(`${info.file.response.errors.image[1]} file upload failed.`);
       }
@@ -155,7 +160,7 @@ export default function DemandeFromUser() {
 
   return (
     <div>
-      {DCongeeValue.id && <h1>Update Conge : {DCongeeValue.name}</h1>}
+      {DCongeeValue.id && <h1>Update {DCongeeValue.type}</h1>}
       {!DCongeeValue.id && <h1>New Demande Conge</h1>}
       <div className="card animated fadeInDown">
         {loading && <div className="text-center">Loading...</div>}

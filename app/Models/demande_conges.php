@@ -23,7 +23,6 @@ class demande_conges extends Model
         'start_date',
         'end_date',
         'description',
-        'image',
         'file'
     ];
 }

@@ -84,6 +84,10 @@ const router = createBrowserRouter([
                 path:'/demandeuser/new',
                 element:<DemandeFromUser/>
             },
+            {
+                path:'/demandeuser/:id',
+                element:<DemandeFromUser key="DemandeUpdate"/>
+            },
 
         ]
     },

@@ -76,7 +76,7 @@ export default function DemnadeUser(){
                                 <td>{u.user_id}</td>
                                 <td>{u.created_at}</td>
                                 <td>
-                                    <Link className="btn-edit" to={'/users/'+u.id}>Edit</Link>
+                                    <Link className="btn-edit" to={'/demandeuser/'+u.id}>Edit</Link>
                                     &nbsp;
                                     <button onClick={ev=>onDelete(u)}className="btn-delete">Delete</button>
                                 </td>
