@@ -20,9 +20,6 @@ export default function UserForm() {
 
   useEffect(() => {
     setLoading(true);
-    if (user.role === "user") {
-      navigate("/dashboard");
-    } else {
       if (user.id) {
         axiosClient
           .get(`/users/${user.id}`)
@@ -36,8 +33,7 @@ export default function UserForm() {
       } else {
         setLoading(false);
       }
-    }
-  }, [user]);
+    }, [user]);
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -106,7 +102,6 @@ export default function UserForm() {
               placeholder="Email"
             />
             <input
-              value={userValue.password}
               type="password"
               onChange={(ev) =>
                 setUser({
@@ -115,6 +110,16 @@ export default function UserForm() {
                 })
               }
               placeholder="Password"
+            />
+            <input
+              type="password"
+              onChange={(ev) =>
+                setUser({
+                  ...userValue,
+                  password_confirmation: ev.target.value,
+                })
+              }
+              placeholder="Password Confirmation"
             />
             <button className="btn">Save</button>
           </form>
