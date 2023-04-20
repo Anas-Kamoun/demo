@@ -174,7 +174,7 @@ export default function UserForm() {
                 }
               >
                 <MenuItem value="" disabled>
-                  Position ?
+                  Poste ?
                 </MenuItem>
                 <MenuItem value={"Designer"}>Simple User</MenuItem>
                 <MenuItem value={"Frontend developer"}>Admin</MenuItem>
