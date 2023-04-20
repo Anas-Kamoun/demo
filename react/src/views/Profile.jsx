@@ -1,4 +1,7 @@
-import { FormControl, MenuItem, Select } from "@mui/material";
+
+Mehdi
+Mehdi Zaghmi
+import { Avatar, FormControl, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
@@ -16,30 +19,37 @@ export default function UserForm() {
     password: "",
     password_confirmation: "",
     role: "",
+    avatar: null,
   });
 
   useEffect(() => {
     setLoading(true);
-      if (user.id) {
-        axiosClient
-          .get(`/users/${user.id}`)
-          .then(({ data }) => {
-            setLoading(false);
-            setUser(data.data);
-          })
-          .catch(() => {
-            setLoading(false);
-          });
-      } else {
-        setLoading(false);
-      }
-    }, [user]);
+    if (user.id) {
+      axiosClient
+        .get(/users/${user.id})
+        .then(({ data }) => {
+          setLoading(false);
+          setUser(data.data);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
 
   const onSubmit = (ev) => {
     ev.preventDefault();
+    const formData = new FormData();
+    formData.append("name", userValue.name);
+    formData.append("email", userValue.email);
+    formData.append("password", userValue.password);
+    formData.append("password_confirmation", userValue.password_confirmation);
+    formData.append("avatar", userValue.avatar);
     if (userValue.id) {
       axiosClient
-        .put(`/users/${userValue.id}`, userValue)
+        .put(/users/${userValue.id}, formData)
         .then(() => {
           setNotification("User was updated successfully");
           navigate("/users");
@@ -53,7 +63,7 @@ export default function UserForm() {
         });
     } else {
       axiosClient
-        .post(`/users/`, userValue)
+        .post(/users/, formData)
         .then(() => {
           setNotification("User was created successfully");
           navigate("/users");
@@ -66,6 +76,10 @@ export default function UserForm() {
           }
         });
     }
+  };
+
+  const onAvatarChange = (ev) => {
+    setUser({ ...userValue, avatar: ev.target.files[0] });
   };
 
   return (
@@ -82,14 +96,40 @@ export default function UserForm() {
         )}
         {!loading && (
           <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              onChange={(ev) =>
-                setUser({ ...userValue, name: ev.target.value })
-              }
-              value={userValue.name}
-              placeholder="Name"
-            />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Avatar
+                src={userValue.avatar && URL.createObjectURL(userValue.avatar)}
+              />
+              <div style={{ marginLeft: "1rem" }}>
+                <button
+                  className="btn"
+                  onClick={() =>
+                    document.getElementById("avatar-upload").click()
+                  }
+                  style={{ fontSize: "0.8rem" }}
+                >
+                  Edit Avatar
+                </button>
+                <input
+                  type="file"
+                  onChange={(ev) => {
+                    const file = ev.target.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onloadend = () => {
+                      setUser({
+                        ...userValue,
+                        avatar: reader.result,
+                      });
+                    };
+                  }}
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  id="avatar-upload"
+                />
+              </div>
+            </div>
+            &nbsp;
             <input
               type="email"
               onChange={(ev) =>
@@ -121,7 +161,45 @@ export default function UserForm() {
               }
               placeholder="Password Confirmation"
             />
-            <button className="btn">Save</button>
+            <FormControl fullWidth>
+              <Select
+                fullWidth
+                displayEmpty
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={userValue.role}
+                placeholder="Role"
+                onChange={(ev) =>
+                  setUser({
+                    ...userValue,
+                    role: ev.target.value,
+                  })
+                }
+              >
+                <MenuItem value="" disabled>
+                  Position ?
+                </MenuItem>
+                <MenuItem value={"Designer"}>Simple User</MenuItem>
+                <MenuItem value={"Frontend developer"}>Admin</MenuItem>
+                <MenuItem value={"Backend developer"}>Super Admin</MenuItem>
+              </Select>
+            </FormControl>
+            &nbsp;
+            <input
+              type="tel"
+              onChange={(ev) =>
+                setUser({
+                  ...userValue,
+                  phone_number: ev.target.value,
+                })
+              }
+              value={userValue.phone_number}
+              placeholder="Phone number"
+            />
+            <button className="btn" type="submit">
+              Save
+            </button>
+
           </form>
         )}
       </div>
