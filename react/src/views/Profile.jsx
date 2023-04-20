@@ -23,7 +23,7 @@ export default function UserForm() {
     setLoading(true);
     if (user.id) {
       axiosClient
-        .get(/users/`${user.id}`)
+        .get(`/users/${user.id}`)
         .then(({ data }) => {
           setLoading(false);
           setUser(data.data);
@@ -46,7 +46,7 @@ export default function UserForm() {
     formData.append("avatar", userValue.avatar);
     if (userValue.id) {
       axiosClient
-        .put(/users/`${userValue.id}`, formData)
+        .put(`/users/${userValue.id}`, formData)
         .then(() => {
           setNotification("User was updated successfully");
           navigate("/users");
@@ -60,7 +60,7 @@ export default function UserForm() {
         });
     } else {
       axiosClient
-        .post(/users/, formData)
+        .post('/users/', formData)
         .then(() => {
           setNotification("User was created successfully");
           navigate("/users");
