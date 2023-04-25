@@ -24,6 +24,10 @@ return new class extends Migration
             $table->foreign('contrat_id')
                  ->references('id')
                  ->on('type_contrats');
+            $table->unsignedBigInteger('poste_id')->nullable();
+            $table->foreign('poste_id')
+                 ->references('id')
+                 ->on('postes');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

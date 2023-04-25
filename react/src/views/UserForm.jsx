@@ -17,8 +17,20 @@ export default function UserForm() {
     password: "",
     password_confirmation: "",
     role: "",
+    poste_id:"",
+    contrat_id:"",
   });
 
+
+  const [Contrat,setContrat]= useState([]);
+  const currentContrat = Contrat.find(
+    (el) => el.id === userValue.contrat_id
+  ) || {
+    name: "",
+    id: "",
+  };
+
+  const [Poste,setPoste]= useState([]);
   useEffect(() => {
     setLoading(true);
     if (user.role === "user") {
@@ -38,7 +50,25 @@ export default function UserForm() {
         setLoading(false);
       }
     }
-  }, [id, user]);
+    axiosClient.get('/contrats')
+    .then(({data})=>{
+        setLoading(false);
+        setContrat(data.data)
+    })
+    .catch(()=>{
+        setLoading(false);
+    })
+    axiosClient.get('/postes')
+    .then(({data})=>{
+        setLoading(false);
+        setPoste(data.data)
+    })
+    .catch(()=>{
+        setLoading(false);
+    })
+  }
+  , [id, user]);
+
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -153,6 +183,68 @@ export default function UserForm() {
               </FormControl>
               &nbsp;
               <br />
+              <FormControl fullWidth>
+                <Select
+                  fullWidth
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={currentContrat.id}
+                  placeholder="type contrat"
+                  onChange={(ev) =>
+                    setConge(
+                      {
+                        ...CongeValue,
+                        contrat_id: ev.target.value,
+                      },
+                      setContrat(ev.target.value)
+                    )
+                  }
+                >
+                  <MenuItem value="" disabled>
+                    Type contrat ?
+                  </MenuItem>
+                  {Contrat.map((c) => {
+                    return (
+                      <MenuItem value={c.id} key={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              &nbsp;
+              <FormControl fullWidth>
+                <Select
+                  fullWidth
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={currentContrat.id}
+                  placeholder="type contrat"
+                  onChange={(ev) =>
+                    setConge(
+                      {
+                        ...CongeValue,
+                        contrat_id: ev.target.value,
+                      },
+                      setContrat(ev.target.value)
+                    )
+                  }
+                >
+                  <MenuItem value="" disabled>
+                    Type Postes ?
+                  </MenuItem>
+                  {Poste.map((c) => {
+                    return (
+                      <MenuItem value={c.id} key={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              &nbsp;
             </div>
             <button className="btn">Save</button>
           </form>

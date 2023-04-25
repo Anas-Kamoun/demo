@@ -16,7 +16,8 @@ import ContratForm from "./views/ContratForm";
 import Profile from "./views/Profile";
 import DemandeUser from "./views/DemandeUser";
 import DemandeFromUser from "./views/DemandeFromUser"
-
+import Poste from "./views/Poste"
+import PosteForm from "./views/PosteForm"
 
 
 const router = createBrowserRouter([
@@ -87,6 +88,19 @@ const router = createBrowserRouter([
             {
                 path:'/demandeuser/:id',
                 element:<DemandeFromUser key="DemandeUpdate"/>
+            },
+            {
+                path:'/postes',
+                element:<Poste/>
+            },
+
+            {
+                path:'/poste/new',
+                element:<PosteForm/>
+            },
+            {
+                path:'/poste/:id',
+                element:<PosteForm key="PosteUpdate"/>
             },
 
         ]

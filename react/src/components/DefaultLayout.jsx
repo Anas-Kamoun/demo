@@ -5,7 +5,7 @@ import { useStateContext } from "../Contexts/ContextProvider";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AccountBalanceSharpIcon from '@mui/icons-material/AccountBalanceSharp'
 import AssignmentIcon from '@mui/icons-material/Assignment';
-
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
@@ -103,6 +103,13 @@ export default function DefaultLayout() {
             <Stack direction="row" alignItems='center'>
                 <AssignmentIcon style={{marginRight:5}} />
                     Types de contrats
+            </Stack>
+        </Link>
+
+        <Link to="/postes">
+            <Stack direction="row" alignItems='center'>
+                <AccessibilityNewIcon style={{marginRight:5}} />
+                    Types des postes
             </Stack>
         </Link>
 

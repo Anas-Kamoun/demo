@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TypeCongesController;
 use App\Http\Controllers\Api\TypeContratController;
 use App\Http\Controllers\Api\DemandeCongesController;
+use App\Http\Controllers\Api\PosteController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('/conges',TypeCongesController::class);
     Route::apiResource('/contrats',TypeContratController::class);
     Route::apiResource('/dconges',DemandeCongesController::class);
+    Route::apiResource('/postes',PosteController::class);
 });
 
 Route::middleware(['cors'])->group(function () {
