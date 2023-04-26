@@ -25,6 +25,7 @@ class User extends Authenticatable
         'solde',
         'autorisation',
         'contrat_id',
+        'poste_id',
     ];
 
     /**

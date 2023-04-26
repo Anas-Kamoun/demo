@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'autorisation'=>$this->autorisation,
             'role'=>$this->role,
             'contrat_id'=>$this->contrat_id,
+            'poste_id'=>$this->poste_id,
             'created_at'=>$this->created_at->format('Y-m-d H:i:s'),
         ];
     }

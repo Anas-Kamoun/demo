@@ -22,15 +22,22 @@ export default function UserForm() {
   });
 
 
-  const [Contrat,setContrat]= useState([]);
-  const currentContrat = Contrat.find(
+  const [ContratValue, setContrat] = useState("");
+  const [Contrats, setContrats] = useState([]);
+  const currentContrat = Contrats.find(
     (el) => el.id === userValue.contrat_id
   ) || {
     name: "",
     id: "",
   };
-
-  const [Poste,setPoste]= useState([]);
+  const [PosteValue, setPoste] = useState("");
+  const [Poste,setPostes]= useState([]);
+  const currentPoste= Poste.find(
+    (el) => el.id === userValue.poste_id
+  ) || {
+    name: "",
+    id: "",
+  };
   useEffect(() => {
     setLoading(true);
     if (user.role === "user") {
@@ -53,7 +60,7 @@ export default function UserForm() {
     axiosClient.get('/contrats')
     .then(({data})=>{
         setLoading(false);
-        setContrat(data.data)
+        setContrats(data.data)
     })
     .catch(()=>{
         setLoading(false);
@@ -61,7 +68,7 @@ export default function UserForm() {
     axiosClient.get('/postes')
     .then(({data})=>{
         setLoading(false);
-        setPoste(data.data)
+        setPostes(data.data)
     })
     .catch(()=>{
         setLoading(false);
@@ -192,9 +199,9 @@ export default function UserForm() {
                   value={currentContrat.id}
                   placeholder="type contrat"
                   onChange={(ev) =>
-                    setConge(
+                    setUser(
                       {
-                        ...CongeValue,
+                        ...userValue,
                         contrat_id: ev.target.value,
                       },
                       setContrat(ev.target.value)
@@ -204,7 +211,7 @@ export default function UserForm() {
                   <MenuItem value="" disabled>
                     Type contrat ?
                   </MenuItem>
-                  {Contrat.map((c) => {
+                  {Contrats.map((c) => {
                     return (
                       <MenuItem value={c.id} key={c.id}>
                         {c.name}
@@ -220,15 +227,15 @@ export default function UserForm() {
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={currentContrat.id}
+                  value={currentPoste.id}
                   placeholder="type contrat"
                   onChange={(ev) =>
-                    setConge(
+                    setUser(
                       {
-                        ...CongeValue,
-                        contrat_id: ev.target.value,
+                        ...userValue,
+                        poste_id: ev.target.value,
                       },
-                      setContrat(ev.target.value)
+                      setPoste(ev.target.value)
                     )
                   }
                 >
