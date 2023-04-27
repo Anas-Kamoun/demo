@@ -34,7 +34,9 @@ class StoreUserRequest extends FormRequest
                  ->letters()
                  ->symbols()
             ],
-            'role'=>'required|string'
+            'role'=>'required|string',
+            'contrat_id'=>'exists:App\Models\TypeContrat,id',
+            'poste_id'=>'exists:App\Models\Poste,id',
         ];
     }
 }
