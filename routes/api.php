@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 
 Route::middleware(['cors'])->group(function () {
+Route::get("/dcongeuser/{id}",[DemandeCongesController::class, 'showbyuser']);
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/image',[DemandeCongesController::class, 'imageStore']);
 });

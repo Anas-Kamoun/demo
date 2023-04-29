@@ -81,4 +81,16 @@ class DemandeCongesController extends Controller
         $typeConges->delete(); // Easy right?
         return Response("",204);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\demande_conges  $demande_conges
+     * @return \Illuminate\Http\Response
+     */
+    public function showbyuser(demande_conges $demande_conges,$id)
+    {
+        $demande_conges = demande_conges::where('user_id', $id)->get();
+        return demande_congesR::collection($demande_conges);
+    }
 }

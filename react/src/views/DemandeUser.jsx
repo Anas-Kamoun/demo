@@ -6,10 +6,7 @@ import { useStateContext } from "../Contexts/ContextProvider";
 export default function DemnadeUser(){
     const [DCongee,setDCongee]= useState([]);
     const [loading,setLoading]=useState(false);
-    const {user,setNotification}=useStateContext()
-
-    
-
+    const {user,setNotification}=useStateContext();
 
     useEffect(()=>{
         getDCongee();
@@ -25,20 +22,17 @@ export default function DemnadeUser(){
             getDCongee()
         })
     }
-
     const getDCongee=()=>{
         setLoading(true);
-        axiosClient.get('/dconges')
+        axiosClient.get(`/dcongeuser/${user.id}`)
         .then(({data})=>{
             setLoading(false);
             setDCongee(data.data)
-            console.log(data.data);
         })
         .catch(()=>{
             setLoading(false);
         })
     }
-
     return(
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
@@ -51,8 +45,9 @@ export default function DemnadeUser(){
                         <tr>
                             <th>ID</th>
                             <th>Type Congé</th>
-                            <th>Email</th>
-                            <th>Create Date</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Etat</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -69,8 +64,9 @@ export default function DemnadeUser(){
                             <tr key={u.id}>
                                 <td>{u.id}</td>
                                 <td>{u.type}</td>
-                                <td>{u.user_id}</td>
-                                <td>{u.created_at}</td>
+                                <td>{u.start_date}</td>
+                                <td>{u.end_date}</td>
+                                <td>{u.etat}</td>
                                 <td>
                                     <Link className="btn-edit" to={'/demandeuser/'+u.id}>Edit</Link>
                                     &nbsp;
