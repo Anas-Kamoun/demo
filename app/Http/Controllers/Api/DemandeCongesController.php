@@ -64,9 +64,13 @@ class DemandeCongesController extends Controller
      * @param  \App\Models\demande_conges  $demande_conges
      * @return \Illuminate\Http\Response
      */
-    public function update(Updatedemande_congesRequest $request, demande_conges $demande_conges)
+    public function update(Updatedemande_congesRequest $request, demande_conges $demande_conges,$id)
     {
-        //
+        $demande_conges =demande_conges::whereId($id)->first();
+        $demande_conges->update([
+            'etat' => $request['etat'],
+        ]);
+        return response()->json("",204);
     }
 
     /**

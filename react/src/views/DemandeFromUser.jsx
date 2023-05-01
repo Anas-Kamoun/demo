@@ -229,6 +229,7 @@ export default function DemandeFromUser() {
                     name="motif"
                     rows="5"
                     cols="33"
+                    value={DCongeeValue.description}
                     placeholder="Description"
                     onChange={(ev) =>
                       setConge({

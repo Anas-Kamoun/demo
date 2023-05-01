@@ -13,7 +13,7 @@ class Updatedemande_congesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class Updatedemande_congesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id'=>'exists:App\Models\User,id',
+            'type'=>'required|string',
+            'conge_id'=>'nullable|required_if:type,Congee|exists:App\Models\TypeConges,id',
+            'autorisation'=>'nullable|required_if:type,autorisation',
+            'start_autorisation'=>'nullable|required_if:type,autorisation',
+            'start_date'=>'nullable|required_if:type,Congee|date',
+            'end_date'=>'nullable|required_if:type,Congee|date',
+            'description'=>'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'file'=>'nullable|string',
         ];
     }
 }

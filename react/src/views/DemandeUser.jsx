@@ -64,8 +64,8 @@ export default function DemnadeUser(){
                             <tr key={u.id}>
                                 <td>{u.id}</td>
                                 <td>{u.type}</td>
-                                <td>{u.start_date}</td>
-                                <td>{u.end_date}</td>
+                                <td>{u.type == 'Congee' && u.start_date}{u.type == 'autorisation' && u.start_autorisation}</td>
+                                <td>{u.type == 'Congee' && u.end_date}{u.type == 'autorisation' && u.start_autorisation+u.autorisation}</td>
                                 <td>{u.etat}</td>
                                 <td>
                                     <Link className="btn-edit" to={'/demandeuser/'+u.id}>Edit</Link>
