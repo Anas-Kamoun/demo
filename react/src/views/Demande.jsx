@@ -12,15 +12,7 @@ export default function DemnadeUser() {
     name: "",
   });
   const [modal, setModal] = useState(false);
-  const toggleModal = (u) => {
-      axiosClient
-        .get(`/user/`)
-        .then(({ data }) => {
-          setUser(data.data);
-          console.log(data.data);
-        })
-        .catch(() => {
-        });
+  const toggleModal = () => {
     setModal(!modal);
   };
 
@@ -116,19 +108,20 @@ export default function DemnadeUser() {
                   </td>
                   <td>{u.etat}</td>
                   <td>
-                    <PageviewIcon onClick={(ev) => toggleModal(u)} />
+                    <PageviewIcon onClick={(ev) => toggleModal()} />
                     {modal && (
                       <div className="modal">
                         <div onClick={toggleModal} className="overlay"></div>
                         <div className="modal-content">
                           <h2>Detail de la demande</h2>
                           &nbsp;
-                          <tr>
+                          <div>
                             <td><h3>Type de la demande : </h3></td>
                             <td><h4>{u.type}</h4></td>
-                            <td><h3>nom : </h3></td>
-                            <td><h4>{userValue.name}</h4></td> 
-                          </tr>
+                            <tr><td><h3>nom : {user.name}</h3></td></tr>
+                            <tr><td><h3>nom : {user.name}</h3></td></tr>
+                            </div>
+                          
                           
                           <button className="close-modal" onClick={toggleModal}>
                             CLOSE
