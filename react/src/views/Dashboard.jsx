@@ -266,7 +266,7 @@ const infobare = [
 
 
 return (<>
-  <div className='all-mini-cart'>
+  <div className='all-mini-cart' style={{marginLeft:"-15px"}} >
               {
                 infos.map((items) =>
                   <Carte icon={items.icon} title={items.title} data={items.data} />
@@ -277,7 +277,7 @@ return (<>
 
 
 
-<div style={{ display: "flex", marginTop: "10px" , gap: "20px"}}>
+<div style={{ display: "flex", marginTop: "10px" , marginLeft:"-15px", gap:"10px" }}>
                   {
                     infobare.map((items) =>
                       <Cardeverticalbar title={items.title} api={items.api} api2={items.api2} api3={items.api3} />
