@@ -12,7 +12,8 @@ export default function DemnadeUser() {
     name: "",
   });
   const [modal, setModal] = useState(false);
-  const toggleModal = () => {
+  const toggleModal = (u) => {
+    
     setModal(!modal);
   };
 
@@ -108,7 +109,7 @@ export default function DemnadeUser() {
                   </td>
                   <td>{u.etat}</td>
                   <td>
-                    <PageviewIcon onClick={(ev) => toggleModal()} />
+                    <PageviewIcon onClick={(ev) => toggleModal(u)} />
                     {modal && (
                       <div className="modal">
                         <div onClick={toggleModal} className="overlay"></div>
