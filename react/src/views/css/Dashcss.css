@@ -45,6 +45,7 @@
     width: 775px;
     border-radius: 15px;
     display: flex;
+    /* margin-right: 30px; */
     margin-top: 11px;
     justify-content: start;
     flex-direction: row;
@@ -55,4 +56,3 @@
     
       
   }
-   
