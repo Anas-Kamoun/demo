@@ -277,7 +277,7 @@ return (<>
 
 
 
-<div style={{ display: "flex", marginTop: "10px" , marginLeft:"-15px", gap:"10px" }}>
+<div style={{ display: "flex", marginTop: "10px" , marginLeft:"-15px", gap:"11px" }}>
                   {
                     infobare.map((items) =>
                       <Cardeverticalbar title={items.title} api={items.api} api2={items.api2} api3={items.api3} />
