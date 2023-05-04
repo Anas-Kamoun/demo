@@ -1,0 +1,58 @@
+.all-mini-cart{
+    display: flex;
+    flex-wrap: wrap;
+}
+.carte{
+    background-color: white;
+    height: 90px;
+    width: 250px;
+    border-radius: 15px;
+    display: flex;
+    margin-right: 10px;
+    margin-top: 16px;
+    justify-content: start;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    
+  }
+  .carte .fix-carte
+  {
+    justify-content: center;
+    align-items: center;
+   
+    display:flex;
+    flex-direction: row;
+   
+  }
+  .carte .fix-texte
+  {
+    
+    color: #1A2552;
+    flex-direction: column;
+    display: flex;
+  
+    
+  }
+  .carte .fix-texte p{
+    margin: 0;
+  
+  }
+  .carte-vertical-bar{
+    background-color: white;
+    height: 500px;
+    width: 775px;
+    border-radius: 15px;
+    display: flex;
+    margin-top: 11px;
+    justify-content: start;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    padding: 30px;
+    
+    
+      
+  }
+   
