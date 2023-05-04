@@ -11,8 +11,14 @@ export default function DemnadeUser() {
   const [userValue, setUser] = useState({
     name: "",
   });
+  const [conges, setConges] = useState([]);
   const [modal, setModal] = useState(false);
   const toggleModal = (u) => {
+    axiosClient.get(`/conges/${u}`).then(({ data }) => {
+      setLoading(false);
+      setConges(data.data);
+      console.log(data.data);
+    });
     
     setModal(!modal);
   };
@@ -109,7 +115,7 @@ export default function DemnadeUser() {
                   </td>
                   <td>{u.etat}</td>
                   <td>
-                    <PageviewIcon onClick={(ev) => toggleModal(u)} />
+                    <PageviewIcon onClick={(ev) => toggleModal(u.conge_id)} />
                     {modal && (
                       <div className="modal">
                         <div onClick={toggleModal} className="overlay"></div>
@@ -117,10 +123,14 @@ export default function DemnadeUser() {
                           <h2>Detail de la demande</h2>
                           &nbsp;
                           <div>
+                          <tr><td><h3>Etat : <a className="btn-add">{u.etat}</a></h3></td></tr>
+                          <tr><td><h3>nom : {user.name}</h3></td></tr>
                             <td><h3>Type de la demande : </h3></td>
                             <td><h4>{u.type}</h4></td>
-                            <tr><td><h3>nom : {user.name}</h3></td></tr>
-                            <tr><td><h3>nom : {user.name}</h3></td></tr>
+                            <tr><td><h3>Congee : {conges.name}</h3></td></tr>
+                            <tr><td><h3>Strat Date : {u.start_date}</h3></td></tr>
+                            <tr><td><h3>Strat Date : {u.end_date}</h3></td></tr>
+                            <tr><td><h3>Description :</h3><p>{u.end_date}</p></td></tr>
                             </div>
                           
                           
