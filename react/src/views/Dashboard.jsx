@@ -223,22 +223,22 @@ function Dashboard() {
 
 const infos = [
   {
-    title: <p className='pp'>Total downloads</p>,
+    title: <p className='pp'>Users</p>,
     icon: <TeamOutlined/>,
     data: "0",
   },
   {
-    title: <p className='pp'>Total peeps</p>,
+    title: <p className='pp'>Postes</p>,
     icon: <PlusCircleOutlined  />,
     data: "0",
   },
   {
-    title: <p className='pp'>Online now</p>,
+    title: <p className='pp'>Contrats</p>,
     icon: <CheckCircleOutlined />,
     data: "0",
   },
   {
-    title: <p className='pp'>Total peeps polls</p>,
+    title: <p className='pp'></p>,
     icon: <SyncOutlined />,
     data: "0",
   },
@@ -248,19 +248,13 @@ const infos = [
 
 const infobare = [
   {
-    title: <p className='ppp' style={{ marginLeft: "-35px" }}>Peeps polls</p>,
-    //titre
-    api: "0",
-    api2: "0",
-    api3: "0"
+    title: <p className='ppp' style={{ marginLeft: "-35px" }}>Administrateur</p>,
+
   },
 
   {
-    title: <p className='ppp' style={{ marginLeft: "-35px" }}>Peeps interactions</p>,
-    //titre
-    api: "0",
-    api2: "",
-    api3: "0"
+    title: <p className='ppp' style={{ marginLeft: "-35px" }}>Super administrateur</p>,
+ 
   },
 ]
 
@@ -280,7 +274,7 @@ return (<>
 <div style={{ display: "flex", marginTop: "10px" , marginLeft:"-15px", gap:"11px" }}>
                   {
                     infobare.map((items) =>
-                      <Cardeverticalbar title={items.title} api={items.api} api2={items.api2} api3={items.api3} />
+                      <Cardeverticalbar title={items.title}  />
 
                     )
 
