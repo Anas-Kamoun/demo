@@ -207,40 +207,63 @@
 // export default Dashboard;
 import Cardeverticalbar from "./Cardeverticalbar";
 import  "../views/css/style.css";
-// import DashCSS from "./css/DashCSS.css";
+import"./css/DashCSS.css";
 import {TeamOutlined ,SyncOutlined ,CheckCircleOutlined,PlusCircleOutlined } from "@ant-design/icons";
 import { Card, Space, Statistic, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
 import Carte from "./Carte";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,} from "chart.js";
 import { Bar } from "react-chartjs-2";
-
+import axiosClient from "../axios-client";
 ChartJS.register(CategoryScale,LinearScale,BarElement,Title,Tooltip,Legend);
 
 
-
 function Dashboard() {
+  const [count_users,setcount_users]= useState([]);
+  const [count_demandes,setcount_demandes]= useState([]);
+  const [count_demandesv,setcount_demandesv]= useState([]);
+  const [count_demandesp,setcount_demandesp]= useState([]);
+  useEffect(()=>{
+    getData();
+},[])
+
+const getData=()=>{
+  axiosClient.get('/count-users')
+  .then(({data})=>{
+    setcount_users(data);
+  })
+  .catch(()=>{
+  })
+  axiosClient.get('/count-demandes')
+  .then(({data})=>{
+    setcount_demandes(data.countall);
+    setcount_demandesv(data.countv);
+    setcount_demandesp(data.countp);
+  })
+  .catch(()=>{
+  })
+}
 
 const infos = [
   {
-    title: <p className='pp'>Total downloads</p>,
+    title: <p className='pp'>Total Users</p>,
     icon: <TeamOutlined/>,
-    data: "0",
+    data: count_users,
   },
   {
-    title: <p className='pp'>Total peeps</p>,
+    title: <p className='pp'>Total Demande</p>,
     icon: <PlusCircleOutlined  />,
-    data: "0",
+    data: count_demandes,
   },
   {
-    title: <p className='pp'>Online now</p>,
+    title: <p className='pp'>Tatal Demande Validee</p>,
     icon: <CheckCircleOutlined />,
-    data: "0",
+    data: count_demandesv,
   },
   {
-    title: <p className='pp'>Total peeps polls</p>,
+    title: <p className='pp'>Total Demande En Cours</p>,
     icon: <SyncOutlined />,
-    data: "0",
+    data: count_demandesp,
   },
  
 ]
@@ -250,9 +273,9 @@ const infobare = [
   {
     title: <p className='ppp' style={{ marginLeft: "-35px" }}>Peeps polls</p>,
     //titre
-    api: "0",
-    api2: "0",
-    api3: "0"
+    api: "50",
+    api2: "10",
+    api3: "1000"
   },
 
   {

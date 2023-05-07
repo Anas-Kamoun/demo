@@ -7,7 +7,8 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
@@ -74,5 +75,12 @@ class UserController extends Controller
     {
         $user->delete();
         return Response("",204);
+    }
+
+    public function countUsers()
+    {
+        $count = DB::table('users')->count();
+
+        return response($count);
     }
 }

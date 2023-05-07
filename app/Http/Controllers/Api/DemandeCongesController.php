@@ -10,6 +10,9 @@ use App\Http\Resources\demande_congesR;
 use App\Models\Image;
 use App\Http\Requests\ImageStoreRequest;
 use Symfony\Component\HttpFoundation\Response;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 class DemandeCongesController extends Controller
 {
     /**
@@ -96,5 +99,18 @@ class DemandeCongesController extends Controller
     {
         $demande_conges = demande_conges::where('user_id', $id)->get();
         return demande_congesR::collection($demande_conges);
+    }
+
+    public function countDemande()
+    {
+        $countall = DB::table('demande_conges')->count();
+        $countv = DB::table('demande_conges')->where('etat', '=', 'Validee')->count();
+        $countp = DB::table('demande_conges')->where('etat', '=', 'En Cours')->count();
+
+        return response()->json([
+            'countall' => $countall,
+            'countv' => $countv,
+            'countp' => $countp,
+        ]);
     }
 }
