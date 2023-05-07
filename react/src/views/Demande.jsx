@@ -3,24 +3,48 @@ import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import moment from "moment";
 
 export default function DemnadeUser() {
   const [DCongee, setDCongee] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user, setNotification } = useStateContext();
-  const [userValue, setUser] = useState({
-    name: "",
-  });
+
   const [conges, setConges] = useState([]);
   const [modal, setModal] = useState(false);
+  const [selectedConge, setSelectedConge] = useState(null);
   const toggleModal = (u) => {
-    axiosClient.get(`/conges/${u}`).then(({ data }) => {
-      setLoading(false);
-      setConges(data.data);
-      console.log(data.data);
-    });
-    
-    setModal(!modal);
+    if (u.conge_id) {
+      axiosClient.get(`/conges/${u.conge_id}`).then(({ data }) => {
+        setConges(data.data);
+        setSelectedConge(u);
+        setModal(true);
+      });
+    } else {
+      setModal(true);
+      const start_autorisation = new Date(u.start_autorisation);
+      const autorisation = u.autorisation;
+      const [hours, minutes, seconds] = autorisation.split(":");
+
+      const combined_date = start_autorisation;
+      combined_date.setHours(combined_date.getHours() + Number(hours));
+      combined_date.setMinutes(combined_date.getMinutes() + Number(minutes));
+      combined_date.setSeconds(combined_date.getSeconds() + Number(seconds));
+
+      setSelectedConge({ ...u, combined_date });
+    }
+  };
+
+  const getautdate = (s, a) => {
+    const start_autorisation = new Date(s);
+    const autorisation = a;
+    const [hours, minutes, seconds] = autorisation.split(":");
+
+    const combined_date = start_autorisation;
+    combined_date.setHours(combined_date.getHours() + Number(hours));
+    combined_date.setMinutes(combined_date.getMinutes() + Number(minutes));
+    combined_date.setSeconds(combined_date.getSeconds() + Number(seconds));
+    return(combined_date);
   };
 
   if (modal) {
@@ -65,6 +89,7 @@ export default function DemnadeUser() {
         setLoading(false);
       });
   };
+
   return (
     <div>
       <div
@@ -111,35 +136,13 @@ export default function DemnadeUser() {
                   <td>
                     {u.type == "Congee" && u.end_date}
                     {u.type == "autorisation" &&
-                      u.start_autorisation + u.autorisation}
+                      moment(
+                        getautdate(u.start_autorisation, u.autorisation)
+                      ).format("YYYY-MM-DD HH:mm:ss")}
                   </td>
                   <td>{u.etat}</td>
                   <td>
-                    <PageviewIcon onClick={(ev) => toggleModal(u.conge_id)} />
-                    {modal && (
-                      <div className="modal">
-                        <div onClick={toggleModal} className="overlay"></div>
-                        <div className="modal-content">
-                          <h2>Detail de la demande</h2>
-                          &nbsp;
-                          <div>
-                          <tr><td><h3>Etat : <a className="btn-add">{u.etat}</a></h3></td></tr>
-                          <tr><td><h3>nom : {user.name}</h3></td></tr>
-                            <td><h3>Type de la demande : </h3></td>
-                            <td><h4>{u.type}</h4></td>
-                            <tr><td><h3>Congee : {conges.name}</h3></td></tr>
-                            <tr><td><h3>Strat Date : {u.start_date}</h3></td></tr>
-                            <tr><td><h3>Strat Date : {u.end_date}</h3></td></tr>
-                            <tr><td><h3>Description :</h3><p>{u.end_date}</p></td></tr>
-                            </div>
-                          
-                          
-                          <button className="close-modal" onClick={toggleModal}>
-                            CLOSE
-                          </button>
-                        </div>
-                      </div>
-                    )}
+                    <PageviewIcon onClick={(ev) => toggleModal(u)} />
                   </td>
                   <td>
                     <button onClick={(ev) => onValidate(u)} className="btn-add">
@@ -158,6 +161,84 @@ export default function DemnadeUser() {
             </tbody>
           )}
         </table>
+        {modal && selectedConge && (
+          <div className="modal">
+            <div
+              onClick={() => {
+                setModal(false);
+                setSelectedConge(null);
+              }}
+              className="overlay"
+            ></div>
+            <div className="modal-content">
+              <h2>Details de la demande</h2>
+              &nbsp;
+              <div>
+                <tr>
+                  <td>
+                    <h3>
+                      Etat : <a className="btn-add">{selectedConge.etat}</a>
+                    </h3>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h3>User : {user.name}</h3>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h3>Type de la demande : {selectedConge.type}</h3>
+                  </td>
+                </tr>
+                {selectedConge.conge_id && (
+                  <tr>
+                    <td>
+                      <h3>Congee : {conges.name}</h3>
+                    </td>
+                  </tr>
+                )}
+                <tr>
+                  <td>
+                    <h3>
+                      Start Date :{" "}
+                      {selectedConge.conge_id
+                        ? selectedConge.start_date
+                        : selectedConge.start_autorisation}
+                    </h3>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h3>
+                      End Date :{" "}
+                      {selectedConge.combined_date
+                        ? moment(selectedConge.combined_date).format(
+                            "YYYY-MM-DD HH:mm:ss"
+                          )
+                        : selectedConge.end_date}
+                    </h3>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h3>Description :</h3>
+                    <p>{selectedConge.description}</p>
+                  </td>
+                </tr>
+              </div>
+              <button
+                className="close-modal"
+                onClick={() => {
+                  setModal(false);
+                  setSelectedConge(null);
+                }}
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

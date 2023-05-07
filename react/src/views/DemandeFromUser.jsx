@@ -290,6 +290,13 @@ export default function DemandeFromUser() {
                     rows="5"
                     cols="33"
                     placeholder="Description"
+                    value={DCongeeValue.description}
+                    onChange={(ev) =>
+                      setConge({
+                        ...DCongeeValue,
+                        description: ev.target.value,
+                      })
+                    }
                   ></textarea>
                   &nbsp;
                   <div>

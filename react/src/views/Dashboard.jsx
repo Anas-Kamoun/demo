@@ -256,12 +256,12 @@ const infos = [
     data: count_demandes,
   },
   {
-    title: <p className='pp'>Total Demande Congee Validee</p>,
+    title: <p className='pp'>Demande Congee Validee</p>,
     icon: <CheckCircleOutlined />,
     data: count_demandesv,
   },
   {
-    title: <p className='pp'>Total Demande Congee En Cours</p>,
+    title: <p className='pp'>Demande Congee En Cours</p>,
     icon: <SyncOutlined />,
     data: count_demandesp,
   },
