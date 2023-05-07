@@ -23,7 +23,7 @@ const DateFilterOptions = [
   { label: 'Last 5 Years', value: 'years' },
 ];
 
-const Tabverticalbar = ({ title, api, api2, api3 }) => {
+const Tabverticalbar = ({ title, }) => {
   const [data, setData] = useState([]);
   const [genderFilter, setGenderFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState('days');

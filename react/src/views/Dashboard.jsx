@@ -246,22 +246,22 @@ const getData=()=>{
 
 const infos = [
   {
-    title: <p className='pp'>Total Users</p>,
+    title: <p className='pp'>Total downloads</p>,
     icon: <TeamOutlined/>,
     data: count_users,
   },
   {
-    title: <p className='pp'>Total Demande</p>,
+    title: <p className='pp'>Total peeps</p>,
     icon: <PlusCircleOutlined  />,
     data: count_demandes,
   },
   {
-    title: <p className='pp'>Tatal Demande Validee</p>,
+    title: <p className='pp'>Online now</p>,
     icon: <CheckCircleOutlined />,
     data: count_demandesv,
   },
   {
-    title: <p className='pp'>Total Demande En Cours</p>,
+    title: <p className='pp'>Total peeps polls</p>,
     icon: <SyncOutlined />,
     data: count_demandesp,
   },
@@ -273,17 +273,14 @@ const infobare = [
   {
     title: <p className='ppp' style={{ marginLeft: "-35px" }}>Peeps polls</p>,
     //titre
-    api: "50",
-    api2: "10",
-    api3: "1000"
+    api: "0",
+    api2: "0",
+    api3: "0"
   },
 
   {
-    title: <p className='ppp' style={{ marginLeft: "-35px" }}>Peeps interactions</p>,
-    //titre
-    api: "0",
-    api2: "",
-    api3: "0"
+    title: <p className='ppp' style={{ marginLeft: "-35px" }}>Super administrateur</p>,
+ 
   },
 ]
 
@@ -303,7 +300,7 @@ return (<>
 <div style={{ display: "flex", marginTop: "10px" , marginLeft:"-15px", gap:"11px" }}>
                   {
                     infobare.map((items) =>
-                      <Cardeverticalbar title={items.title} api={items.api} api2={items.api2} api3={items.api3} />
+                      <Cardeverticalbar title={items.title}  />
 
                     )
 
