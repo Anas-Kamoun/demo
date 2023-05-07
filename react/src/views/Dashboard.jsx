@@ -246,22 +246,22 @@ const getData=()=>{
 
 const infos = [
   {
-    title: <p className='pp'>Total downloads</p>,
+    title: <p className='pp'>Total Users</p>,
     icon: <TeamOutlined/>,
     data: count_users,
   },
   {
-    title: <p className='pp'>Total peeps</p>,
+    title: <p className='pp'>Total Demande Congee</p>,
     icon: <PlusCircleOutlined  />,
     data: count_demandes,
   },
   {
-    title: <p className='pp'>Online now</p>,
+    title: <p className='pp'>Total Demande Congee Validee</p>,
     icon: <CheckCircleOutlined />,
     data: count_demandesv,
   },
   {
-    title: <p className='pp'>Total peeps polls</p>,
+    title: <p className='pp'>Total Demande Congee En Cours</p>,
     icon: <SyncOutlined />,
     data: count_demandesp,
   },
