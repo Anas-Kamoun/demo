@@ -205,6 +205,12 @@
 
 
 // export default Dashboard;
+
+
+
+
+
+
 import Cardeverticalbar from "./Cardeverticalbar";
 import  "../views/css/style.css";
 import"./css/DashCSS.css";
@@ -247,22 +253,60 @@ const getData=()=>{
 const infos = [
   {
     title: <p className='pp'>Total Users</p>,
-    icon: <TeamOutlined/>,
+    icon: <TeamOutlined
+                    style={{
+                color: "blue",
+                backgroundColor: "rgba(0,255,0,0.25)",
+                borderRadius: 20,
+                fontSize: 24,
+                padding: 8,
+              }}
+    
+    
+    />,
     data: count_users,
   },
   {
     title: <p className='pp'>Total Demande Congee</p>,
-    icon: <PlusCircleOutlined  />,
+    icon: <PlusCircleOutlined 
+                style={{
+                color: "blue",
+                backgroundColor: "rgba(0,0,255,0.25)",
+                borderRadius: 20,
+                fontSize: 24,
+                padding: 8,
+              }}
+    
+    />,
     data: count_demandes,
   },
   {
     title: <p className='pp'>Demande Congee Validee</p>,
-    icon: <CheckCircleOutlined />,
+    icon: <CheckCircleOutlined 
+                style={{
+                color: "purple",
+                backgroundColor: "rgba(0,255,255,0.25)",
+                borderRadius: 20,
+                fontSize: 24,
+                padding: 8,
+              }}
+
+    />,
     data: count_demandesv,
   },
   {
     title: <p className='pp'>Demande Congee En Cours</p>,
-    icon: <SyncOutlined />,
+    icon: <SyncOutlined 
+    
+                  style={{
+                color: "blue",
+                backgroundColor: "rgba(25,10,0,0.25)",
+                borderRadius: 20,
+                fontSize: 24,
+                padding: 8,
+              }}
+    
+    />,
     data: count_demandesp,
   },
  
@@ -271,11 +315,11 @@ const infos = [
 
 const infobare = [
   {
-    title: <p className='ppp' style={{ marginLeft: "-35px" }}>Peeps polls</p>,
+    title: <p className='ppp' style={{ marginLeft: "-35px" }}>Administrateur</p>,
     //titre
-    api: "0",
-    api2: "0",
-    api3: "0"
+    // api: "0",
+    // api2: "0",
+    // api3: "0"
   },
 
   {
