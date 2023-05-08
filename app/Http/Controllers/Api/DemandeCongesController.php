@@ -113,4 +113,23 @@ class DemandeCongesController extends Controller
             'countp' => $countp,
         ]);
     }
+    public function countDemandedays()
+    {
+        $lastSevenDaysRows = DB::table('table_name')
+                ->whereBetween('created_at', [now()->subDays(7), now()])
+                ->get();
+        $lastMonthRows = DB::table('table_name')
+                ->whereBetween('created_at', [now()->subMonth(), now()])
+                ->get();
+        $lastYearRows = DB::table('table_name')
+                ->whereBetween('created_at', [now()->subYear(), now()])
+                ->get();
+        
+
+        return response()->json([
+            'lastd' => $lastSevenDaysRows,
+            'lastm' => $lastMonthRows,
+            'lastm' => $lastYearRows,
+        ]);
+    }
 }
