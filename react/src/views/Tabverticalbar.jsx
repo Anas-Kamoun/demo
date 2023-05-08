@@ -19,8 +19,8 @@ const GenderFilterOptions = [
 
 const DateFilterOptions = [
   { label: 'Last 7 Days', value: 'days' },
-  { label: 'Last 3 Months', value: 'months' },
-  { label: 'Last 1 Year', value: 'years' },
+  { label: 'Last Month', value: 'months' },
+  { label: 'Last Year', value: 'years' },
 ];
 
 const Tabverticalbar = ({ title, }) => {
