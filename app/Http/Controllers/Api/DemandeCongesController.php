@@ -115,13 +115,13 @@ class DemandeCongesController extends Controller
     }
     public function countDemandedays()
     {
-        $lastSevenDaysRows = DB::table('table_name')
+        $lastSevenDaysRows = DB::table('demande_conges')
                 ->whereBetween('created_at', [now()->subDays(7), now()])
                 ->get();
-        $lastMonthRows = DB::table('table_name')
+        $lastMonthRows = DB::table('demande_conges')
                 ->whereBetween('created_at', [now()->subMonth(), now()])
                 ->get();
-        $lastYearRows = DB::table('table_name')
+        $lastYearRows = DB::table('demande_conges')
                 ->whereBetween('created_at', [now()->subYear(), now()])
                 ->get();
         
