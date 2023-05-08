@@ -117,13 +117,13 @@ class DemandeCongesController extends Controller
     {
         $lastSevenDaysRows = DB::table('demande_conges')
                 ->whereBetween('created_at', [now()->subDays(7), now()])
-                ->get();
+                ->get(['id','etat','created_at']);
         $lastMonthRows = DB::table('demande_conges')
                 ->whereBetween('created_at', [now()->subMonth(), now()])
-                ->get();
+                ->get(['id','etat','created_at']);
         $lastYearRows = DB::table('demande_conges')
                 ->whereBetween('created_at', [now()->subYear(), now()])
-                ->get();
+                ->get(['id','etat','created_at']);
         
 
         return response()->json([
