@@ -1,4 +1,6 @@
 import * as React from 'react';
+import axiosClient from "../axios-client";
+
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -29,35 +31,29 @@ const Tabverticalbar = ({ title, }) => {
   const [dateFilter, setDateFilter] = useState('days');
 
   useEffect(() => {
-    // fetchData();
+    fetchData();
   }, [genderFilter, dateFilter]);
 
-//   const fetchData = async () => {
-//     try {
-//       let response = null;
-//       switch (dateFilter) {
-//         case 'days':
-//           response = await axios.get(http://localhost:5000/peeps/${api}?gender=${genderFilter});
-//           break;
-//         case 'months':
-//           response = await axios.get(http://localhost:5000/peeps/${api2}?gender=${genderFilter});
-//           break;
-//         case 'years':
-//           response = await axios.get(http://localhost:5000/peeps/${api3}?gender=${genderFilter});
-//           break;
-//         default:
-//           throw new Error(Invalid date filter: ${dateFilter});
-//       }
-//       setData(response.data);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
+  const fetchData = async () => {
+    try {
+      let response = null;
+      switch (dateFilter) {
+        case 'days':
+          response = await axiosClient.get(`/demandeschart`);
+          break;
+        
+        default:
+      }
+      setData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const formatDate = (dateObj) => {
     const { day, month, year } = dateObj;
     switch (dateFilter) {
       case 'days':
-        return `${day}/${month}/${year}`;
+        return `ghjhjj`;
       case 'months':
         return `${month}/${year}`;
       case 'years':
@@ -73,7 +69,9 @@ const Tabverticalbar = ({ title, }) => {
     },
     xAxis: {
       type: 'category',
-      data: data.slice(-7).map((item) => formatDate(item._id)),
+      data:'aa',
+      // Array.isArray(data) ? data.slice(-7).map(() => formatDate()) : [],
+      //  data.slice(-7).map((item) => formatDate(item._id)),
     },
     yAxis: {
       type: 'value',
@@ -84,7 +82,9 @@ const Tabverticalbar = ({ title, }) => {
         barWidth: '40%',
 
         color: "#8D92A9",
-        data: data.slice(-7).map((item) => item.count),
+        data:'aa',
+        //  Array.isArray(data) ? data.slice(-7).map(() => ) : [],
+        // data.slice(-7).map((item) => item.count),
         smooth: true,
 
 
