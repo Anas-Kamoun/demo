@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('type_contrats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('soldec');
-            $table->float('autorisation');
+            $table->tinyInteger('soldec');
+            $table->time('autorisation');
             $table->timestamps();
         });
     }

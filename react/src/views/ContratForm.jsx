@@ -103,7 +103,7 @@ export default function ContratForm() {
               placeholder="solde/jrs"
             />
              <input
-              type="number"
+              type="time"
               onChange={(ev) =>
                 setContrat({ ...contratValue, autorisation: ev.target.value })
               }
