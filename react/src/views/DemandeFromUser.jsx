@@ -23,7 +23,7 @@ export default function DemandeFromUser() {
     conge_id: "",
     type: "",
     autorisation: "",
-    start_autorisation:"",
+    start_autorisation: "",
     start_date: "",
     end_date: "",
     description: "",
@@ -31,12 +31,12 @@ export default function DemandeFromUser() {
     etat: "",
   });
   const [conges, setConges] = useState([]);
-  const currentConges = conges.find(
-    (el) => el.contrat_id === user.contrat_id
-  ) || {
-    name: "",
-    id: "",
-  };
+  // const currentConges = conges.find(
+  //   (el) => el.contrat_id === user.contrat_id
+  // ) || {
+  //   name: "",
+  //   id: "",
+  // };
 
   const [dates, setDates] = useState(null);
   const [value, setValue] = useState(null);
@@ -64,7 +64,6 @@ export default function DemandeFromUser() {
       start_date: dateString[0],
       end_date: dateString[1],
     });
-    console.log(date);
   };
 
   const onChangeau = (value, dateString) => {
@@ -79,9 +78,9 @@ export default function DemandeFromUser() {
     if ((user.role = !"user")) {
       navigate("/dashboard");
     } else {
-      axiosClient.get(`/conges/`).then(({ data }) => {
-        setLoading(false);
-        setConges(data.data);
+      axiosClient.get(`/getcongebycontrat/${1}`).then(({ data }) => {
+        setConges(data);
+        console.log(data);
       });
       if (id) {
         axiosClient
@@ -106,7 +105,7 @@ export default function DemandeFromUser() {
         .put(`/dconges/${DCongeeValue.id}`, DCongeeValue)
         .then(() => {
           setNotification("Conge was updated successfully");
-          navigate("/conge");
+          navigate("/demandeuser");
         })
         .catch((err) => {
           const response = err.response;
@@ -146,11 +145,14 @@ export default function DemandeFromUser() {
         message.success(`${info.file.name} file uploaded successfully.`);
         setConge({
           ...DCongeeValue,
-          file:`${import.meta.env.VITE_API_BASE_URL}/storage/${info.file.response.image}`.replace('public/', '')
-
-        })
+          file: `${import.meta.env.VITE_API_BASE_URL}/storage/${
+            info.file.response.image
+          }`.replace("public/", ""),
+        });
       } else if (status === "error") {
-        message.error(`${info.file.response.errors.image[1]} file upload failed.`);
+        message.error(
+          `${info.file.response.errors.image[1]} file upload failed.`
+        );
       }
     },
     onDrop(e) {
@@ -209,13 +211,15 @@ export default function DemandeFromUser() {
                 <div>
                   <div>
                     <Space direction="horizontal" size={12}>
-                      <DatePicker showTime format='YYYY-MM-DD HH:mm'
-                      onChange={onChangeau}/>
+                      <DatePicker
+                        showTime
+                        format="YYYY-MM-DD HH:mm"
+                        onChange={onChangeau}
+                      />
                       <TimePicker
                         format={format}
-                        onChange={(time,timeString) =>
+                        onChange={(time, timeString) =>
                           setConge({
-
                             ...DCongeeValue,
                             autorisation: timeString,
                           })
@@ -260,15 +264,11 @@ export default function DemandeFromUser() {
                     <MenuItem value="" disabled>
                       Type Congee ?
                     </MenuItem>
-                    {conges.map((c) => {
-                      if (c.contrat_id === user.contrat_id) {
-                        return (
-                          <MenuItem value={c.id} key={c.id}>
-                            {c.name}
-                          </MenuItem>
-                        );
-                      }
-                    })}
+                    {conges.map((c) => (
+                      <MenuItem value={c.id} key={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    ))}
                   </Select>
                   &nbsp;
                   <div>

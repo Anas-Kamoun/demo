@@ -64,6 +64,12 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $data=$request->validated();
+        $solde = DB::table('type_contrats')
+        ->select('soldec', 'autorisation')
+        ->where('id', '=', $data['contrat_id'])
+        ->get();
+        $data['solde'] = $solde[0]->soldec;
+        $data['autorisation']=$solde[0]->autorisation;
         if(isset($data['password'])){
             $data['password']=bcrypt($data['password']);
         }

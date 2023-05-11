@@ -1,8 +1,27 @@
+import * as React from 'react';
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
+import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import Chip from '@mui/material/Chip';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+
 
 export default function CongeForm() {
   const navigate = useNavigate();
@@ -80,7 +99,25 @@ export default function CongeForm() {
         });
     }
   };
+  const theme = useTheme();
+  const [personName, setPersonName] = React.useState([]);
 
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+    setConge(
+      {
+        ...CongeValue,
+        contrat_id: ev.target.value,
+      },
+      setContrat(ev.target.value)
+    )
+  };
   return (
     <div>
       {CongeValue.id && <h1>Update Conge : {CongeValue.name}</h1>}
@@ -109,7 +146,7 @@ export default function CongeForm() {
             />
             <div>
               <FormControl fullWidth>
-                <Select
+                {/* <Select
                   fullWidth
                   displayEmpty
                   labelId="demo-simple-select-label"
@@ -136,7 +173,32 @@ export default function CongeForm() {
                       </MenuItem>
                     );
                   })}
-                </Select>
+                </Select> */}
+                <InputLabel id="demo-multiple-chip-label">Type Contrat</InputLabel>
+        <Select
+          labelId="demo-multiple-chip-label"
+          id="demo-multiple-chip"
+          multiple
+          value={contrats}
+          onChange={handleChange}
+          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} />
+              ))}
+            </Box>
+          )}
+          MenuProps={MenuProps}
+        >
+          {contrats.map((c) => {
+                    return (
+                      <MenuItem value={c.name} key={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    );
+                  })}
+        </Select>
               </FormControl>
               &nbsp;
               <br />

@@ -38,6 +38,7 @@ Route::post('/image',[DemandeCongesController::class, 'imageStore']);
 Route::get('/count-users', [UserController::class, 'countUsers']);
 Route::get('/count-demandes', [DemandeCongesController::class, 'countDemande']);
 Route::get('/demandeschart', [DemandeCongesController::class, 'countDemandedays']);
+Route::get('/getcongebycontrat/{id}', [TypeCongesController::class, 'getcongebycontrat']);
 
 });
 

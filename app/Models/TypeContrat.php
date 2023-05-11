@@ -31,4 +31,9 @@ class TypeContrat extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function conge()
+    {
+        return $this->belongsToMany(TypeConges::class, 'conges_contrats', 'contrat_id', 'conge_id');
+    }
 }

@@ -13,10 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('type_conges', function (Blueprint $table) {
+        Schema::create('conges_contrats', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('contrat_id')->unsigned();
+            $table->unsignedBigInteger('conge_id')->unsigned();
             $table->timestamps();
+            $table->foreign('contrat_id')->references('id')->on('type_contrats')->onDelete('cascade');;
+            $table->foreign('conge_id')->references('id')->on('type_conges')->onDelete('cascade');;
+            
         });
     }
 
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_conges');
+        Schema::dropIfExists('conges_contrats');
     }
 };

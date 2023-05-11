@@ -25,7 +25,6 @@ class UpdateTypeCongesRequest extends FormRequest
     {
         return [
             'name'=>'required|string|max:55|unique:type_conges,name,'.$this->id,
-            'contrat_id'=>'exists:App\Models\TypeContrat,id',
         ];
     }
 }

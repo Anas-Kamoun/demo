@@ -18,4 +18,9 @@ class TypeConges extends Model
         'name',
         'contrat_id'
     ];
+
+    public function contrat()
+    {
+        return $this->belongsToMany(TypeContrat::class, 'conges_contrats', 'conge_id', 'contrat_id');
+    }   
 }

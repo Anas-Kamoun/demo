@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\TypeConges;
+use App\Models\TypeContrat;
 use App\Http\Requests\StoreTypeCongesRequest;
 use App\Http\Requests\UpdateTypeCongesRequest;
 use App\Http\Resources\TypeCongesR;
 
+use Illuminate\Support\Facades\DB;
 class TypeCongesController extends Controller
 {
     /**
@@ -31,9 +33,14 @@ class TypeCongesController extends Controller
     public function store(StoreTypeCongesRequest $request)
     {
         $data=$request->validated();
-        $Conges=TypeConges::create($data);
-        return response(new TypeCongesR($Conges),201); 
-    }
+        $TypeConges = new TypeConges();
+        $TypeConges->name=$data['name'];
+        $TypeConges->save();
+        $TypeConges->contrat()->attach([$request['contrat_id']]);
+        
+        // $Conges=TypeConges::create($data);
+
+        return response()->json(['message' => 'type created and attached to contrat successfully']);    }
 
     /**
      * Display the specified resource.
@@ -46,6 +53,28 @@ class TypeCongesController extends Controller
         $typeConges = TypeConges::findOrFail($id);
         return new TypeCongesR($typeConges);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\TypeConges  $typeConges
+     * @return \Illuminate\Http\Response
+     */
+
+    public function getcongebycontrat(TypeConges $typeConges,$id)
+    {
+        $contract = TypeContrat::find($id);
+        $conges = $contract->conge;
+        $congeNames = [];
+        foreach ($conges as $conge) {
+            $congeId = $conge->id;
+            $name = DB::table('type_conges')->where('id', '=', $congeId)->get();
+            $congeNames[] = $name[0];
+        }
+        return response()->json($congeNames);    
+        // return new TypeCongesR($typeConges);
+    }
+
 
     /**
      * Update the specified resource in storage.

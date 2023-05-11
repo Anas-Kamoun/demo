@@ -71,7 +71,9 @@ class DemandeCongesController extends Controller
     {
         $demande_conges =demande_conges::whereId($id)->first();
         $demande_conges->update([
+            'conge_id'=> $request['conge_id'],
             'etat' => $request['etat'],
+            'description' => $request['description'],
         ]);
         return response()->json("",204);
     }
@@ -97,7 +99,7 @@ class DemandeCongesController extends Controller
      */
     public function showbyuser(demande_conges $demande_conges,$id)
     {
-        $demande_conges = demande_conges::where('user_id', $id)->get();
+        $demande_conges = demande_conges::where('user_id', $id)->orderBy('id', 'desc')->paginate(10);
         return demande_congesR::collection($demande_conges);
     }
 
@@ -113,7 +115,36 @@ class DemandeCongesController extends Controller
             'countp' => $countp,
         ]);
     }
-    public function countDemandedays()
+    // public function countDemandedays()
+    // {
+    //     $lastSevenDaysRows = DB::table('demande_conges')
+    //             ->whereBetween('created_at', [now()->subDays(7), now()])
+    //             ->get(['id','etat','created_at']);
+    //     $lastMonthRows = DB::table('demande_conges')
+    //             ->whereBetween('created_at', [now()->subMonth(), now()])
+    //             ->get(['id','etat','created_at']);
+    //     $lastYearRows = DB::table('demande_conges')
+    //             ->whereBetween('created_at', [now()->subYear(), now()])
+    //             ->get(['id','etat','created_at']);
+        
+
+    //     return response()->json([
+    //         'lastd' => $lastSevenDaysRows,
+    //         'lastm' => $lastMonthRows,
+    //         'lastm' => $lastYearRows,
+    //     ]);
+
+    //     {
+    //         "_id": {
+    //           "gender": "Male",
+    //           "day": 23,
+    //           "month": 9,
+    //           "year": 2022
+    //         },
+    //         "count": 120
+    //       },
+    // }
+    public function countDemandedays($etat)
     {
         $lastSevenDaysRows = DB::table('demande_conges')
                 ->whereBetween('created_at', [now()->subDays(7), now()])
