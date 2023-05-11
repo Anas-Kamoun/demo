@@ -23,6 +23,8 @@ const MenuProps = {
 
 
 
+
+
 export default function CongeForm() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -35,12 +37,44 @@ export default function CongeForm() {
   });
   const [ContratValue, setContrat] = useState("");
   const [contrats, setContrats] = useState([]);
-  const currentContrat = contrats.find(
-    (el) => el.id === CongeValue.contrat_id
-  ) || {
-    name: "",
-    id: "",
-  };
+  const currentContrat = useState([]);
+
+//////////////////////////////////////////////////////////////////
+
+  const theme = useTheme();
+  function getStyles(name, personName, theme) {
+    return {
+      fontWeight:
+        personName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+    const [personName, setPersonName] = React.useState([]);
+  
+    const handleChange = (event) => {
+      const {
+        target: { value },
+      } = event;
+      setPersonName(
+        // On autofill we get a stringified value.
+        typeof value === 'string' ? value.split(',') : value,
+      );
+    };
+
+    const names = [
+  'Oliver Hansen',
+  'Van Henry',
+  'April Tucker',
+  'Ralph Hubbard',
+  'Omar Alexander',
+  'Carlos Abbott',
+  'Miriam Wagner',
+  'Bradley Wilkerson',
+  'Virginia Andrews',
+  'Kelly Snyder',
+];
+//////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     setLoading(true);
@@ -50,6 +84,7 @@ export default function CongeForm() {
       axiosClient.get(`/contrats/`).then(({ data }) => {
         setLoading(false);
         setContrats(data.data);
+        console.log(data.data);
       });
       if (id) {
         axiosClient
@@ -98,25 +133,6 @@ export default function CongeForm() {
           }
         });
     }
-  };
-  const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-    setConge(
-      {
-        ...CongeValue,
-        contrat_id: ev.target.value,
-      },
-      setContrat(ev.target.value)
-    )
   };
   return (
     <div>
@@ -174,12 +190,12 @@ export default function CongeForm() {
                     );
                   })}
                 </Select> */}
-                <InputLabel id="demo-multiple-chip-label">Type Contrat</InputLabel>
+                <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={contrats}
+          value={personName}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
           renderValue={(selected) => (
@@ -191,13 +207,15 @@ export default function CongeForm() {
           )}
           MenuProps={MenuProps}
         >
-          {contrats.map((c) => {
-                    return (
-                      <MenuItem value={c.name} key={c.id}>
-                        {c.name}
-                      </MenuItem>
-                    );
-                  })}
+          {contrats.map((name) => (
+            <MenuItem
+              key={name.id}
+              value={name.name}
+              style={getStyles(name.name, personName, theme)}
+            >
+              {name.name}
+            </MenuItem>
+          ))}
         </Select>
               </FormControl>
               &nbsp;
