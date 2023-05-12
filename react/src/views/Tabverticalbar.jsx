@@ -13,47 +13,128 @@ import * as echarts from 'echarts';
 
 
 const GenderFilterOptions = [
-  { label: 'All', value: 'all' },
-  { label: 'Demande congé', value: 'Demande congé' },
-  { label: 'Congé accepté', value: 'Congé accepté' },
-  { label: 'Congé refusé', value: 'Congé refusé' },
+  // { label: 'All', value: 'all' },
+  { label: 'Demande congé', value: 'En Cours' },
+  { label: 'Congé accepté', value: 'Validee' },
+  { label: 'Congé refusé', value: 'Annulee' },
 ];
+
+// const DateFilterOptions = [
+//   { label: 'Last 7 Days', value: 'days' },
+//   { label: 'Last Month', value: 'months' },
+//   { label: 'Last Year', value: 'years' },
+// ];
+
 
 const DateFilterOptions = [
   { label: 'Last 7 Days', value: 'days' },
-  { label: 'Last Month', value: 'months' },
-  { label: 'Last Year', value: 'years' },
+  { label: 'Last 12 Months', value: 'months' },
+ 
 ];
+
+
+
 
 const Tabverticalbar = ({ title, }) => {
   const [data, setData] = useState([]);
-  const [genderFilter, setGenderFilter] = useState('all');
+  const [genderFilter, setGenderFilter] = useState('En Cours');
   const [dateFilter, setDateFilter] = useState('days');
 
   useEffect(() => {
     fetchData();
   }, [genderFilter, dateFilter]);
 
+  // const fetchData = async () => {
+  //   try {
+  //     let response = null;
+  //     switch (dateFilter) {
+  //       case 'days':
+  //         response = await axiosClient.get(`http://localhost:8000/api/count-past-7-days/{etat?}`);
+  //         break;
+
+  //       case 'months':
+  //           response = await axios.get(`http://localhost:8000/api/count-last-mounth/{etat?}`);
+  //           break;
+  //       default:
+  //           throw new Error(`Invalid date filter: ${dateFilter}`);  
+        
+        
+  //     }
+  //     setData(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  // const formatDate = (dateObj) => {
+  //   const { day, month, year } = dateObj;
+  //   switch (dateFilter) {
+  //     case 'days':
+  //       return `${day}/${month}/${year}`;
+  //     case 'months':
+  //       return `${month}/${year}`;
+  //     case 'years':
+  //       return `${year}`;
+  //     default:
+  //       throw new Error(`Invalid date filter: ${dateFilter}`);
+  //   }
+  // };
+
+  // const chartOptions = {
+  //   tooltip: {
+  //     trigger: 'axis',
+  //   },
+  //   xAxis: {
+  //     type: 'category',
+  //     data: Array.isArray(data) ? data.slice(-7).map((item) => formatDate(item._id)) : [],
+  //     // Array.isArray(data) ? data.slice(-7).map(() => formatDate()) : [],
+  //     //  data.slice(-7).map((item) => formatDate(item._id)),
+  //   },
+  //   yAxis: {
+  //     type: 'value',
+  //   },
+  //   series: [
+  //     {
+  //       type: 'bar',
+  //       barWidth: '40%',
+
+  //       color: "#8D92A9",
+  //       data: Array.isArray(data) ? data.slice(-7).map((item) =>item.count) : [],
+  //       //  Array.isArray(data) ? data.slice(-7).map(() => ) : [],
+  //       // data.slice(-7).map((item) => item.count),
+  //       smooth: true,
+
+
+  //     },
+  //   ],
+  // };
+
+
+
+
   const fetchData = async () => {
     try {
       let response = null;
       switch (dateFilter) {
         case 'days':
-          response = await axiosClient.get(`/demandeschart`);
+          response = await axiosClient.get(`http://localhost:8000/api/count-past-7-days/${genderFilter}`);
           break;
-        
+        case 'months':
+          response = await axiosClient.get(`http://localhost:8000/api/count-last-mounth/${genderFilter}`);
+          break;
         default:
+          throw new Error(`Invalid date filter: ${dateFilter}`);
       }
       setData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+  
   const formatDate = (dateObj) => {
     const { day, month, year } = dateObj;
     switch (dateFilter) {
       case 'days':
-        return `ghjhjj`;
+        return `${day}/${month}/${year}`;
       case 'months':
         return `${month}/${year}`;
       case 'years':
@@ -62,16 +143,14 @@ const Tabverticalbar = ({ title, }) => {
         throw new Error(`Invalid date filter: ${dateFilter}`);
     }
   };
-
+  
   const chartOptions = {
     tooltip: {
       trigger: 'axis',
     },
     xAxis: {
       type: 'category',
-      data:'aa',
-      // Array.isArray(data) ? data.slice(-7).map(() => formatDate()) : [],
-      //  data.slice(-7).map((item) => formatDate(item._id)),
+      data: Array.isArray(data) ? data.slice(-9).map((item) => formatDate(item._id)) : [],
     },
     yAxis: {
       type: 'value',
@@ -80,17 +159,24 @@ const Tabverticalbar = ({ title, }) => {
       {
         type: 'bar',
         barWidth: '40%',
-
         color: "#8D92A9",
-        data:'aa',
-        //  Array.isArray(data) ? data.slice(-7).map(() => ) : [],
-        // data.slice(-7).map((item) => item.count),
+        data: Array.isArray(data) ? data.slice(-9).map((item) => item.count) : [],
         smooth: true,
-
-
       },
     ],
   };
+  
+
+
+
+
+
+
+
+
+
+
+
 
 
 

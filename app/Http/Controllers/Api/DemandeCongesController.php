@@ -106,18 +106,18 @@ class DemandeCongesController extends Controller
         return demande_congesR::collection($demande_conges);
     }
 
-    // public function countDemande()
-    // {
-    //     $countall = DB::table('demande_conges')->count();
-    //     $countv = DB::table('demande_conges')->where('etat', '=', 'Validee')->count();
-    //     $countp = DB::table('demande_conges')->where('etat', '=', 'En Cours')->count();
+    public function countDemande()
+    {
+        $countall = DB::table('demande_conges')->count();
+        $countv = DB::table('demande_conges')->where('etat', '=', 'Validee')->count();
+        $countp = DB::table('demande_conges')->where('etat', '=', 'En Cours')->count();
 
-    //     return response()->json([
-    //         'countall' => $countall,
-    //         'countv' => $countv,
-    //         'countp' => $countp,
-    //     ]);
-    // }
+        return response()->json([
+            'countall' => $countall,
+            'countv' => $countv,
+            'countp' => $countp,
+        ]);
+    }
 
     function getCountForPast7Days($etat = null)
     {
@@ -152,5 +152,41 @@ class DemandeCongesController extends Controller
     
         return response()->json($response);
     }
+
+
+public function getCountForLastMounth($etat = null)
+{
+    $response = [];
+    $currentYear = Carbon::now()->year;
+
+    for ($month = 1; $month <= 12; $month++) {
+        $startDate = Carbon::create($currentYear, $month, 1, 0, 0, 0);
+        $endDate = $startDate->copy()->endOfMonth();
+
+        $query = DB::table('demande_conges')
+            ->select(DB::raw('COUNT(*) as count'))
+            ->whereBetween('created_at', [$startDate, $endDate]);
+
+        if ($etat !== null) {
+            $query->where('etat', $etat);
+        }
+
+        $result = $query->first();
+
+        $response[] = [
+            "_id" => [
+                "etat" => $etat,
+                "month" => $month,
+                "year" => $currentYear
+            ],
+            "count" => $result ? $result->count : 0
+        ];
+    }
+
+    return response()->json($response);
+}
+
+
+
     
 }

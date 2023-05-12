@@ -15,6 +15,7 @@
     align-items: center;
     gap: 15px;
     padding: 10px;
+    margin-left: 30px;
     
   }
   .carte .fix-carte
@@ -42,7 +43,7 @@
   .carte-vertical-bar{
     background-color: white;
     height: 500px;
-    width: 600px;
+    width:1092px !important;
     border-radius: 15px;
     display: flex;
     /* margin-right: 30px; */
@@ -52,6 +53,7 @@
     align-items: center;
     gap: 15px;
     padding: 30px;
+    margin-left: 43px;
     
     
       
