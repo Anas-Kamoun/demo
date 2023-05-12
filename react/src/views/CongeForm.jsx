@@ -21,6 +21,10 @@ const MenuProps = {
   },
 };
 
+
+
+
+
 export default function CongeForm() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -29,11 +33,13 @@ export default function CongeForm() {
   const { user, setNotification } = useStateContext();
   const [CongeValue, setConge] = useState({
     name: "",
-    contrat_id: null, // Remplacer par null pour le moment
+    contrat_id: "",
   });
   const [ContratValue, setContrat] = useState("");
   const [contrats, setContrats] = useState([]);
   const currentContrat = useState([]);
+
+//////////////////////////////////////////////////////////////////
 
   const theme = useTheme();
   function getStyles(name, personName, theme) {
@@ -54,7 +60,27 @@ export default function CongeForm() {
         // On autofill we get a stringified value.
         typeof value === 'string' ? value.split(',') : value,
       );
+      setConge(
+        {
+          ...CongeValue,
+          contrat_id: value,
+        }
+      )
     };
+
+    const names = [
+  'Oliver Hansen',
+  'Van Henry',
+  'April Tucker',
+  'Ralph Hubbard',
+  'Omar Alexander',
+  'Carlos Abbott',
+  'Miriam Wagner',
+  'Bradley Wilkerson',
+  'Virginia Andrews',
+  'Kelly Snyder',
+];
+//////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     setLoading(true);
@@ -99,52 +125,21 @@ export default function CongeForm() {
           }
         });
     } else {
-  //     axiosClient
-  //       .post(`/conges/`, CongeValue)
-  //       .then(() => {
-  //         setNotification("Conge was created successfully");
-  //         navigate("/conge");
-  //       })
-  //       .catch((err) => {
-  //         const response = err.response;
-  //         if (response && response.status === 422) {
-  //           setErrors(response.data.errors);
-  //           console.log(response.data.errors);
-  //         }
-  //       })
-  //       .finally(() => {
-  //         setLoading(false);
-  //       });
-  //   }
-  // };
-if (personName.length > 0) { // Vérifiez si une valeur est sélectionnée pour le contrat
-      const contratId = contrats.find((contrat) => contrat.name === personName[0])?.id;
-      if (contratId) {
-        const newCongeValue = { ...CongeValue, contrat_id: contratId };
-        axiosClient
-          .post(`/conges/`, newCongeValue)
-          .then(() => {
-            setNotification("Conge was created successfully");
-            navigate("/conge");
-          })
-          .catch((err) => {
-            const response = err.response;
-            if (response && response.status === 422) {
-              setErrors(response.data.errors);
-              console.log(response.data.errors);
-            }
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      } else {
-        console.log("Invalid contrat selected");
-      }
-    } else {
-      console.log("No contrat selected");
+      axiosClient
+        .post(`/conges/`, CongeValue)
+        .then(() => {
+          setNotification("Conge was created successfully");
+          navigate("/conge");
+        })
+        .catch((err) => {
+          const response = err.response;
+          if (response && response.status === 422) {
+            setErrors(response.data.errors);
+            console.log(response.data.errors);
+          }
+        });
     }
-  }
-};
+  };
   return (
     <div>
       {CongeValue.id && <h1>Update Conge : {CongeValue.name}</h1>}
@@ -173,6 +168,34 @@ if (personName.length > 0) { // Vérifiez si une valeur est sélectionnée pour 
             />
             <div>
               <FormControl fullWidth>
+                {/* <Select
+                  fullWidth
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={currentContrat.id}
+                  placeholder="type contrat"
+                  onChange={(ev) =>
+                    setConge(
+                      {
+                        ...CongeValue,
+                        contrat_id: ev.target.value,
+                      },
+                      setContrat(ev.target.value)
+                    )
+                  }
+                >
+                  <MenuItem value="" disabled>
+                    Type contrat ?
+                  </MenuItem>
+                  {contrats.map((c) => {
+                    return (
+                      <MenuItem value={c.id} key={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select> */}
                 <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
@@ -193,7 +216,7 @@ if (personName.length > 0) { // Vérifiez si une valeur est sélectionnée pour 
           {contrats.map((name) => (
             <MenuItem
               key={name.id}
-              value={name.name}
+              value={name.id}
               style={getStyles(name.name, personName, theme)}
             >
               {name.name}
