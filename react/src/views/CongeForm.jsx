@@ -60,6 +60,12 @@ export default function CongeForm() {
         // On autofill we get a stringified value.
         typeof value === 'string' ? value.split(',') : value,
       );
+      setConge(
+        {
+          ...CongeValue,
+          contrat_id: value,
+        }
+      )
     };
 
     const names = [
@@ -210,7 +216,7 @@ export default function CongeForm() {
           {contrats.map((name) => (
             <MenuItem
               key={name.id}
-              value={name.name}
+              value={name.id}
               style={getStyles(name.name, personName, theme)}
             >
               {name.name}

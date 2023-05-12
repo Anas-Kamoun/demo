@@ -36,11 +36,15 @@ class TypeCongesController extends Controller
         $TypeConges = new TypeConges();
         $TypeConges->name=$data['name'];
         $TypeConges->save();
-        $TypeConges->contrat()->attach([$request['contrat_id']]);
+        $contractIds = $request['contrat_id'];
+        $TypeConges->contrat()->attach($contractIds);
+        
+        // $TypeConges->contrat()->attach([$request['contrat_id']]);
         
         // $Conges=TypeConges::create($data);
 
-        return response()->json(['message' => 'type created and attached to contrat successfully']);    }
+        return response()->json(['message' => 'type created and attached to contrat successfully']);
+    }
 
     /**
      * Display the specified resource.
