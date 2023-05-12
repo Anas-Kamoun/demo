@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
+use Carbon\Carbon;
+
 class DemandeCongesController extends Controller
 {
     /**
@@ -23,7 +26,7 @@ class DemandeCongesController extends Controller
     public function index()
     {
         return demande_congesR::collection(
-            demande_conges::query()->orderBy('id','desc')->paginate(10)
+            demande_conges::query()->orderBy('id', 'desc')->paginate(10)
         );
     }
 
@@ -35,9 +38,9 @@ class DemandeCongesController extends Controller
      */
     public function store(Storedemande_congesRequest $request)
     {
-        $data=$request->validated();
-        $Conges=demande_conges::create($data);
-        return response(new demande_congesR($Conges),201); 
+        $data = $request->validated();
+        $Conges = demande_conges::create($data);
+        return response(new demande_congesR($Conges), 201);
     }
     public function imageStore(ImageStoreRequest $request)
     {
@@ -53,7 +56,7 @@ class DemandeCongesController extends Controller
      * @param  \App\Models\demande_conges  $demande_conges
      * @return \Illuminate\Http\Response
      */
-    public function show(demande_conges $demande_conges,$id)
+    public function show(demande_conges $demande_conges, $id)
     {
         $demande_conges = demande_conges::findOrFail($id);
         return new demande_congesR($demande_conges);
@@ -67,15 +70,15 @@ class DemandeCongesController extends Controller
      * @param  \App\Models\demande_conges  $demande_conges
      * @return \Illuminate\Http\Response
      */
-    public function update(Updatedemande_congesRequest $request, demande_conges $demande_conges,$id)
+    public function update(Updatedemande_congesRequest $request, demande_conges $demande_conges, $id)
     {
-        $demande_conges =demande_conges::whereId($id)->first();
+        $demande_conges = demande_conges::whereId($id)->first();
         $demande_conges->update([
-            'conge_id'=> $request['conge_id'],
+            'conge_id' => $request['conge_id'],
             'etat' => $request['etat'],
             'description' => $request['description'],
         ]);
-        return response()->json("",204);
+        return response()->json("", 204);
     }
 
     /**
@@ -88,7 +91,7 @@ class DemandeCongesController extends Controller
     {
         $typeConges = demande_conges::find($id);
         $typeConges->delete(); // Easy right?
-        return Response("",204);
+        return Response("", 204);
     }
 
     /**
@@ -97,70 +100,57 @@ class DemandeCongesController extends Controller
      * @param  \App\Models\demande_conges  $demande_conges
      * @return \Illuminate\Http\Response
      */
-    public function showbyuser(demande_conges $demande_conges,$id)
+    public function showbyuser(demande_conges $demande_conges, $id)
     {
         $demande_conges = demande_conges::where('user_id', $id)->orderBy('id', 'desc')->paginate(10);
         return demande_congesR::collection($demande_conges);
     }
 
-    public function countDemande()
-    {
-        $countall = DB::table('demande_conges')->count();
-        $countv = DB::table('demande_conges')->where('etat', '=', 'Validee')->count();
-        $countp = DB::table('demande_conges')->where('etat', '=', 'En Cours')->count();
-
-        return response()->json([
-            'countall' => $countall,
-            'countv' => $countv,
-            'countp' => $countp,
-        ]);
-    }
-    // public function countDemandedays()
+    // public function countDemande()
     // {
-    //     $lastSevenDaysRows = DB::table('demande_conges')
-    //             ->whereBetween('created_at', [now()->subDays(7), now()])
-    //             ->get(['id','etat','created_at']);
-    //     $lastMonthRows = DB::table('demande_conges')
-    //             ->whereBetween('created_at', [now()->subMonth(), now()])
-    //             ->get(['id','etat','created_at']);
-    //     $lastYearRows = DB::table('demande_conges')
-    //             ->whereBetween('created_at', [now()->subYear(), now()])
-    //             ->get(['id','etat','created_at']);
-        
+    //     $countall = DB::table('demande_conges')->count();
+    //     $countv = DB::table('demande_conges')->where('etat', '=', 'Validee')->count();
+    //     $countp = DB::table('demande_conges')->where('etat', '=', 'En Cours')->count();
 
     //     return response()->json([
-    //         'lastd' => $lastSevenDaysRows,
-    //         'lastm' => $lastMonthRows,
-    //         'lastm' => $lastYearRows,
+    //         'countall' => $countall,
+    //         'countv' => $countv,
+    //         'countp' => $countp,
     //     ]);
-
-    //     {
-    //         "_id": {
-    //           "gender": "Male",
-    //           "day": 23,
-    //           "month": 9,
-    //           "year": 2022
-    //         },
-    //         "count": 120
-    //       },
     // }
-    public function countDemandedays($etat)
-    {
-        $lastSevenDaysRows = DB::table('demande_conges')
-                ->whereBetween('created_at', [now()->subDays(7), now()])
-                ->get(['id','etat','created_at']);
-        $lastMonthRows = DB::table('demande_conges')
-                ->whereBetween('created_at', [now()->subMonth(), now()])
-                ->get(['id','etat','created_at']);
-        $lastYearRows = DB::table('demande_conges')
-                ->whereBetween('created_at', [now()->subYear(), now()])
-                ->get(['id','etat','created_at']);
-        
 
-        return response()->json([
-            'lastd' => $lastSevenDaysRows,
-            'lastm' => $lastMonthRows,
-            'lastm' => $lastYearRows,
-        ]);
+    function getCountForPast7Days($etat = null)
+    {
+        $response = [];
+        $endDate = Carbon::now()->endOfDay();
+    
+        for ($i = 0; $i < 7; $i++) {
+            $currentDate = $endDate->copy()->subDays($i);
+            $startDate = $currentDate->copy()->startOfDay();
+            $endDateOfDay = $currentDate->copy()->endOfDay();
+    
+            $query = DB::table('demande_conges')
+                ->select(DB::raw('COUNT(*) as count'))
+                ->whereBetween('created_at', [$startDate, $endDateOfDay]);
+    
+            if ($etat !== null) {
+                $query->where('etat', $etat);
+            }
+    
+            $result = $query->first();
+    
+            $response[] = [
+                "_id" => [
+                    "etat" => $etat,
+                    "day" => $currentDate->format('d'), // Format day with leading zeros
+                    "month" => $currentDate->format('m'), // Format month with leading zeros
+                    "year" => (string)$currentDate->year
+                ],
+                "count" => $result ? $result->count : 0
+            ];
+        }
+    
+        return response()->json($response);
     }
+    
 }

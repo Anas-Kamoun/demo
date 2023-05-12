@@ -39,6 +39,7 @@ Route::get('/count-users', [UserController::class, 'countUsers']);
 Route::get('/count-demandes', [DemandeCongesController::class, 'countDemande']);
 Route::get('/demandeschart', [DemandeCongesController::class, 'countDemandedays']);
 Route::get('/getcongebycontrat/{id}', [TypeCongesController::class, 'getcongebycontrat']);
+Route::get('/count-past-7-days/{etat?}', [DemandeCongesController::class, 'getCountForPast7Days']);
 
 });
 
