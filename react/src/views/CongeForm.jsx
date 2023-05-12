@@ -21,10 +21,6 @@ const MenuProps = {
   },
 };
 
-
-
-
-
 export default function CongeForm() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -33,13 +29,11 @@ export default function CongeForm() {
   const { user, setNotification } = useStateContext();
   const [CongeValue, setConge] = useState({
     name: "",
-    contrat_id: "",
+    contrat_id: null, // Remplacer par null pour le moment
   });
   const [ContratValue, setContrat] = useState("");
   const [contrats, setContrats] = useState([]);
   const currentContrat = useState([]);
-
-//////////////////////////////////////////////////////////////////
 
   const theme = useTheme();
   function getStyles(name, personName, theme) {
@@ -50,31 +44,17 @@ export default function CongeForm() {
           : theme.typography.fontWeightMedium,
     };
   }
-    const [personName, setPersonName] = React.useState([]);
-  
-    const handleChange = (event) => {
-      const {
-        target: { value },
-      } = event;
-      setPersonName(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value,
-      );
-    };
+  const [personName, setPersonName] = React.useState([]);
 
-    const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-//////////////////////////////////////////////////////////////////
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -119,21 +99,52 @@ export default function CongeForm() {
           }
         });
     } else {
-      axiosClient
-        .post(`/conges/`, CongeValue)
-        .then(() => {
-          setNotification("Conge was created successfully");
-          navigate("/conge");
-        })
-        .catch((err) => {
-          const response = err.response;
-          if (response && response.status === 422) {
-            setErrors(response.data.errors);
-            console.log(response.data.errors);
-          }
-        });
+  //     axiosClient
+  //       .post(`/conges/`, CongeValue)
+  //       .then(() => {
+  //         setNotification("Conge was created successfully");
+  //         navigate("/conge");
+  //       })
+  //       .catch((err) => {
+  //         const response = err.response;
+  //         if (response && response.status === 422) {
+  //           setErrors(response.data.errors);
+  //           console.log(response.data.errors);
+  //         }
+  //       })
+  //       .finally(() => {
+  //         setLoading(false);
+  //       });
+  //   }
+  // };
+if (personName.length > 0) { // Vérifiez si une valeur est sélectionnée pour le contrat
+      const contratId = contrats.find((contrat) => contrat.name === personName[0])?.id;
+      if (contratId) {
+        const newCongeValue = { ...CongeValue, contrat_id: contratId };
+        axiosClient
+          .post(`/conges/`, newCongeValue)
+          .then(() => {
+            setNotification("Conge was created successfully");
+            navigate("/conge");
+          })
+          .catch((err) => {
+            const response = err.response;
+            if (response && response.status === 422) {
+              setErrors(response.data.errors);
+              console.log(response.data.errors);
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      } else {
+        console.log("Invalid contrat selected");
+      }
+    } else {
+      console.log("No contrat selected");
     }
-  };
+  }
+};
   return (
     <div>
       {CongeValue.id && <h1>Update Conge : {CongeValue.name}</h1>}
@@ -162,61 +173,33 @@ export default function CongeForm() {
             />
             <div>
               <FormControl fullWidth>
-                {/* <Select
-                  fullWidth
-                  displayEmpty
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={currentContrat.id}
-                  placeholder="type contrat"
-                  onChange={(ev) =>
-                    setConge(
-                      {
-                        ...CongeValue,
-                        contrat_id: ev.target.value,
-                      },
-                      setContrat(ev.target.value)
-                    )
-                  }
-                >
-                  <MenuItem value="" disabled>
-                    Type contrat ?
-                  </MenuItem>
-                  {contrats.map((c) => {
-                    return (
-                      <MenuItem value={c.id} key={c.id}>
-                        {c.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select> */}
                 <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-        <Select
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
-          MenuProps={MenuProps}
-        >
-          {contrats.map((name) => (
-            <MenuItem
-              key={name.id}
-              value={name.name}
-              style={getStyles(name.name, personName, theme)}
-            >
-              {name.name}
-            </MenuItem>
-          ))}
-        </Select>
+                <Select
+                  labelId="demo-multiple-chip-label"
+                  id="demo-multiple-chip"
+                  multiple
+                  value={personName}
+                  onChange={handleChange}
+                  input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {contrats.map((name) => (
+                    <MenuItem
+                      key={name.id}
+                      value={name.name}
+                      style={getStyles(name.name, personName, theme)}
+                    >
+                      {name.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </FormControl>
               &nbsp;
               <br />
