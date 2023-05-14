@@ -19,17 +19,6 @@ use App\Http\Controllers\Api\PosteController;
 |
 */
 // header('Access-Control-Allow-Origin: *');
-// Route::middleware('auth:sanctum')->group(function(){
-//     Route::get('/user', function (Request $request) {
-//         return $request->user();
-//     });});
-//     Route::post('/logout', [AuthController::class, 'logout']);
-//     Route::apiResource('/users',UserController::class);
-//     Route::apiResource('/conges',TypeCongesController::class);
-//     Route::apiResource('/contrats',TypeContratController::class);
-//     Route::apiResource('/dconges',DemandeCongesController::class);
-//     Route::apiResource('/postes',PosteController::class);
-// });
 
 Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:sanctum')->group(function(){
@@ -38,7 +27,6 @@ Route::middleware(['cors'])->group(function () {
         });
         Route::post('/logout', [AuthController::class, 'logout']);
     });
-    // Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('/users',UserController::class);
     Route::apiResource('/conges',TypeCongesController::class);
     Route::apiResource('/contrats',TypeContratController::class);
@@ -46,20 +34,18 @@ Route::middleware(['cors'])->group(function () {
     Route::apiResource('/postes',PosteController::class);
 
 
-
-
     Route::post('/login', [AuthController::class, 'login']);
-Route::get("/dcongeuser/{id}",[DemandeCongesController::class, 'showbyuser']);
-Route::post('/signup', [AuthController::class, 'signup']);
-Route::post('/image',[DemandeCongesController::class, 'imageStore']);
-Route::get('/count-users', [UserController::class, 'countUsers']);
-Route::get('/count-demandes', [DemandeCongesController::class, 'countDemande']);
-Route::get('/demandeschart', [DemandeCongesController::class, 'countDemandedays']);
-Route::get('/getcongebycontrat/{id}', [TypeCongesController::class, 'getcongebycontrat']);
-Route::get('/count-past-7-days/{etat?}', [DemandeCongesController::class, 'getCountForPast7Days']);
-Route::get('/count-last-mounth/{etat?}', [DemandeCongesController::class, 'getCountForLastMounth']);
-Route::get('/count-contrats', [TypeContratController::class, 'countContrat']);
-Route::get('/count-post', [PosteController::class, 'countPost']);
+    Route::get("/dcongeuser/{id}",[DemandeCongesController::class, 'showbyuser']);
+    Route::post('/signup', [AuthController::class, 'signup']);
+    Route::post('/image',[DemandeCongesController::class, 'imageStore']);
+    Route::get('/count-users', [UserController::class, 'countUsers']);
+    Route::get('/count-demandes', [DemandeCongesController::class, 'countDemande']);
+    Route::get('/demandeschart', [DemandeCongesController::class, 'countDemandedays']);
+    Route::get('/getcongebycontrat/{id}', [TypeCongesController::class, 'getcongebycontrat']);
+    Route::get('/count-past-7-days/{etat?}', [DemandeCongesController::class, 'getCountForPast7Days']);
+    Route::get('/count-last-mounth/{etat?}', [DemandeCongesController::class, 'getCountForLastMounth']);
+    Route::get('/count-contrats', [TypeContratController::class, 'countContrat']);
+    Route::get('/count-post', [PosteController::class, 'countPost']);
 
 
 });
