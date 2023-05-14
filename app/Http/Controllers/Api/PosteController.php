@@ -8,6 +8,8 @@ use App\Http\Requests\StorePosteRequest;
 use App\Http\Requests\UpdatePosteRequest;
 use App\Http\Resources\PosteResource;
 
+use Illuminate\Support\Facades\DB;
+
 class PosteController extends Controller
 {
     /**
@@ -76,4 +78,10 @@ class PosteController extends Controller
         $poste = Poste::find($id);
         $poste->delete(); // Easy right?
         return Response("",204);    }
+
+        public function countPost()
+    {
+        $count = DB::table('postes')->count();
+        return response()->json(['count' => $count]);
+    }
 }

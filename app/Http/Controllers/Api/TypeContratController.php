@@ -8,6 +8,8 @@ use App\Http\Requests\StoreTypeContratRequest;
 use App\Http\Requests\UpdateTypeContratRequest;
 use App\Http\Resources\TypeContratR;
 
+use Illuminate\Support\Facades\DB;
+
 class TypeContratController extends Controller
 {
     /**
@@ -79,5 +81,11 @@ class TypeContratController extends Controller
         $typeContrat = TypeContrat::find($id);
         $typeContrat->delete(); // Easy right?
         return Response("",204);
+    }
+
+    public function countContrat()
+    {
+        $count = DB::table('type_contrats')->count();
+        return response()->json(['count' => $count]);
     }
 }

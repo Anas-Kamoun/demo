@@ -1,0 +1,26 @@
+
+
+.link-text {
+display: none;
+}
+
+@media only screen and (min-width: 600px) {
+   .link-text {
+    display: block;
+} 
+.link-icons {
+    margin-right: 5px;
+}
+}
+
+@media only screen and (max-width: 600px) {
+    #defaultLayout aside {
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+   }
+ }
+ 
+

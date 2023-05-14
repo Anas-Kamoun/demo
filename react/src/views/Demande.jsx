@@ -9,11 +9,15 @@ export default function DemnadeUser() {
   const [DCongee, setDCongee] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user, setNotification } = useStateContext();
+  const [userValue, setUser] = useState({});
 
   const [conges, setConges] = useState([]);
   const [modal, setModal] = useState(false);
   const [selectedConge, setSelectedConge] = useState(null);
   const toggleModal = (u) => {
+    axiosClient.get(`/users/${u.user_id}`).then(({ data }) => {
+      setUser(data.data);
+    });
     if (u.conge_id) {
       axiosClient.get(`/conges/${u.conge_id}`).then(({ data }) => {
         setConges(data.data);
@@ -183,7 +187,7 @@ export default function DemnadeUser() {
                 </tr>
                 <tr>
                   <td>
-                    <h3>User : {user.name}</h3>
+                    <h3>User : {userValue.name}</h3>
                   </td>
                 </tr>
                 <tr>
@@ -226,6 +230,16 @@ export default function DemnadeUser() {
                     <p>{selectedConge.description}</p>
                   </td>
                 </tr>
+                <ImgsViewer
+    imgs={[
+      { src: '../images/photo-1.jpg' },
+      { src: '../images/photo-2.jpg' }
+    ]}
+    isOpen={this.state.isOpen}
+    onClickPrev={this.gotoPrevImg}
+    onClickNext={this.gotoNextImg}
+    onClose={this.closeImgsViewer}
+  />
               </div>
               <button
                 className="close-modal"

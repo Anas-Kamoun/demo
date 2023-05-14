@@ -6,7 +6,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import AccountBalanceSharpIcon from '@mui/icons-material/AccountBalanceSharp'
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-
+import './style.css'
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
 import AdjustIcon from '@mui/icons-material/Adjust';
@@ -61,8 +61,8 @@ export default function DefaultLayout() {
 
         <Link to="/dashboard">
             <Stack direction="row" alignItems='center'>
-                <DashboardIcon style={{marginRight:5}} />
-                    Dashboard
+                <DashboardIcon className="link-icons" />
+                   <span className="link-text">Dashboard</span> 
             </Stack>
         </Link>
 
@@ -71,8 +71,9 @@ export default function DefaultLayout() {
 
         <Link to="/users">
             <Stack direction="row" alignItems='center'>
-                <AccountBoxIcon style={{marginRight:5}} />
-                    Users
+                <AccountBoxIcon className="link-icons" />
+                <span className="link-text">Users</span> 
+                    
             </Stack>
         </Link>
 
@@ -82,7 +83,8 @@ export default function DefaultLayout() {
         <Link to="/demande">
           <Stack direction="row" alignItems='center'>
                 <AdjustIcon style={{ marginRight: 5 }} />
-                    Demandes de Congés
+                <span className="link-text">Demandes de Congés</span> 
+                    
           </Stack>
         </Link>
 
@@ -91,8 +93,9 @@ export default function DefaultLayout() {
 
         <Link to="/conge">
             <Stack direction="row" alignItems='center'>
-                <AccountBalanceSharpIcon style={{marginRight:5}} />
-                    Types de congés
+                <AccountBalanceSharpIcon className="link-icons" />
+                <span className="link-text">Types de congés</span> 
+                    
             </Stack>
         </Link>
 
@@ -101,15 +104,17 @@ export default function DefaultLayout() {
 
         <Link to="/contrat">
             <Stack direction="row" alignItems='center'>
-                <AssignmentIcon style={{marginRight:5}} />
-                    Types de contrats
+                <AssignmentIcon className="link-icons" />
+                <span className="link-text">Types de contrats</span> 
+                    
             </Stack>
         </Link>
 
         <Link to="/postes">
             <Stack direction="row" alignItems='center'>
-                <AccessibilityNewIcon style={{marginRight:5}} />
-                    Types des postes
+                <AccessibilityNewIcon className="link-icons" />
+                <span className="link-text">Types des postes</span> 
+                    
             </Stack>
         </Link>
 
@@ -118,8 +123,9 @@ export default function DefaultLayout() {
         {/* {user.role == 'user' && */}
         <Link to="/demandeuser">
             <Stack direction="row" alignItems='center'>
-                <AdjustIcon style={{marginRight:5}} />
-                    Demande Congé
+                <AdjustIcon className="link-icons" />
+                <span className="link-text">Demande Congé</span> 
+                   
             </Stack>
         </Link>
 
