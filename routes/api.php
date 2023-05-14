@@ -35,8 +35,10 @@ Route::middleware(['cors'])->group(function () {
     Route::middleware('auth:sanctum')->group(function(){
         Route::get('/user', function (Request $request) {
             return $request->user();
-        });});
-    Route::post('/logout', [AuthController::class, 'logout']);
+        });
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
+    // Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('/users',UserController::class);
     Route::apiResource('/conges',TypeCongesController::class);
     Route::apiResource('/contrats',TypeContratController::class);
