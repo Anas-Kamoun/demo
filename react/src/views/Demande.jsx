@@ -4,6 +4,8 @@ import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import moment from "moment";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 
 export default function DemnadeUser() {
   const [DCongee, setDCongee] = useState([]);
@@ -230,16 +232,11 @@ export default function DemnadeUser() {
                     <p>{selectedConge.description}</p>
                   </td>
                 </tr>
-                <ImgsViewer
-    imgs={[
-      { src: '../images/photo-1.jpg' },
-      { src: '../images/photo-2.jpg' }
-    ]}
-    isOpen={this.state.isOpen}
-    onClickPrev={this.gotoPrevImg}
-    onClickNext={this.gotoNextImg}
-    onClose={this.closeImgsViewer}
-  />
+                <Carousel showThumbs={false}>
+                <div style={{width:250}}>
+                    <img  src="http://localhost:8000/storage/jFj6YFlkdf0iGqETsRu6biWlS3xGtlvfNtIzSgSh.png" />
+                </div>
+                  </Carousel>       
               </div>
               <button
                 className="close-modal"
