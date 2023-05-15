@@ -116,10 +116,10 @@ const Tabverticalbar = ({ title, }) => {
       let response = null;
       switch (dateFilter) {
         case 'days':
-          response = await axiosClient.get(`http://localhost:8000/api/count-past-7-days/${genderFilter}`);
+          response = await axiosClient.get(`/count-past-7-days/${genderFilter}`);
           break;
         case 'months':
-          response = await axiosClient.get(`http://localhost:8000/api/count-last-mounth/${genderFilter}`);
+          response = await axiosClient.get(`/count-last-mounth/${genderFilter}`);
           break;
         default:
           throw new Error(`Invalid date filter: ${dateFilter}`);
