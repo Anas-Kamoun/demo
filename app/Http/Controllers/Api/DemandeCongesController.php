@@ -39,9 +39,46 @@ class DemandeCongesController extends Controller
     public function store(Storedemande_congesRequest $request)
     {
         $data = $request->validated();
+        $useraut = DB::table('users')
+            ->where('id', '=', $data['user_id'])
+            ->pluck('autorisation')
+            ->first();
+
+        $dataAutorisation = $data['autorisation'];
+
+        $userautTime = strtotime($useraut);
+        $dataAutorisationTime = strtotime($dataAutorisation);
+
+        $userautFormatted = date('H:i', $userautTime);
+        $dataAutorisationFormatted = date('H:i', $dataAutorisationTime);
+
+        if ($dataAutorisationFormatted > $userautFormatted) {
+            return response([
+                'message' => 'Votre solde est insuffisant'
+            ], 422);
+        } elseif ($dataAutorisationFormatted <= $userautFormatted) {
+
+            $userautFormatted = Carbon::createFromTimestamp($userautTime)->format('H:i');
+            $dataAutorisationFormatted = Carbon::createFromTimestamp($dataAutorisationTime)->format('H:i');
+
+            $userautDateTime = Carbon::createFromFormat('H:i', $userautFormatted);
+            $dataAutorisationDateTime = Carbon::createFromFormat('H:i', $dataAutorisationFormatted);
+
+            $timeDifference = $userautDateTime->diff($dataAutorisationDateTime);
+
+            // Format the difference as H:i
+            $timeDifferenceFormatted = $timeDifference->format('%H:%I');
+            DB::table('users')
+                ->where('id', '=', $data['user_id'])
+                ->update(['autorisation' => $timeDifferenceFormatted]);
+        }
+
         $Conges = demande_conges::create($data);
         return response(new demande_congesR($Conges), 201);
     }
+
+
+
     public function imageStore(ImageStoreRequest $request)
     {
         $validatedData['image'] = $request->file('image')->store('public');
@@ -123,22 +160,22 @@ class DemandeCongesController extends Controller
     {
         $response = [];
         $endDate = Carbon::now()->endOfDay();
-    
+
         for ($i = 0; $i < 7; $i++) {
             $currentDate = $endDate->copy()->subDays($i);
             $startDate = $currentDate->copy()->startOfDay();
             $endDateOfDay = $currentDate->copy()->endOfDay();
-    
+
             $query = DB::table('demande_conges')
                 ->select(DB::raw('COUNT(*) as count'))
                 ->whereBetween('created_at', [$startDate, $endDateOfDay]);
-    
+
             if ($etat !== null) {
                 $query->where('etat', $etat);
             }
-    
+
             $result = $query->first();
-    
+
             $response[] = [
                 "_id" => [
                     "etat" => $etat,
@@ -149,44 +186,40 @@ class DemandeCongesController extends Controller
                 "count" => $result ? $result->count : 0
             ];
         }
-    
+
         return response()->json($response);
     }
 
 
-public function getCountForLastMounth($etat = null)
-{
-    $response = [];
-    $currentYear = Carbon::now()->year;
+    public function getCountForLastMounth($etat = null)
+    {
+        $response = [];
+        $currentYear = Carbon::now()->year;
 
-    for ($month = 1; $month <= 12; $month++) {
-        $startDate = Carbon::create($currentYear, $month, 1, 0, 0, 0);
-        $endDate = $startDate->copy()->endOfMonth();
+        for ($month = 1; $month <= 12; $month++) {
+            $startDate = Carbon::create($currentYear, $month, 1, 0, 0, 0);
+            $endDate = $startDate->copy()->endOfMonth();
 
-        $query = DB::table('demande_conges')
-            ->select(DB::raw('COUNT(*) as count'))
-            ->whereBetween('created_at', [$startDate, $endDate]);
+            $query = DB::table('demande_conges')
+                ->select(DB::raw('COUNT(*) as count'))
+                ->whereBetween('created_at', [$startDate, $endDate]);
 
-        if ($etat !== null) {
-            $query->where('etat', $etat);
+            if ($etat !== null) {
+                $query->where('etat', $etat);
+            }
+
+            $result = $query->first();
+
+            $response[] = [
+                "_id" => [
+                    "etat" => $etat,
+                    "month" => $month,
+                    "year" => $currentYear
+                ],
+                "count" => $result ? $result->count : 0
+            ];
         }
 
-        $result = $query->first();
-
-        $response[] = [
-            "_id" => [
-                "etat" => $etat,
-                "month" => $month,
-                "year" => $currentYear
-            ],
-            "count" => $result ? $result->count : 0
-        ];
+        return response()->json($response);
     }
-
-    return response()->json($response);
-}
-
-
-
-    
 }

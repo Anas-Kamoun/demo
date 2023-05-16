@@ -28,7 +28,7 @@ export default function DemandeFromUser() {
     end_date: "",
     description: "",
     file: "",
-    etat: "",
+    etat: ""
   });
   const [conges, setConges] = useState([]);
   // const currentConges = conges.find(
@@ -40,7 +40,7 @@ export default function DemandeFromUser() {
 
   const [dates, setDates] = useState(null);
   const [value, setValue] = useState(null);
-  const disabledDate = (current) => {
+  const disabledDate = current => {
     if (!dates) {
       return false;
     }
@@ -48,7 +48,7 @@ export default function DemandeFromUser() {
     const tooEarly = dates[1] && dates[1].diff(current, "days") >= user.solde;
     return !!tooEarly || !!tooLate;
   };
-  const onOpenChange = (open) => {
+  const onOpenChange = open => {
     if (open) {
       setDates([null, null]);
     } else {
@@ -62,14 +62,14 @@ export default function DemandeFromUser() {
     setConge({
       ...DCongeeValue,
       start_date: dateString[0],
-      end_date: dateString[1],
+      end_date: dateString[1]
     });
   };
 
   const onChangeau = (value, dateString) => {
     setConge({
       ...DCongeeValue,
-      start_autorisation: dateString,
+      start_autorisation: dateString
     });
   };
 
@@ -98,7 +98,7 @@ export default function DemandeFromUser() {
     }
   }, [id]);
 
-  const onSubmit = (ev) => {
+  const onSubmit = ev => {
     ev.preventDefault();
     if (DCongeeValue.id) {
       axiosClient
@@ -107,11 +107,16 @@ export default function DemandeFromUser() {
           setNotification("Conge was updated successfully");
           navigate("/demandeuser");
         })
-        .catch((err) => {
+        .catch(err => {
           const response = err.response;
           if (response && response.status === 422) {
-            setErrors(response.data.errors);
-            console.log(response.data.errors);
+            if (response.data.errors) {
+              setErrors(response.data.errors);
+            } else {
+              setErrors({
+                err: [response.data.message],
+              });
+            }
           }
         });
     } else {
@@ -121,11 +126,16 @@ export default function DemandeFromUser() {
           setNotification("Demnade Conge was created successfully");
           navigate("/demandeuser");
         })
-        .catch((err) => {
+        .catch(err => {
           const response = err.response;
           if (response && response.status === 422) {
-            setErrors(response.data.errors);
-            console.log(response.data.errors);
+            if (response.data.errors) {
+              setErrors(response.data.errors);
+            } else {
+              setErrors({
+                err: [response.data.message],
+              });
+            }
           }
         });
     }
@@ -147,7 +157,7 @@ export default function DemandeFromUser() {
           ...DCongeeValue,
           file: `${import.meta.env.VITE_API_BASE_URL}/storage/${
             info.file.response.image
-          }`.replace("public/", ""),
+          }`.replace("public/", "")
         });
       } else if (status === "error") {
         message.error(
@@ -157,7 +167,7 @@ export default function DemandeFromUser() {
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
-    },
+    }
   };
 
   return (
@@ -168,7 +178,7 @@ export default function DemandeFromUser() {
         {loading && <div className="text-center">Loading...</div>}
         {errors && (
           <div className="alert">
-            {Object.keys(errors).map((key) => (
+            {Object.keys(errors).map(key => (
               <p key={key}>{errors[key][0]}</p>
             ))}
           </div>
@@ -190,11 +200,11 @@ export default function DemandeFromUser() {
                   id="demo-simple-select"
                   value={DCongeeValue.type}
                   placeholder="TypeCongee"
-                  onChange={(ev) =>
+                  onChange={ev =>
                     setConge({
                       ...DCongeeValue,
                       type: ev.target.value,
-                      user_id: user.id,
+                      user_id: user.id
                     })
                   }
                 >
@@ -215,15 +225,20 @@ export default function DemandeFromUser() {
                         showTime
                         format="YYYY-MM-DD HH:mm"
                         onChange={onChangeau}
+                        disabledDate={current =>
+                          current && current < moment().startOf("day")
+                        }
                       />
+
                       <TimePicker
                         format={format}
-                        onChange={(time, timeString) =>
+                        onChange={(time, timeString) =>{
+                          const formattedTime = moment(timeString, format).format("HH:mm:ss");
                           setConge({
                             ...DCongeeValue,
-                            autorisation: timeString,
-                          })
-                        }
+                            autorisation: formattedTime
+                          });
+                        }}
                       />
                     </Space>
                   </div>
@@ -235,10 +250,10 @@ export default function DemandeFromUser() {
                     cols="33"
                     value={DCongeeValue.description}
                     placeholder="Description"
-                    onChange={(ev) =>
+                    onChange={ev =>
                       setConge({
                         ...DCongeeValue,
-                        description: ev.target.value,
+                        description: ev.target.value
                       })
                     }
                   ></textarea>
@@ -254,17 +269,17 @@ export default function DemandeFromUser() {
                     id="demo-simple-select"
                     value={DCongeeValue.conge_id}
                     placeholder="TypeCongee"
-                    onChange={(ev) =>
+                    onChange={ev =>
                       setConge({
                         ...DCongeeValue,
-                        conge_id: ev.target.value,
+                        conge_id: ev.target.value
                       })
                     }
                   >
                     <MenuItem value="" disabled>
                       Type Congee ?
                     </MenuItem>
-                    {conges.map((c) => (
+                    {conges.map(c => (
                       <MenuItem value={c.id} key={c.id}>
                         {c.name}
                       </MenuItem>
@@ -278,7 +293,7 @@ export default function DemandeFromUser() {
                       value={dates || value}
                       disabledDate={disabledDate}
                       minDates={moment()}
-                      onCalendarChange={(val) => setDates(val)}
+                      onCalendarChange={val => setDates(val)}
                       onChange={onChange}
                       onOpenChange={onOpenChange}
                     />
@@ -291,10 +306,10 @@ export default function DemandeFromUser() {
                     cols="33"
                     placeholder="Description"
                     value={DCongeeValue.description}
-                    onChange={(ev) =>
+                    onChange={ev =>
                       setConge({
                         ...DCongeeValue,
-                        description: ev.target.value,
+                        description: ev.target.value
                       })
                     }
                   ></textarea>
