@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import moment from "moment";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
+import { Carousel } from "react-responsive-carousel";
+import ImageViewer from "react-simple-image-viewer";
+
 
 export default function DemnadeUser() {
   const [DCongee, setDCongee] = useState([]);
@@ -16,7 +18,7 @@ export default function DemnadeUser() {
   const [conges, setConges] = useState([]);
   const [modal, setModal] = useState(false);
   const [selectedConge, setSelectedConge] = useState(null);
-  const toggleModal = (u) => {
+  const toggleModal = u => {
     axiosClient.get(`/users/${u.user_id}`).then(({ data }) => {
       setUser(data.data);
     });
@@ -50,7 +52,7 @@ export default function DemnadeUser() {
     combined_date.setHours(combined_date.getHours() + Number(hours));
     combined_date.setMinutes(combined_date.getMinutes() + Number(minutes));
     combined_date.setSeconds(combined_date.getSeconds() + Number(seconds));
-    return(combined_date);
+    return combined_date;
   };
 
   if (modal) {
@@ -63,7 +65,7 @@ export default function DemnadeUser() {
     getDCongee();
   }, []);
 
-  const onDelete = (u) => {
+  const onDelete = u => {
     if (!window.confirm("Vous Voulez Annulez cette Demande")) {
       return;
     }
@@ -73,7 +75,7 @@ export default function DemnadeUser() {
       getDCongee();
     });
   };
-  const onValidate = (u) => {
+  const onValidate = u => {
     if (!window.confirm("Vous Voulez Validez cette Demande")) {
       return;
     }
@@ -96,13 +98,34 @@ export default function DemnadeUser() {
       });
   };
 
+  ////////////////////////////////////////////
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const images = [
+    "http://placeimg.com/1200/800/nature",
+    "http://placeimg.com/800/1200/nature",
+    "http://placeimg.com/1920/1080/nature",
+    "http://placeimg.com/1500/500/nature"
+  ];
+
+  const openImageViewer = useCallback(index => {
+    setCurrentImage(index);
+    setIsViewerOpen(true);
+  }, []);
+
+  const closeImageViewer = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
+  };
+  //////////////////////////
+
   return (
     <div>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "center"
         }}
       >
         <h1>Liste des demandes de Congés</h1>
@@ -131,7 +154,7 @@ export default function DemnadeUser() {
           )}
           {!loading && (
             <tbody>
-              {DCongee.map((u) => (
+              {DCongee.map(u => (
                 <tr key={u.id}>
                   <td>{u.id}</td>
                   <td>{u.type}</td>
@@ -148,17 +171,14 @@ export default function DemnadeUser() {
                   </td>
                   <td>{u.etat}</td>
                   <td>
-                    <PageviewIcon onClick={(ev) => toggleModal(u)} />
+                    <PageviewIcon onClick={ev => toggleModal(u)} />
                   </td>
                   <td>
-                    <button onClick={(ev) => onValidate(u)} className="btn-add">
+                    <button onClick={ev => onValidate(u)} className="btn-add">
                       Valider
                     </button>
                     &nbsp;
-                    <button
-                      onClick={(ev) => onDelete(u)}
-                      className="btn-delete"
-                    >
+                    <button onClick={ev => onDelete(u)} className="btn-delete">
                       Annuler
                     </button>
                   </td>
@@ -180,64 +200,93 @@ export default function DemnadeUser() {
               <h2>Details de la demande</h2>
               &nbsp;
               <div>
-                <tr>
-                  <td>
-                    <h3>
-                      Etat : <a className="btn-add">{selectedConge.etat}</a>
-                    </h3>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h3>User : {userValue.name}</h3>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h3>Type de la demande : {selectedConge.type}</h3>
-                  </td>
-                </tr>
-                {selectedConge.conge_id && (
+                <table>
                   <tr>
                     <td>
-                      <h3>Congee : {conges.name}</h3>
+                      <h3>
+                        Etat : <a className="btn-add">{selectedConge.etat}</a>
+                      </h3>
                     </td>
                   </tr>
-                )}
-                <tr>
-                  <td>
-                    <h3>
-                      Start Date :{" "}
-                      {selectedConge.conge_id
-                        ? selectedConge.start_date
-                        : selectedConge.start_autorisation}
-                    </h3>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h3>
-                      End Date :{" "}
-                      {selectedConge.combined_date
-                        ? moment(selectedConge.combined_date).format(
-                            "YYYY-MM-DD HH:mm:ss"
-                          )
-                        : selectedConge.end_date}
-                    </h3>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <h3>Description :</h3>
-                    <p>{selectedConge.description}</p>
-                  </td>
-                </tr>
-                <Carousel showThumbs={false}>
-                <div style={{width:250}}>
-                    <img  src="http://localhost:8000/storage/jFj6YFlkdf0iGqETsRu6biWlS3xGtlvfNtIzSgSh.png" />
-                </div>
-                  </Carousel>       
+                  <tr>
+                    <td>
+                      <h3>User : {userValue.name}</h3>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Type de la demande : {selectedConge.type}</h3>
+                    </td>
+                  </tr>
+                  {selectedConge.conge_id && (
+                    <tr>
+                      <td>
+                        <h3>Congee : {conges.name}</h3>
+                      </td>
+                    </tr>
+                  )}
+                  <tr>
+                    <td>
+                      <h3>
+                        Start Date :{" "}
+                        {selectedConge.conge_id
+                          ? selectedConge.start_date
+                          : selectedConge.start_autorisation}
+                      </h3>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>
+                        End Date :{" "}
+                        {selectedConge.combined_date
+                          ? moment(selectedConge.combined_date).format(
+                              "YYYY-MM-DD HH:mm:ss"
+                            )
+                          : selectedConge.end_date}
+                      </h3>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Description :</h3>
+                      <p>{selectedConge.description}</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h3>Photos :</h3>
+                    </td>
+                  </tr>
+                  <tr>
+                    {images.map((src, index) => (
+                      <td>
+                        <img
+                          src={src}
+                          onClick={() => openImageViewer(index)}
+                          width="250"
+                          height="250"
+                          key={index}
+                          style={{ margin: "2px" }}
+                          alt=""
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                </table>
               </div>
+              {isViewerOpen && (
+        <ImageViewer
+          src={images}
+          currentIndex={currentImage}
+          onClose={closeImageViewer}
+          disableScroll={false}
+          backgroundStyle={{
+            backgroundColor: "rgba(0,0,0,0.9)"
+          }}
+          closeOnClickOutside={true}
+        />
+      )}
               <button
                 className="close-modal"
                 onClick={() => {

@@ -245,7 +245,7 @@ table > tbody > tr > td {
     }
 }
 body.active-modal {
-    overflow-y: hidden;
+    overflow: auto;
 }
 
 .btn-modal {

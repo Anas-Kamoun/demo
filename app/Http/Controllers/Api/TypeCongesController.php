@@ -38,10 +38,7 @@ class TypeCongesController extends Controller
         $TypeConges->save();
         $contractIds = $request['contrat_id'];
         $TypeConges->contrat()->attach($contractIds);
-        
-        // $TypeConges->contrat()->attach([$request['contrat_id']]);
-        
-        // $Conges=TypeConges::create($data);
+
 
         return response()->json(['message' => 'type created and attached to contrat successfully']);
     }
@@ -89,13 +86,23 @@ class TypeCongesController extends Controller
      */
     public function update(UpdateTypeCongesRequest $request, TypeConges $typeConges,$id)
     {
-        $typeContrat =TypeConges::whereId($id)->first();
-        $typeContrat->update([
-            'name' => $request['name'],
-            'contrat_id' => $request['contrat_id'],
-            'created_at' => $request['created_at'],
-        ]);
-        return response()->json("",204);
+        // $TypeConges =TypeConges::whereId($id)->first();
+        // $TypeConges->update([
+        //     'name' => $request['name'],
+        //     'contrat_id' => $request['contrat_id'],
+        //     'created_at' => $request['created_at'],
+        // ]);
+        // return response()->json("",204);
+        $TypeConges =TypeConges::whereId($id)->first();
+        $data=$request->validated();
+        $TypeConges->name=$data['name'];
+        $TypeConges->save();
+        $contractIds = $request['contrat_id'];
+        $TypeConges->contrat()->sync($contractIds);
+
+
+        return response()->json(['message' => 'Updated !!']);
+
     }
 
     /**

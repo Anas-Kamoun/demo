@@ -24,9 +24,9 @@ class UpdateTypeContratRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|max:55',
+            'name'=>'required|string|max:55|unique:type_contrats,name,'.$this->id,
             'soldec'=>'required|numeric',
-            'autorisation'=>'required|numeric',
+            'autorisation'=>'required|date_format:H:i'
         ];
     }
 }

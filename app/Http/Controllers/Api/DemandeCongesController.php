@@ -39,39 +39,58 @@ class DemandeCongesController extends Controller
     public function store(Storedemande_congesRequest $request)
     {
         $data = $request->validated();
-        $useraut = DB::table('users')
-            ->where('id', '=', $data['user_id'])
-            ->pluck('autorisation')
-            ->first();
 
-        $dataAutorisation = $data['autorisation'];
-
-        $userautTime = strtotime($useraut);
-        $dataAutorisationTime = strtotime($dataAutorisation);
-
-        $userautFormatted = date('H:i', $userautTime);
-        $dataAutorisationFormatted = date('H:i', $dataAutorisationTime);
-
-        if ($dataAutorisationFormatted > $userautFormatted) {
-            return response([
-                'message' => 'Votre solde est insuffisant'
-            ], 422);
-        } elseif ($dataAutorisationFormatted <= $userautFormatted) {
-
-            $userautFormatted = Carbon::createFromTimestamp($userautTime)->format('H:i');
-            $dataAutorisationFormatted = Carbon::createFromTimestamp($dataAutorisationTime)->format('H:i');
-
-            $userautDateTime = Carbon::createFromFormat('H:i', $userautFormatted);
-            $dataAutorisationDateTime = Carbon::createFromFormat('H:i', $dataAutorisationFormatted);
-
-            $timeDifference = $userautDateTime->diff($dataAutorisationDateTime);
-
-            // Format the difference as H:i
-            $timeDifferenceFormatted = $timeDifference->format('%H:%I');
-            DB::table('users')
+        if ($data['type'] == 'autorisation') {
+            $useraut = DB::table('users')
                 ->where('id', '=', $data['user_id'])
-                ->update(['autorisation' => $timeDifferenceFormatted]);
+                ->pluck('autorisation')
+                ->first();
+
+            $dataAutorisation = $data['autorisation'];
+
+            $userautTime = strtotime($useraut);
+            $dataAutorisationTime = strtotime($dataAutorisation);
+
+            $userautFormatted = date('H:i', $userautTime);
+            $dataAutorisationFormatted = date('H:i', $dataAutorisationTime);
+
+            if ($dataAutorisationFormatted > $userautFormatted) {
+                return response([
+                    'message' => 'Votre solde est insuffisant'
+                ], 422);
+            } elseif ($dataAutorisationFormatted <= $userautFormatted) {
+
+                $userautFormatted = Carbon::createFromTimestamp($userautTime)->format('H:i');
+                $dataAutorisationFormatted = Carbon::createFromTimestamp($dataAutorisationTime)->format('H:i');
+
+                $userautDateTime = Carbon::createFromFormat('H:i', $userautFormatted);
+                $dataAutorisationDateTime = Carbon::createFromFormat('H:i', $dataAutorisationFormatted);
+
+                $timeDifference = $userautDateTime->diff($dataAutorisationDateTime);
+
+                // Format the difference as H:i
+                $timeDifferenceFormatted = $timeDifference->format('%H:%I');
+                DB::table('users')
+                    ->where('id', '=', $data['user_id'])
+                    ->update(['autorisation' => $timeDifferenceFormatted]);
+            }
         }
+        else{
+            $usersolde = DB::table('users')
+                ->where('id', '=', $data['user_id'])
+                ->pluck('solde')
+                ->first();
+
+                $start = Carbon::parse($data['start_date']);
+                $end = Carbon::parse($data['end_date']);
+                $numberOfDays = $start->diffInDays($end)+1;
+                $usersolde=$usersolde-$numberOfDays;
+                DB::table('users')
+                    ->where('id', '=', $data['user_id'])
+                    ->update(['solde' => $usersolde]);
+        }
+
+
 
         $Conges = demande_conges::create($data);
         return response(new demande_congesR($Conges), 201);

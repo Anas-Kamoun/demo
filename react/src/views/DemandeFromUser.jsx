@@ -41,12 +41,19 @@ export default function DemandeFromUser() {
   const [dates, setDates] = useState(null);
   const [value, setValue] = useState(null);
   const disabledDate = current => {
+    const today = moment(); // Get the current day using moment.js
+  
     if (!dates) {
       return false;
     }
+  
     const tooLate = dates[0] && current.diff(dates[0], "days") >= user.solde;
     const tooEarly = dates[1] && dates[1].diff(current, "days") >= user.solde;
-    return !!tooEarly || !!tooLate;
+  
+    // Disable dates before the current day
+    const beforeToday = current.isBefore(today, "day");
+  
+    return !!tooEarly || !!tooLate || beforeToday;
   };
   const onOpenChange = open => {
     if (open) {
