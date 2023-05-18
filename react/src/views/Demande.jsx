@@ -8,7 +8,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import ImageViewer from "react-simple-image-viewer";
 
-
 export default function DemnadeUser() {
   const [DCongee, setDCongee] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -101,17 +100,15 @@ export default function DemnadeUser() {
   ////////////////////////////////////////////
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [openImage,setOpenImage] = useState([])
   const images = [
-    "http://placeimg.com/1200/800/nature",
-    "http://placeimg.com/800/1200/nature",
-    "http://placeimg.com/1920/1080/nature",
-    "http://placeimg.com/1500/500/nature"
   ];
 
-  const openImageViewer = useCallback(index => {
-    setCurrentImage(index);
+  const openImageViewer = (img) => {
+    setOpenImage([img])
+    setCurrentImage(1);
     setIsViewerOpen(true);
-  }, []);
+  };
 
   const closeImageViewer = () => {
     setCurrentImage(0);
@@ -247,46 +244,40 @@ export default function DemnadeUser() {
                       </h3>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                      <h3>Description :</h3>
-                      <p>{selectedConge.description}</p>
-                    </td>
-                  </tr>
-                  <tr>
+                  {selectedConge.description && (
+                    <tr>
+                      <td>
+                        <h3>Description :</h3>
+                        <p>{selectedConge.description}</p>
+                      </td>
+                    </tr>
+                  )}
+                  {selectedConge.file &&(
+                    <tr>
                     <td>
                       <h3>Photos :</h3>
                     </td>
                   </tr>
+                  )}
+                  {selectedConge.file &&(
                   <tr>
-                    {images.map((src, index) => (
-                      <td>
-                        <img
-                          src={src}
-                          onClick={() => openImageViewer(index)}
-                          width="250"
-                          height="250"
-                          key={index}
-                          style={{ margin: "2px" }}
-                          alt=""
-                        />
-                      </td>
-                    ))}
+                    <td>
+                      <img
+                        src={selectedConge.file}
+                        onClick={() => openImageViewer(selectedConge.file)}
+                        width="250"
+                        height="250"
+                        key={1}
+                        style={{ margin: "2px" }}
+                        alt=""
+                      />
+                    </td>
                   </tr>
+                  )}
+
                 </table>
               </div>
-              {isViewerOpen && (
-        <ImageViewer
-          src={images}
-          currentIndex={currentImage}
-          onClose={closeImageViewer}
-          disableScroll={false}
-          backgroundStyle={{
-            backgroundColor: "rgba(0,0,0,0.9)"
-          }}
-          closeOnClickOutside={true}
-        />
-      )}
+              
               <button
                 className="close-modal"
                 onClick={() => {
@@ -299,6 +290,19 @@ export default function DemnadeUser() {
             </div>
           </div>
         )}
+        {isViewerOpen && (
+                <ImageViewer
+                  src={openImage}
+                  currentIndex={currentImage}
+                  onClose={closeImageViewer}
+                  disableScroll={false}
+                  backgroundStyle={{
+                    backgroundColor: "rgba(0,0,0,0.9)",
+                    height: '100vh'
+                  }}
+                  closeOnClickOutside={true}
+                />
+              )}
       </div>
     </div>
   );
