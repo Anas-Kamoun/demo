@@ -1,14 +1,14 @@
-import * as React from 'react';
+import * as React from "react";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import Chip from '@mui/material/Chip';
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import Chip from "@mui/material/Chip";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -16,14 +16,10 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+      width: 250
+    }
+  }
 };
-
-
-
-
 
 export default function CongeForm() {
   const navigate = useNavigate();
@@ -33,13 +29,13 @@ export default function CongeForm() {
   const { user, setNotification } = useStateContext();
   const [CongeValue, setConge] = useState({
     name: "",
-    contrat_id: "",
+    contrat_id: ""
   });
   const [ContratValue, setContrat] = useState("");
   const [contrats, setContrats] = useState([]);
   const currentContrat = useState([]);
 
-//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
 
   const theme = useTheme();
   function getStyles(name, personName, theme) {
@@ -47,28 +43,32 @@ export default function CongeForm() {
       fontWeight:
         personName.indexOf(name) === -1
           ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
+          : theme.typography.fontWeightMedium
     };
   }
-    const [personName, setPersonName] = React.useState([]);
-  
-    const handleChange = (event) => {
-      const {
-        target: { value },
-      } = event;
-      setPersonName(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value,
-      );
-      setConge(
-        {
-          ...CongeValue,
-          contrat_id: value,
-        }
-      )
-    };
+  const [personName, setPersonName] = React.useState([]);
+  const handleChange = event => {
+    const {
+      target: { value }
+    } = event;
+    const contratIds = value.reduce((ids, name) => {
+      const contrat = contrats.find((contrat) => contrat.name === name);
+      if (contrat) {
+        ids.push(contrat.id);
+      }
+      return ids;
+    }, []);
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+    setConge({
+      ...CongeValue,
+      contrat_id: contratIds
+    });
+  };
 
-//////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
 
   useEffect(() => {
     setLoading(true);
@@ -78,7 +78,6 @@ export default function CongeForm() {
       axiosClient.get(`/contrats/`).then(({ data }) => {
         setLoading(false);
         setContrats(data.data);
-        console.log(data.data);
       });
       if (id) {
         axiosClient
@@ -96,7 +95,7 @@ export default function CongeForm() {
     }
   }, [id]);
 
-  const onSubmit = (ev) => {
+  const onSubmit = ev => {
     ev.preventDefault();
     if (CongeValue.id) {
       axiosClient
@@ -105,7 +104,7 @@ export default function CongeForm() {
           setNotification("Conge was updated successfully");
           navigate("/conge");
         })
-        .catch((err) => {
+        .catch(err => {
           const response = err.response;
           if (response && response.status === 422) {
             setErrors(response.data.errors);
@@ -119,7 +118,7 @@ export default function CongeForm() {
           setNotification("Conge was created successfully");
           navigate("/conge");
         })
-        .catch((err) => {
+        .catch(err => {
           const response = err.response;
           if (response && response.status === 422) {
             setErrors(response.data.errors);
@@ -136,7 +135,7 @@ export default function CongeForm() {
         {loading && <div className="text-center">Loading...</div>}
         {errors && (
           <div className="alert">
-            {Object.keys(errors).map((key) => (
+            {Object.keys(errors).map(key => (
               <p key={key}>{errors[key][0]}</p>
             ))}
           </div>
@@ -145,10 +144,10 @@ export default function CongeForm() {
           <form onSubmit={onSubmit}>
             <input
               type="text"
-              onChange={(ev) =>
+              onChange={ev =>
                 setConge({
                   ...CongeValue,
-                  name: ev.target.value,
+                  name: ev.target.value
                 })
               }
               value={CongeValue.name}
@@ -185,32 +184,34 @@ export default function CongeForm() {
                   })}
                 </Select> */}
                 <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
-        <Select
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
-          MenuProps={MenuProps}
-        >
-          {contrats.map((name) => (
-            <MenuItem
-              key={name.id}
-              value={name.id}
-              style={getStyles(name.name, personName, theme)}
-            >
-              {name.name}
-            </MenuItem>
-          ))}
-        </Select>
+                <Select
+                  labelId="demo-multiple-chip-label"
+                  id="demo-multiple-chip"
+                  multiple
+                  value={personName}
+                  onChange={handleChange}
+                  input={
+                    <OutlinedInput id="select-multiple-chip" label="Chip" />
+                  }
+                  renderValue={selected => (
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {selected.map(value => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {contrats.map(c => (
+                    <MenuItem
+                      key={c.id}
+                      value={c.name}
+                      style={getStyles(c.name, personName, theme)}
+                    >
+                      {c.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </FormControl>
               &nbsp;
               <br />
