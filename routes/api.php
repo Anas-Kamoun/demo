@@ -46,6 +46,8 @@ Route::middleware(['cors'])->group(function () {
     Route::get('/count-last-mounth/{etat?}', [DemandeCongesController::class, 'getCountForLastMounth']);
     Route::get('/count-contrats', [TypeContratController::class, 'countContrat']);
     Route::get('/count-post', [PosteController::class, 'countPost']);
+    Route::get('/typeconges', [TypeCongesController::class, 'getTypeCongesWithContrats']);
+
 
 
 });

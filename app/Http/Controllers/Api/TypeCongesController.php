@@ -105,6 +105,16 @@ class TypeCongesController extends Controller
 
     }
 
+    public function getTypeCongesWithContrats()
+{
+    $typeConges = TypeConges::with('contrat')->get();
+    // $typeConges = TypeConges::with('contrat')->get()->map(function ($typeConge) {
+    //     $typeConge->created_at = $typeConge->created_at->format('Y-m-d H:i:s');
+    //     return $typeConge;
+    // });
+
+    return response()->json($typeConges);
+}
     /**
      * Remove the specified resource from storage.
      *
