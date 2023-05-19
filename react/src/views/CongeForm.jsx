@@ -183,7 +183,7 @@ export default function CongeForm() {
                     );
                   })}
                 </Select> */}
-                <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+                <InputLabel id="demo-multiple-chip-label" >Contrats</InputLabel>
                 <Select
                   labelId="demo-multiple-chip-label"
                   id="demo-multiple-chip"
@@ -191,7 +191,7 @@ export default function CongeForm() {
                   value={personName}
                   onChange={handleChange}
                   input={
-                    <OutlinedInput id="select-multiple-chip" label="Chip" />
+                    <OutlinedInput id="select-multiple-chip" label="Contrats" />
                   }
                   renderValue={selected => (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
