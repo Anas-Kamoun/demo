@@ -26,6 +26,7 @@ class User extends Authenticatable
         'autorisation',
         'contrat_id',
         'poste_id',
+        'tel',
     ];
 
     /**

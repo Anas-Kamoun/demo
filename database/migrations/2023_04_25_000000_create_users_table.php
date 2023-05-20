@@ -20,6 +20,7 @@ return new class extends Migration
             $table->tinyInteger('solde')->nullable();
             $table->time('autorisation')->nullable();
             $table->string('role')->nullable();
+            $table->integer('tel')->nullable();
             $table->unsignedBigInteger('contrat_id')->nullable();
             $table->foreign('contrat_id')
                  ->references('id')

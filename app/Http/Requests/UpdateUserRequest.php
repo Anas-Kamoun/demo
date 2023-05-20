@@ -34,6 +34,7 @@ class UpdateUserRequest extends FormRequest
                  ->letters()
                  ->symbols()
             ],
+            'tel'=>'numeric',
             'role'=>'required|string',
             'contrat_id'=>'exists:App\Models\TypeContrat,id',
             'poste_id'=>'exists:App\Models\Poste,id',

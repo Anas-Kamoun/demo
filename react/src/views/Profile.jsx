@@ -1,4 +1,4 @@
-import { Avatar, FormControl, MenuItem, Select } from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../axios-client";
@@ -6,6 +6,7 @@ import { useStateContext } from "../Contexts/ContextProvider";
 
 export default function UserForm() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const { user, setNotification } = useStateContext();
@@ -16,37 +17,71 @@ export default function UserForm() {
     password: "",
     password_confirmation: "",
     role: "",
-    avatar: null,
+    poste_id:"",
+    contrat_id:"",
   });
 
+
+  const [ContratValue, setContrat] = useState("");
+  const [Contrats, setContrats] = useState([]);
+  const currentContrat = Contrats.find(
+    (el) => el.id === user.contrat_id
+  ) || {
+    name: "",
+    id: "",
+  };
+  const [PosteValue, setPoste] = useState("");
+  const [Poste,setPostes]= useState([]);
+  const currentPoste= Poste.find(
+    (el) => el.id === user.poste_id
+  ) || {
+    name: "",
+    id: "",
+  };
   useEffect(() => {
     setLoading(true);
-    if (user.id) {
-      axiosClient
-        .get(`/users/${user.id}`)
-        .then(({ data }) => {
-          setLoading(false);
-          setUser(data.data);
-        })
-        .catch(() => {
-          setLoading(false);
-        });
+    if (user.role === "user") {
+      navigate("/dashboard");
     } else {
-      setLoading(false);
+      if (user.id) {
+        axiosClient
+        .get(`/users/${user.id}`)
+          .then(({ data }) => {
+            setLoading(false);
+            setUser(data.data);
+          })
+          .catch(() => {
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+      }
     }
-  }, [user]);
+    axiosClient.get('/contrats')
+    .then(({data})=>{
+        setLoading(false);
+        setContrats(data.data)
+    })
+    .catch(()=>{
+        setLoading(false);
+    })
+    axiosClient.get('/postes')
+    .then(({data})=>{
+        setLoading(false);
+        setPostes(data.data)
+    })
+    .catch(()=>{
+        setLoading(false);
+    })
+  }
+  , [user]);
+
 
   const onSubmit = (ev) => {
     ev.preventDefault();
-    const formData = new FormData();
-    formData.append("name", userValue.name);
-    formData.append("email", userValue.email);
-    formData.append("password", userValue.password);
-    formData.append("password_confirmation", userValue.password_confirmation);
-    formData.append("avatar", userValue.avatar);
     if (userValue.id) {
       axiosClient
-        .put(`/users/${userValue.id}`, formData)
+        .put(`/users/${userValue.id}`, userValue)
         .then(() => {
           setNotification("User was updated successfully");
           navigate("/users");
@@ -60,7 +95,7 @@ export default function UserForm() {
         });
     } else {
       axiosClient
-        .post('/users/', formData)
+        .post(`/users/`, userValue)
         .then(() => {
           setNotification("User was created successfully");
           navigate("/users");
@@ -75,13 +110,9 @@ export default function UserForm() {
     }
   };
 
-  const onAvatarChange = (ev) => {
-    setUser({ ...userValue, avatar: ev.target.files[0] });
-  };
-
   return (
     <div>
-      {userValue.id && <h1>Profile User : {userValue.name}</h1>}
+<h1>Profile User : {userValue.name}</h1>
       <div className="card animated fadeInDown">
         {loading && <div className="text-center">Loading...</div>}
         {errors && (
@@ -93,40 +124,14 @@ export default function UserForm() {
         )}
         {!loading && (
           <form onSubmit={onSubmit}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Avatar
-                src={userValue.avatar && URL.createObjectURL(userValue.avatar)}
-              />
-              <div style={{ marginLeft: "1rem" }}>
-                <button
-                  className="btn"
-                  onClick={() =>
-                    document.getElementById("avatar-upload").click()
-                  }
-                  style={{ fontSize: "0.8rem" }}
-                >
-                  Edit Avatar
-                </button>
-                <input
-                  type="file"
-                  onChange={(ev) => {
-                    const file = ev.target.files[0];
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onloadend = () => {
-                      setUser({
-                        ...userValue,
-                        avatar: reader.result,
-                      });
-                    };
-                  }}
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  id="avatar-upload"
-                />
-              </div>
-            </div>
-            &nbsp;
+            <input
+              type="text"
+              onChange={(ev) =>
+                setUser({ ...userValue, name: ev.target.value })
+              }
+              value={userValue.name}
+              placeholder="Name"
+            />
             <input
               type="email"
               onChange={(ev) =>
@@ -158,45 +163,107 @@ export default function UserForm() {
               }
               placeholder="Password Confirmation"
             />
-            <FormControl fullWidth>
-              <Select
-                fullWidth
-                displayEmpty
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={userValue.role}
-                placeholder="Role"
-                onChange={(ev) =>
-                  setUser({
-                    ...userValue,
-                    role: ev.target.value,
-                  })
-                }
-              >
-                <MenuItem value="" disabled>
-                  Poste ?
-                </MenuItem>
-                <MenuItem value={"Designer"}>Simple User</MenuItem>
-                <MenuItem value={"Frontend developer"}>Admin</MenuItem>
-                <MenuItem value={"Backend developer"}>Super Admin</MenuItem>
-              </Select>
-            </FormControl>
-            &nbsp;
-            <input
+            <div>
+              <FormControl fullWidth>
+                <Select
+                  fullWidth
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={userValue.role}
+                  placeholder="Role"
+                  onChange={(ev) =>
+                    setUser({
+                      ...userValue,
+                      role: ev.target.value,
+                    })
+                  }
+                >
+                  <MenuItem value="" disabled>
+                    Role ?
+                  </MenuItem>
+                  <MenuItem value={"user"}>Simple User</MenuItem>
+                  <MenuItem value={"admin"}>Admin</MenuItem>
+                  <MenuItem value={"super_admin"}>Super Admin</MenuItem>
+                </Select>
+              </FormControl>
+              &nbsp;
+              <br />
+              <FormControl fullWidth>
+                <Select
+                  fullWidth
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={currentContrat.id}
+                  placeholder="type contrat"
+                  onChange={(ev) =>
+                    setUser(
+                      {
+                        ...userValue,
+                        contrat_id: ev.target.value,
+                      },
+                      setContrat(ev.target.value)
+                    )
+                  }
+                >
+                  <MenuItem value="" disabled>
+                    Type contrat ?
+                  </MenuItem>
+                  {Contrats.map((c) => {
+                    return (
+                      <MenuItem value={c.id} key={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              &nbsp;
+              <FormControl fullWidth>
+                <Select
+                  fullWidth
+                  displayEmpty
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={currentPoste.id}
+                  placeholder="type contrat"
+                  onChange={(ev) =>
+                    setUser(
+                      {
+                        ...userValue,
+                        poste_id: ev.target.value,
+                      },
+                      setPoste(ev.target.value)
+                    )
+                  }
+                >
+                  <MenuItem value="" disabled>
+                    Type Postes ?
+                  </MenuItem>
+                  {Poste.map((c) => {
+                    return (
+                      <MenuItem value={c.id} key={c.id}>
+                        {c.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              &nbsp;
+              <input
               type="tel"
+              maxLength={'8'}
               onChange={(ev) =>
                 setUser({
                   ...userValue,
-                  phone_number: ev.target.value,
+                  tel: ev.target.value,
                 })
               }
-              value={userValue.phone_number}
-              placeholder="Phone number"
+              placeholder="Numero Telephone"
             />
-            <button className="btn" type="submit">
-              Save
-            </button>
-
+            </div>
+            <button className="btn">Save</button>
           </form>
         )}
       </div>
