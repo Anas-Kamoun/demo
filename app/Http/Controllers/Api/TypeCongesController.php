@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateTypeCongesRequest;
 use App\Http\Resources\TypeCongesR;
 
 use Illuminate\Support\Facades\DB;
+
 class TypeCongesController extends Controller
 {
     /**
@@ -20,7 +21,7 @@ class TypeCongesController extends Controller
     public function index()
     {
         return TypeCongesR::collection(
-            TypeConges::query()->orderBy('id','desc')->paginate(10)
+            TypeConges::query()->orderBy('id', 'desc')->paginate(10)
         );
     }
 
@@ -32,9 +33,9 @@ class TypeCongesController extends Controller
      */
     public function store(StoreTypeCongesRequest $request)
     {
-        $data=$request->validated();
+        $data = $request->validated();
         $TypeConges = new TypeConges();
-        $TypeConges->name=$data['name'];
+        $TypeConges->name = $data['name'];
         $TypeConges->save();
         $contractIds = $request['contrat_id'];
         $TypeConges->contrat()->attach($contractIds);
@@ -49,7 +50,7 @@ class TypeCongesController extends Controller
      * @param  \App\Models\TypeConges  $typeConges
      * @return \Illuminate\Http\Response
      */
-    public function show(TypeConges $typeConges,$id)
+    public function show(TypeConges $typeConges, $id)
     {
         $typeConges = TypeConges::findOrFail($id);
         return new TypeCongesR($typeConges);
@@ -62,7 +63,7 @@ class TypeCongesController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function getcongebycontrat(TypeConges $typeConges,$id)
+    public function getcongebycontrat(TypeConges $typeConges, $id)
     {
         $contract = TypeContrat::find($id);
         $conges = $contract->conge;
@@ -72,7 +73,7 @@ class TypeCongesController extends Controller
             $name = DB::table('type_conges')->where('id', '=', $congeId)->get();
             $congeNames[] = $name[0];
         }
-        return response()->json($congeNames);    
+        return response()->json($congeNames);
         // return new TypeCongesR($typeConges);
     }
 
@@ -84,7 +85,7 @@ class TypeCongesController extends Controller
      * @param  \App\Models\TypeConges  $typeConges
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTypeCongesRequest $request, TypeConges $typeConges,$id)
+    public function update(UpdateTypeCongesRequest $request, TypeConges $typeConges, $id)
     {
         // $TypeConges =TypeConges::whereId($id)->first();
         // $TypeConges->update([
@@ -93,24 +94,23 @@ class TypeCongesController extends Controller
         //     'created_at' => $request['created_at'],
         // ]);
         // return response()->json("",204);
-        $TypeConges =TypeConges::whereId($id)->first();
-        $data=$request->validated();
-        $TypeConges->name=$data['name'];
+        $TypeConges = TypeConges::whereId($id)->first();
+        $data = $request->validated();
+        $TypeConges->name = $data['name'];
         $TypeConges->save();
         $contractIds = $request['contrat_id'];
         $TypeConges->contrat()->sync($contractIds);
 
 
         return response()->json(['message' => 'Updated !!']);
-
     }
 
     public function getTypeCongesWithContrats()
-{
-    $typeConges = TypeConges::with('contrat')->get();
+    {
+        $typeConges = TypeConges::with('contrat')->get();
 
-    return response()->json($typeConges);
-}
+        return response()->json($typeConges);
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -121,6 +121,6 @@ class TypeCongesController extends Controller
     {
         $typeConges = TypeConges::find($id);
         $typeConges->delete(); // Easy right?
-        return Response("",204);
+        return Response("", 204);
     }
 }
