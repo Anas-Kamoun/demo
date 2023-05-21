@@ -85,7 +85,7 @@ export default function DemandeFromUser() {
     if ((user.role !="user")) {
       navigate("/dashboard");
     } else {
-      axiosClient.get(`/getcongebycontrat/${1}`).then(({ data }) => {
+      axiosClient.get(`/getcongebycontrat/${user.contrat_id}`).then(({ data }) => {
         setConges(data);
         console.log(data);
       });
