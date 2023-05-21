@@ -252,6 +252,17 @@ export default function UserForm() {
                 </Select>
               </FormControl>
               &nbsp;
+              <input
+                type="tel"
+                maxLength={"8"}
+                onChange={ev =>
+                  setUser({
+                    ...userValue,
+                    tel: ev.target.value
+                  })
+                }
+                placeholder="Numero Telephone"
+              />
             </div>
             <button className="btn">Save</button>
           </form>

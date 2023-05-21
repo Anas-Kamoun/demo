@@ -10,33 +10,19 @@ export default function UserForm() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
   const { user, setNotification } = useStateContext();
-  const [userValue, setUser] = useState({
-    id: "",
-    name: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-    role: "",
-    poste_id:"",
-    contrat_id:"",
-  });
-
+  const [userValue, setUser] = useState({});
 
   const [ContratValue, setContrat] = useState("");
   const [Contrats, setContrats] = useState([]);
-  const currentContrat = Contrats.find(
-    (el) => el.id === user.contrat_id
-  ) || {
+  const currentContrat = Contrats.find(el => el.id === user.contrat_id) || {
     name: "",
-    id: "",
+    id: ""
   };
   const [PosteValue, setPoste] = useState("");
-  const [Poste,setPostes]= useState([]);
-  const currentPoste= Poste.find(
-    (el) => el.id === user.poste_id
-  ) || {
+  const [Poste, setPostes] = useState([]);
+  const currentPoste = Poste.find(el => el.id === user.poste_id) || {
     name: "",
-    id: "",
+    id: ""
   };
   useEffect(() => {
     setLoading(true);
@@ -45,7 +31,7 @@ export default function UserForm() {
     } else {
       if (user.id) {
         axiosClient
-        .get(`/users/${user.id}`)
+          .get(`/users/${user.id}`)
           .then(({ data }) => {
             setLoading(false);
             setUser(data.data);
@@ -57,67 +43,51 @@ export default function UserForm() {
         setLoading(false);
       }
     }
-    axiosClient.get('/contrats')
-    .then(({data})=>{
+    axiosClient
+      .get("/contrats")
+      .then(({ data }) => {
         setLoading(false);
-        setContrats(data.data)
-    })
-    .catch(()=>{
+        setContrats(data.data);
+      })
+      .catch(() => {
         setLoading(false);
-    })
-    axiosClient.get('/postes')
-    .then(({data})=>{
+      });
+    axiosClient
+      .get("/postes")
+      .then(({ data }) => {
         setLoading(false);
-        setPostes(data.data)
-    })
-    .catch(()=>{
+        setPostes(data.data);
+      })
+      .catch(() => {
         setLoading(false);
-    })
-  }
-  , [user]);
+      });
+  }, [user]);
 
-
-  const onSubmit = (ev) => {
+  const onSubmit = ev => {
     ev.preventDefault();
-    if (userValue.id) {
-      axiosClient
-        .put(`/users/${userValue.id}`, userValue)
-        .then(() => {
-          setNotification("User was updated successfully");
-          navigate("/users");
-        })
-        .catch((err) => {
-          const response = err.response;
-          if (response && response.status === 422) {
-            setErrors(response.data.errors);
-            console.log(response.data.errors);
-          }
-        });
-    } else {
-      axiosClient
-        .post(`/users/`, userValue)
-        .then(() => {
-          setNotification("User was created successfully");
-          navigate("/users");
-        })
-        .catch((err) => {
-          const response = err.response;
-          if (response && response.status === 422) {
-            setErrors(response.data.errors);
-            console.log(response.data.errors);
-          }
-        });
-    }
+    console.log(userValue);
+    axiosClient
+      .put(`/users/${userValue.id}`, userValue)
+      .then(() => {
+        setNotification("Profile was updated successfully");
+        navigate("/dashboard");
+      })
+      .catch(err => {
+        const response = err.response;
+        if (response && response.status === 422) {
+          setErrors(response.data.errors);
+        }
+      });
   };
 
   return (
     <div>
-<h1>Profile User : {userValue.name}</h1>
+      <h1>Profile User : {userValue.name}</h1>
       <div className="card animated fadeInDown">
         {loading && <div className="text-center">Loading...</div>}
         {errors && (
           <div className="alert">
-            {Object.keys(errors).map((key) => (
+            {Object.keys(errors).map(key => (
               <p key={key}>{errors[key][0]}</p>
             ))}
           </div>
@@ -126,18 +96,16 @@ export default function UserForm() {
           <form onSubmit={onSubmit}>
             <input
               type="text"
-              onChange={(ev) =>
-                setUser({ ...userValue, name: ev.target.value })
-              }
+              onChange={ev => setUser({ ...userValue, name: ev.target.value })}
               value={userValue.name}
               placeholder="Name"
             />
             <input
               type="email"
-              onChange={(ev) =>
+              onChange={ev =>
                 setUser({
                   ...userValue,
-                  email: ev.target.value,
+                  email: ev.target.value
                 })
               }
               value={userValue.email}
@@ -145,20 +113,20 @@ export default function UserForm() {
             />
             <input
               type="password"
-              onChange={(ev) =>
+              onChange={ev =>
                 setUser({
                   ...userValue,
-                  password: ev.target.value,
+                  password: ev.target.value
                 })
               }
               placeholder="Password"
             />
             <input
               type="password"
-              onChange={(ev) =>
+              onChange={ev =>
                 setUser({
                   ...userValue,
-                  password_confirmation: ev.target.value,
+                  password_confirmation: ev.target.value
                 })
               }
               placeholder="Password Confirmation"
@@ -166,16 +134,17 @@ export default function UserForm() {
             <div>
               <FormControl fullWidth>
                 <Select
+                  disabled
                   fullWidth
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={userValue.role}
                   placeholder="Role"
-                  onChange={(ev) =>
+                  onChange={ev =>
                     setUser({
                       ...userValue,
-                      role: ev.target.value,
+                      role: ev.target.value
                     })
                   }
                 >
@@ -191,17 +160,18 @@ export default function UserForm() {
               <br />
               <FormControl fullWidth>
                 <Select
+                  disabled
                   fullWidth
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={currentContrat.id}
                   placeholder="type contrat"
-                  onChange={(ev) =>
+                  onChange={ev =>
                     setUser(
                       {
                         ...userValue,
-                        contrat_id: ev.target.value,
+                        contrat_id: ev.target.value
                       },
                       setContrat(ev.target.value)
                     )
@@ -210,7 +180,7 @@ export default function UserForm() {
                   <MenuItem value="" disabled>
                     Type contrat ?
                   </MenuItem>
-                  {Contrats.map((c) => {
+                  {Contrats.map(c => {
                     return (
                       <MenuItem value={c.id} key={c.id}>
                         {c.name}
@@ -222,17 +192,18 @@ export default function UserForm() {
               &nbsp;
               <FormControl fullWidth>
                 <Select
+                  disabled
                   fullWidth
                   displayEmpty
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={currentPoste.id}
                   placeholder="type contrat"
-                  onChange={(ev) =>
+                  onChange={ev =>
                     setUser(
                       {
                         ...userValue,
-                        poste_id: ev.target.value,
+                        poste_id: ev.target.value
                       },
                       setPoste(ev.target.value)
                     )
@@ -241,7 +212,7 @@ export default function UserForm() {
                   <MenuItem value="" disabled>
                     Type Postes ?
                   </MenuItem>
-                  {Poste.map((c) => {
+                  {Poste.map(c => {
                     return (
                       <MenuItem value={c.id} key={c.id}>
                         {c.name}
@@ -252,16 +223,16 @@ export default function UserForm() {
               </FormControl>
               &nbsp;
               <input
-              type="tel"
-              maxLength={'8'}
-              onChange={(ev) =>
-                setUser({
-                  ...userValue,
-                  tel: ev.target.value,
-                })
-              }
-              placeholder="Numero Telephone"
-            />
+                type="tel"
+                maxLength={"8"}
+                onChange={ev =>
+                  setUser({
+                    ...userValue,
+                    tel: ev.target.value
+                  })
+                }
+                placeholder="Numero Telephone"
+              />
             </div>
             <button className="btn">Save</button>
           </form>
