@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
 
@@ -7,9 +7,13 @@ export default function DemnadeUser(){
     const [DCongee,setDCongee]= useState([]);
     const [loading,setLoading]=useState(false);
     const {user,setNotification}=useStateContext();
+    const navigate = useNavigate();
 
     useEffect(()=>{
-        getDCongee();
+        if ((user.role !="user")) {
+            navigate("/dashboard");
+          } else {
+        getDCongee();}
     },[])
 
     const onDelete=(u)=>{

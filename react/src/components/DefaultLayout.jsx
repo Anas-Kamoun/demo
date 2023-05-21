@@ -64,108 +64,115 @@ export default function DefaultLayout() {
   }
 
   return (
-      <div id="defaultLayout">
-        <aside>
-          <Link to="/dashboard">
-            <Stack direction="row" alignItems="center">
-              <DashboardIcon className="link-icons" />
-              <span className="link-text">Dashboard</span>
-            </Stack>
-          </Link>
-
+    <div id="defaultLayout">
+      <aside>
+        <Link to="/dashboard">
+          <Stack direction="row" alignItems="center">
+            <DashboardIcon className="link-icons" />
+            <span className="link-text">Dashboard</span>
+          </Stack>
+        </Link>
+        {user.role != "user" && (
           <Link to="/users">
             <Stack direction="row" alignItems="center">
               <AccountBoxIcon className="link-icons" />
               <span className="link-text">Users</span>
             </Stack>
           </Link>
-
+        )}
+        {user.role != "user" && (
           <Link to="/demande">
             <Stack direction="row" alignItems="center">
               <AdjustIcon style={{ marginRight: 5 }} />
               <span className="link-text">Demandes de Congés</span>
             </Stack>
           </Link>
-
+        )}
+        {user.role != "user" && (
           <Link to="/conge">
             <Stack direction="row" alignItems="center">
               <AccountBalanceSharpIcon className="link-icons" />
               <span className="link-text">Types de congés</span>
             </Stack>
           </Link>
-
+        )}
+        {user.role != "user" && (
           <Link to="/contrat">
             <Stack direction="row" alignItems="center">
               <AssignmentIcon className="link-icons" />
               <span className="link-text">Types de contrats</span>
             </Stack>
           </Link>
-
+        )}
+        {user.role != "user" && (
           <Link to="/postes">
             <Stack direction="row" alignItems="center">
               <AccessibilityNewIcon className="link-icons" />
               <span className="link-text">Types des postes</span>
             </Stack>
           </Link>
+        )}
 
-          {/* {user.role == 'user' && */}
+        {user.role === "user" && (
           <Link to="/demandeuser">
             <Stack direction="row" alignItems="center">
               <AdjustIcon className="link-icons" />
               <span className="link-text">Demande Congé</span>
             </Stack>
           </Link>
-        </aside>
-        <div className="content">
-          <header>
-            <div>
-              <Stack direction="row" alignItems="center">
-                <img
-                  src={Logo}
-                  width="70"
-                  alt="logo"
-                  style={{ marginRight: 5 }}
-                />{" "}
-                &nbsp;
-                <h1>GRH</h1>
-              </Stack>
-            </div>
+        )}
+      </aside>
+      <div className="content">
+        <header>
+          <div>
+            <Stack direction="row" alignItems="center">
+              <img
+                src={Logo}
+                width="70"
+                alt="logo"
+                style={{ marginRight: 5 }}
+              />{" "}
+              &nbsp;
+              <h1>GRH</h1>
+            </Stack>
+          </div>
 
-            <div>
-              <IconButton onClick={handleMenuClick}>
-                <Avatar />
-                &nbsp;
-                {user.name}
-              </IconButton>
+          <div>
+            <IconButton onClick={handleMenuClick}>
+              <Avatar />
+              &nbsp;
+              {user.name}
+            </IconButton>
 
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-              >
-                <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </Menu>
-            </div>
-          </header>
-          <main style={{minHeight:'80vh'}}>
-            <Outlet />
-          </main>
-          <MDBFooter className="bg-light text-center text-white" style={{justifySelf:'self-end'}}>
-
-        <div
-          className="text-center p-3"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+          </div>
+        </header>
+        <main style={{ minHeight: "80vh" }}>
+          <Outlet />
+        </main>
+        <MDBFooter
+          className="bg-light text-center text-white"
+          style={{ justifySelf: "self-end" }}
         >
-          © 2023 Copyright:&nbsp;
-          <a className="text-white" href="https://www.comunikcrm.com/" >
-          ComunikCRM
-          </a>
-        </div>
-      </MDBFooter>
-        </div>
-        {notification && <div className="notification">{notification}</div>}{" "}
+          <div
+            className="text-center p-3"
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+          >
+            © 2023 Copyright:&nbsp;
+            <a className="text-white" href="https://www.comunikcrm.com/">
+              ComunikCRM
+            </a>
+          </div>
+        </MDBFooter>
       </div>
-      
+      {notification && <div className="notification">{notification}</div>}{" "}
+    </div>
   );
 }

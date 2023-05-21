@@ -82,7 +82,7 @@ export default function DemandeFromUser() {
 
   useEffect(() => {
     setLoading(true);
-    if ((user.role = !"user")) {
+    if ((user.role !="user")) {
       navigate("/dashboard");
     } else {
       axiosClient.get(`/getcongebycontrat/${1}`).then(({ data }) => {

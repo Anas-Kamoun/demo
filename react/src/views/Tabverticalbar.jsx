@@ -14,7 +14,7 @@ import * as echarts from 'echarts';
 
 const GenderFilterOptions = [
   // { label: 'All', value: 'all' },
-  { label: 'Demande congé', value: 'En Cours' },
+  { label: 'Congé en cours', value: 'En Cours' },
   { label: 'Congé accepté', value: 'Validee' },
   { label: 'Congé refusé', value: 'Annulee' },
 ];

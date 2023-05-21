@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
@@ -9,6 +10,7 @@ import { Carousel } from "react-responsive-carousel";
 import ImageViewer from "react-simple-image-viewer";
 
 export default function DemnadeUser() {
+  const navigate = useNavigate();
   const [DCongee, setDCongee] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user, setNotification } = useStateContext();
@@ -61,7 +63,9 @@ export default function DemnadeUser() {
   }
 
   useEffect(() => {
-    getDCongee();
+    if ((user.role ==="user")) {
+      navigate("/dashboard");
+    }else{getDCongee();}
   }, []);
 
   const onDelete = u => {
@@ -298,7 +302,7 @@ export default function DemnadeUser() {
                   disableScroll={false}
                   backgroundStyle={{
                     backgroundColor: "rgba(0,0,0,0.9)",
-                    height: '100vh'
+                    height: '100%%'
                   }}
                   closeOnClickOutside={true}
                 />

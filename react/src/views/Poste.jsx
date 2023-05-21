@@ -12,6 +12,7 @@ export default function Contrat(){
 
 
     useEffect(()=>{
+        
         getPoste();
     },[])
 

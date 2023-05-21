@@ -26,22 +26,18 @@ export default function UserForm() {
   };
   useEffect(() => {
     setLoading(true);
-    if (user.role === "user") {
-      navigate("/dashboard");
+    if (user.id) {
+      axiosClient
+        .get(`/users/${user.id}`)
+        .then(({ data }) => {
+          setLoading(false);
+          setUser(data.data);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     } else {
-      if (user.id) {
-        axiosClient
-          .get(`/users/${user.id}`)
-          .then(({ data }) => {
-            setLoading(false);
-            setUser(data.data);
-          })
-          .catch(() => {
-            setLoading(false);
-          });
-      } else {
-        setLoading(false);
-      }
+      setLoading(false);
     }
     axiosClient
       .get("/contrats")
@@ -223,6 +219,7 @@ export default function UserForm() {
               </FormControl>
               &nbsp;
               <input
+                value={user.tel}
                 type="tel"
                 maxLength={"8"}
                 onChange={ev =>
@@ -231,7 +228,7 @@ export default function UserForm() {
                     tel: ev.target.value
                   })
                 }
-                placeholder="Numero Telephone"
+                placeholder={user.tel ? user.tel : "Numero Telephone"}
               />
             </div>
             <button className="btn">Save</button>
