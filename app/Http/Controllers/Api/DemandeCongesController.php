@@ -146,6 +146,24 @@ class DemandeCongesController extends Controller
             'etat' => $request['etat'],
             'description' => $request['description'],
         ]);
+        if($demande_conges->etat=='Annulee'){
+            if($demande_conges->type=='Congee'){
+                {
+                    $usersolde = DB::table('users')
+                        ->where('id', '=', $request['user_id'])
+                        ->pluck('solde')
+                        ->first();
+        
+                    $start = Carbon::parse($request['start_date']);
+                    $end = Carbon::parse($request['end_date']);
+                    $numberOfDays = $start->diffInDays($end);
+                    $usersolde = $usersolde + $numberOfDays;
+                    DB::table('users')
+                        ->where('id', '=', $request['user_id'])
+                        ->update(['solde' => $usersolde]);
+                }
+            }
+        }
         return response()->json("", 204);
     }
 

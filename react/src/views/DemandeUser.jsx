@@ -29,13 +29,12 @@ export default function DemnadeUser() {
   }, []);
 
   const onDelete = u => {
-    if (
-      !window.confirm("Are you sure you want to delet this Demnade Congee ?")
-    ) {
+    if (!window.confirm("Vous Voulez Annulez cette Demande")) {
       return;
     }
-    axiosClient.delete(`dconges/${u.id}`).then(() => {
-      setNotification("Demnade Congee was deleted successfully");
+    u.etat = "Annulee";
+    axiosClient.put(`dconges/${u.id}`, u).then(() => {
+      setNotification("Demnade Congee Annuler !");
       getDCongee();
     });
   };
@@ -61,12 +60,9 @@ export default function DemnadeUser() {
         }}
       >
         <h1>Vos demandes de Congé</h1>
-        {user.role == "user" ||
-          ("admin" && (
             <Link to="/demandeuser/new" className="btn-add">
               Add New
             </Link>
-          ))}
       </div>
       <div className="card animated fadeInDown">
         <table>
@@ -110,7 +106,7 @@ export default function DemnadeUser() {
                   <td>{u.etat}</td>
                   <td>
                     &nbsp;
-                    {u.etat != "Annulee" && (
+                    {(u.etat === "Accepte") || (u.etat == "En Cours" )&& (
                       <button
                         onClick={ev => onDelete(u)}
                         className="btn-delete"
