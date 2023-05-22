@@ -72,9 +72,10 @@ export default function DemnadeUser(){
                                 <td>{u.type == 'Congee' && u.end_date}{u.type == 'autorisation' && u.start_autorisation+u.autorisation}</td>
                                 <td>{u.etat}</td>
                                 <td>
-                                    {/* <Link className="btn-edit" to={'/demandeuser/'+u.id}>Edit</Link> */}
                                     &nbsp;
-                                    <button onClick={ev=>onDelete(u)}className="btn-delete">Delete</button>
+                                    {u.etat != 'Annulee' && (
+  <button onClick={ev => onDelete(u)} className="btn-delete">Delete</button>
+)}
                                 </td>
                             </tr>
                         ))}
