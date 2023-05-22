@@ -1,4 +1,5 @@
 import Cardeverticalbar from "./Cardeverticalbar";
+import { useStateContext } from "../Contexts/ContextProvider";
 import "../views/css/style.css";
 import "./css/DashCSS.css";
 import {
@@ -31,6 +32,7 @@ ChartJS.register(
 );
 
 function Dashboard() {
+  const { user, setNotification } = useStateContext();
   const [count_contrats, setcount_contrats] = useState([]);
   const [count_post, setcount_post] = useState([]);
 

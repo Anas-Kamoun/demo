@@ -19,7 +19,7 @@ export default function ContratForm() {
 
   useEffect(() => {
     setLoading(true);
-    if (user.role === "user") {
+    if (user.role !='super_admin'){
       navigate("/dashboard");
     } else {
       if (id) {

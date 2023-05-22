@@ -72,7 +72,7 @@ export default function DefaultLayout() {
             <span className="link-text">Dashboard</span>
           </Stack>
         </Link>
-        {user.role != "user" && (
+        {user.role == "super_admin" && (
           <Link to="/users">
             <Stack direction="row" alignItems="center">
               <AccountBoxIcon className="link-icons" />
@@ -88,7 +88,7 @@ export default function DefaultLayout() {
             </Stack>
           </Link>
         )}
-        {user.role != "user" && (
+        {user.role == "super_admin" && (
           <Link to="/conge">
             <Stack direction="row" alignItems="center">
               <AccountBalanceSharpIcon className="link-icons" />
@@ -96,7 +96,7 @@ export default function DefaultLayout() {
             </Stack>
           </Link>
         )}
-        {user.role != "user" && (
+        {user.role == "super_admin" && (
           <Link to="/contrat">
             <Stack direction="row" alignItems="center">
               <AssignmentIcon className="link-icons" />
@@ -113,11 +113,11 @@ export default function DefaultLayout() {
           </Link>
         )}
 
-        {user.role === "user" && (
+        {user.role != "super_admin" && (
           <Link to="/demandeuser">
             <Stack direction="row" alignItems="center">
               <AdjustIcon className="link-icons" />
-              <span className="link-text">Demande Congé</span>
+              <span className="link-text">Demander un Congé</span>
             </Stack>
           </Link>
         )}

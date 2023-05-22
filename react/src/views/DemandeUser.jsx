@@ -10,7 +10,7 @@ export default function DemnadeUser(){
     const navigate = useNavigate();
 
     useEffect(()=>{
-        if ((user.role !="user")) {
+        if ((user.role =="super_admin")) {
             navigate("/dashboard");
           } else {
         getDCongee();}
@@ -41,7 +41,7 @@ export default function DemnadeUser(){
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <h1>Vos demandes de Congé</h1>
-                {user.role == 'user' && <Link to="/demandeuser/new" className="btn-add">Add New</Link>}
+                {user.role == 'user'||"admin" && <Link to="/demandeuser/new" className="btn-add">Add New</Link>}
             </div>
             <div className="card animated fadeInDown">
                 <table>

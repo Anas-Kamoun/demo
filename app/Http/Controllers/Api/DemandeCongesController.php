@@ -30,6 +30,19 @@ class DemandeCongesController extends Controller
         );
     }
 
+    public function getSuper()
+    {
+        $etats = ['Annulee', 'Validee', 'Accepte'];
+
+        $demandes = DB::table('demande_conges')
+            ->whereIn('etat', $etats)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+        return $demandes;
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -74,20 +87,19 @@ class DemandeCongesController extends Controller
                     ->where('id', '=', $data['user_id'])
                     ->update(['autorisation' => $timeDifferenceFormatted]);
             }
-        }
-        else{
+        } else {
             $usersolde = DB::table('users')
                 ->where('id', '=', $data['user_id'])
                 ->pluck('solde')
                 ->first();
 
-                $start = Carbon::parse($data['start_date']);
-                $end = Carbon::parse($data['end_date']);
-                $numberOfDays = $start->diffInDays($end)+1;
-                $usersolde=$usersolde-$numberOfDays;
-                DB::table('users')
-                    ->where('id', '=', $data['user_id'])
-                    ->update(['solde' => $usersolde]);
+            $start = Carbon::parse($data['start_date']);
+            $end = Carbon::parse($data['end_date']);
+            $numberOfDays = $start->diffInDays($end) + 1;
+            $usersolde = $usersolde - $numberOfDays;
+            DB::table('users')
+                ->where('id', '=', $data['user_id'])
+                ->update(['solde' => $usersolde]);
         }
 
 

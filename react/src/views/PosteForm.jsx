@@ -20,6 +20,7 @@ export default function ContratForm() {
     if (user.role === "user") {
       navigate("/dashboard");
     } else {
+      setLoading(true);
       if (id) {
         axiosClient
           .get(`/postes/${id}`)

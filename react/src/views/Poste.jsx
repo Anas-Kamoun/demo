@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
-
+import { useNavigate } from "react-router-dom";
 export default function Contrat(){
     const [Poste,setPoste]= useState([]);
     const [loading,setLoading]=useState(false);
     const {user,setNotification}=useStateContext()
-
-    
+    const navigate = useNavigate();
 
 
     useEffect(()=>{
-        
-        getPoste();
+        if (user.role =='user'){
+            navigate("/dashboard");
+        }else{
+        getPoste();}
     },[])
 
     const onDelete=(u)=>{
@@ -43,7 +44,7 @@ export default function Contrat(){
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
                 <h1>Types Des Postes</h1>
-                {user.role == 'super_admin' && <Link to="/poste/new" className="btn-add">Add New</Link>}
+                {user.role == 'super_admin' ||  'admin' && <Link to="/poste/new" className="btn-add">Add New</Link>}
             </div>
             <div className="card animated fadeInDown">
                 <table>

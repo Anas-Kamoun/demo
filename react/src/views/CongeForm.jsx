@@ -72,7 +72,7 @@ export default function CongeForm() {
 
   useEffect(() => {
     setLoading(true);
-    if (user.role === "user") {
+    if (user.role != "super_admin") {
       navigate("/dashboard");
     } else {
       axiosClient.get(`/contrats/`).then(({ data }) => {

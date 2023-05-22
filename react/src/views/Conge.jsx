@@ -2,14 +2,18 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
-
+import { useNavigate } from "react-router-dom";
 export default function Conge() {
   const [Conge, setConge] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user, setNotification } = useStateContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getConge();
+    if (user.role != "super_admin") {
+      navigate("/dashboard");
+    } else {
+    getConge();}
   }, []);
 
   const onDelete = u => {

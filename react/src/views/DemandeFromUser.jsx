@@ -82,7 +82,7 @@ export default function DemandeFromUser() {
 
   useEffect(() => {
     setLoading(true);
-    if ((user.role !="user")) {
+    if ((user.role =="super_admin")) {
       navigate("/dashboard");
     } else {
       axiosClient.get(`/getcongebycontrat/${user.contrat_id}`).then(({ data }) => {

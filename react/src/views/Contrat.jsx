@@ -2,17 +2,22 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../Contexts/ContextProvider";
-
+import { useNavigate } from "react-router-dom";
 export default function Contrat(){
     const [Contrat,setContrat]= useState([]);
     const [loading,setLoading]=useState(false);
-    const {user,setNotification}=useStateContext()
+    const {user,setNotification}=useStateContext();
+    const navigate = useNavigate();
 
     
 
 
     useEffect(()=>{
-        getContrat();
+        if (user.role !='super_admin'){
+            navigate("/dashboard");
+        }else{
+            getContrat();
+        }
     },[])
 
     const onDelete=(u)=>{
@@ -56,9 +61,10 @@ export default function Contrat(){
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    {loading && <tbody>
+                    {loading && 
+                    <tbody>
                         <tr>
-                            <td colSpan="5" className="text-center">
+                            <td colSpan="6" className="text-center">
                             Loading...
                             </td>
                         </tr>

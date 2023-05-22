@@ -82,15 +82,34 @@ export default function DemnadeUser() {
     if (!window.confirm("Vous Voulez Validez cette Demande")) {
       return;
     }
-    u.etat = "Validee";
+    if(user.role=='super_admin'){
+      u.etat = "Validee";
     axiosClient.put(`dconges/${u.id}`, u).then(() => {
       setNotification("Demnade Congee Validee !");
       getDCongee();
     });
+    }else{
+      u.etat = "Accepte";
+    axiosClient.put(`dconges/${u.id}`, u).then(() => {
+      setNotification("Demnade Congee Validee !");
+      getDCongee();
+    });
+    }
   };
   const getDCongee = () => {
     setLoading(true);
-    axiosClient
+    if(user.role=='super_admin'){
+      axiosClient
+      .get(`/getSuper`)
+      .then(({ data }) => {
+        setLoading(false);
+        setDCongee(data.data);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+    }else{
+      axiosClient
       .get(`/dconges`)
       .then(({ data }) => {
         setLoading(false);
@@ -99,6 +118,8 @@ export default function DemnadeUser() {
       .catch(() => {
         setLoading(false);
       });
+    }
+    
   };
 
   ////////////////////////////////////////////
