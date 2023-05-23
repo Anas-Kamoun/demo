@@ -29,12 +29,12 @@ export default function DemnadeUser() {
   }, []);
 
   const onDelete = u => {
-    if (!window.confirm("Vous Voulez Annulez cette Demande")) {
+    if (!window.confirm("Voulez-vous annulez cette demande")) {
       return;
     }
     u.etat = "Annulee";
     axiosClient.put(`dconges/${u.id}`, u).then(() => {
-      setNotification("Demnade Congee Annuler !");
+      setNotification("Demnade congé annulé !");
       getDCongee();
     });
   };
@@ -59,9 +59,9 @@ export default function DemnadeUser() {
           alignItems: "center"
         }}
       >
-        <h1>Vos demandes de Congé</h1>
+        <h1>Vos demandes de congé</h1>
             <Link to="/demandeuser/new" className="btn-add">
-              Add New
+              Ajouter
             </Link>
       </div>
       <div className="card animated fadeInDown">
@@ -69,10 +69,10 @@ export default function DemnadeUser() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Type Congé</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Etat</th>
+              <th>Type congé</th>
+              <th>Date début</th>
+              <th>Date fin</th>
+              <th>État</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -80,7 +80,7 @@ export default function DemnadeUser() {
             <tbody>
               <tr>
                 <td colSpan="5" className="text-center">
-                  Loading...
+                Chargement...
                 </td>
               </tr>
             </tbody>
@@ -111,7 +111,7 @@ export default function DemnadeUser() {
                         onClick={ev => onDelete(u)}
                         className="btn-delete"
                       >
-                        Delete
+                        Annuler
                       </button>
                     )}
                   </td>

@@ -49,10 +49,10 @@ export default function Conge() {
           alignItems: "center"
         }}
       >
-        <h1>Types des Conge</h1>
+        <h1>Types Congés</h1>
         {user.role == "super_admin" && (
           <Link to="/conge/new" className="btn-add">
-            Add New
+            Ajouter
           </Link>
         )}
       </div>
@@ -61,9 +61,9 @@ export default function Conge() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
+              <th>Nom</th>
               <th>Contrat</th>
-              <th>Create Date</th>
+              <th>Date de création</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -71,7 +71,7 @@ export default function Conge() {
             <tbody>
               <tr>
                 <td colSpan="5" className="text-center">
-                  Loading...
+                  Chargement...
                 </td>
               </tr>
             </tbody>
@@ -91,18 +91,18 @@ export default function Conge() {
                       ))
                     ) : (
                       <tr>
-                        <td>Contrat Not Found</td>
+                        <td>Contrat introuvable</td>
                       </tr>
                     )}
                   </td>
                   <td>{u.created_at}</td>
                   <td>
                     <Link className="btn-edit" to={"/conge/" + u.id}>
-                      Edit
+                      Modifier
                     </Link>
                     &nbsp;
                     <button onClick={ev => onDelete(u)} className="btn-delete">
-                      Delete
+                      Supprimer
                     </button>
                   </td>
                 </tr>

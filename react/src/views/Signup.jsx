@@ -50,7 +50,7 @@ export default function Signup(){
         <div className="login-signup-form animated fadeInDown">
                 <div className="form">
                     <form onSubmit={onSubmit}>
-                        <h1 className="title">Sign Up</h1>
+                        <h1 className="title">S'inscrire</h1>
                         {errors && <div className="alert">
                         {Object.keys(errors).map(key => (
                             <p key={key}>{errors[key][0]}</p>
@@ -76,7 +76,7 @@ export default function Signup(){
           <TextField
             inputRef={passwordRef}
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            placeholder="Mot de passe"
             variant="outlined"
             fullWidth
             margin="normal"
@@ -97,7 +97,7 @@ export default function Signup(){
           <TextField
             inputRef={passwordConfirmationRef}
             type={showPassword ? "text" : "password"}
-            placeholder="Password Confirmation"
+            placeholder="Confirmation mot de passe"
             variant="outlined"
             fullWidth
             margin="normal"
@@ -121,9 +121,9 @@ export default function Signup(){
                         <input ref={passwordRef} type="password" placeholder="Password"/>
                         <input ref={passwordConfirmationRef} type="password" placeholder=""/> */}
 
-                        <button className="btn btn-block">Signup</button>
+                        <button className="btn btn-block">S'inscrire</button>
                         <p className="message">
-                            Already Registred <Link to="/login">Sign in</Link>
+                            Déja inscrit <Link to="/login">Se connecter</Link>
                         </p>
                     </form>
                 </div>

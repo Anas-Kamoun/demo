@@ -46,18 +46,18 @@ export default function Contrat(){
     return(
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <h1>types des contrats</h1>
-                {user.role == 'super_admin' && <Link to="/contrat/new" className="btn-add">Add New</Link>}
+                <h1>Types des contrats</h1>
+                {user.role == 'super_admin' && <Link to="/contrat/new" className="btn-add">Ajouter</Link>}
             </div>
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
+                            <th>Nom</th>
                             <th>Solde</th>
                             <th>Autorisation</th>
-                            <th>Create Date</th>
+                            <th>Date de création</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -65,7 +65,7 @@ export default function Contrat(){
                     <tbody>
                         <tr>
                             <td colSpan="6" className="text-center">
-                            Loading...
+                            Chargement...
                             </td>
                         </tr>
                     </tbody>
@@ -79,9 +79,9 @@ export default function Contrat(){
                                 <td>{u.autorisation}</td>
                                 <td>{u.created_at}</td>
                                 <td>
-                                    <Link className="btn-edit" to={'/contrat/'+u.id}>Edit</Link>
+                                    <Link className="btn-edit" to={'/contrat/'+u.id}>Modifier</Link>
                                     &nbsp;
-                                    <button onClick={ev=>onDelete(u)}className="btn-delete">Delete</button>
+                                    <button onClick={ev=>onDelete(u)}className="btn-delete">Supprimer</button>
                                 </td>
                             </tr>
                         ))}

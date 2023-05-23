@@ -76,7 +76,7 @@ export default function DefaultLayout() {
           <Link to="/users">
             <Stack direction="row" alignItems="center">
               <AccountBoxIcon className="link-icons" />
-              <span className="link-text">Users</span>
+              <span className="link-text">Utilisateurs</span>
             </Stack>
           </Link>
         )}
@@ -84,7 +84,7 @@ export default function DefaultLayout() {
           <Link to="/demande">
             <Stack direction="row" alignItems="center">
               <AdjustIcon style={{ marginRight: 5 }} />
-              <span className="link-text">Demandes de Congés</span>
+              <span className="link-text">Demandes congés</span>
             </Stack>
           </Link>
         )}
@@ -92,7 +92,7 @@ export default function DefaultLayout() {
           <Link to="/conge">
             <Stack direction="row" alignItems="center">
               <AccountBalanceSharpIcon className="link-icons" />
-              <span className="link-text">Types de congés</span>
+              <span className="link-text">Types congés</span>
             </Stack>
           </Link>
         )}
@@ -100,7 +100,7 @@ export default function DefaultLayout() {
           <Link to="/contrat">
             <Stack direction="row" alignItems="center">
               <AssignmentIcon className="link-icons" />
-              <span className="link-text">Types de contrats</span>
+              <span className="link-text">Types contrats</span>
             </Stack>
           </Link>
         )}
@@ -108,7 +108,7 @@ export default function DefaultLayout() {
           <Link to="/postes">
             <Stack direction="row" alignItems="center">
               <AccessibilityNewIcon className="link-icons" />
-              <span className="link-text">Types des postes</span>
+              <span className="link-text">Types postes</span>
             </Stack>
           </Link>
         )}
@@ -117,7 +117,7 @@ export default function DefaultLayout() {
           <Link to="/demandeuser">
             <Stack direction="row" alignItems="center">
               <AdjustIcon className="link-icons" />
-              <span className="link-text">Demander un Congé</span>
+              <span className="link-text">Demander un congé</span>
             </Stack>
           </Link>
         )}
@@ -149,8 +149,8 @@ export default function DefaultLayout() {
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
             >
-              <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              <MenuItem onClick={handleProfileClick}>Profil</MenuItem>
+              <MenuItem onClick={handleLogout}>Se déconnecter</MenuItem>
             </Menu>
           </div>
         </header>

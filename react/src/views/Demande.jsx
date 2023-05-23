@@ -69,17 +69,17 @@ export default function DemnadeUser() {
   }, []);
 
   const onDelete = u => {
-    if (!window.confirm("Vous Voulez Annulez cette Demande")) {
+    if (!window.confirm("Voulez-vous annulez cette demande")) {
       return;
     }
     u.etat = "Annulee";
     axiosClient.put(`dconges/${u.id}`, u).then(() => {
-      setNotification("Demnade Congee Annuler !");
+      setNotification("Demnade congé annulé !");
       getDCongee();
     });
   };
   const onValidate = u => {
-    if (!window.confirm("Vous Voulez Validez cette Demande")) {
+    if (!window.confirm("Voulez-vous validez cette demande !")) {
       return;
     }
     if(user.role=='super_admin'){
@@ -150,7 +150,7 @@ export default function DemnadeUser() {
           alignItems: "center"
         }}
       >
-        <h1>Liste des demandes de Congés</h1>
+        <h1>Liste des demandes de congés</h1>
       </div>
       <div className="card animated fadeInDown">
         <table>
@@ -158,10 +158,10 @@ export default function DemnadeUser() {
             <tr>
               <th>ID</th>
               <th>Type Congé</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Etat</th>
-              <th>View</th>
+              <th>Date début</th>
+              <th>Date fin</th>
+              <th>État</th>
+              <th>Vue</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -169,7 +169,7 @@ export default function DemnadeUser() {
             <tbody>
               <tr>
                 <td colSpan="5" className="text-center">
-                  Loading...
+                  Chargement...
                 </td>
               </tr>
             </tbody>
@@ -219,20 +219,20 @@ export default function DemnadeUser() {
               className="overlay"
             ></div>
             <div className="modal-content">
-              <h2>Details de la demande</h2>
+              <h2>Detail de la demande</h2>
               &nbsp;
               <div>
                 <table>
                   <tr>
                     <td>
                       <h3>
-                        Etat : <a className="btn-add">{selectedConge.etat}</a>
+                      État : <a className="btn-add">{selectedConge.etat}</a>
                       </h3>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <h3>User : {userValue.name}</h3>
+                      <h3>Utilisateur : {userValue.name}</h3>
                     </td>
                   </tr>
                   <tr>
@@ -243,14 +243,14 @@ export default function DemnadeUser() {
                   {selectedConge.conge_id && (
                     <tr>
                       <td>
-                        <h3>Congee : {conges.name}</h3>
+                        <h3>Congé : {conges.name}</h3>
                       </td>
                     </tr>
                   )}
                   <tr>
                     <td>
                       <h3>
-                        Start Date :{" "}
+                      Date début :{" "}
                         {selectedConge.conge_id
                           ? selectedConge.start_date
                           : selectedConge.start_autorisation}
@@ -260,7 +260,7 @@ export default function DemnadeUser() {
                   <tr>
                     <td>
                       <h3>
-                        End Date :{" "}
+                      Date fin :{" "}
                         {selectedConge.combined_date
                           ? moment(selectedConge.combined_date).format(
                               "YYYY-MM-DD HH:mm:ss"
@@ -280,7 +280,7 @@ export default function DemnadeUser() {
                   {selectedConge.file &&(
                     <tr>
                     <td>
-                      <h3>Photos :</h3>
+                      <h3>Photo :</h3>
                     </td>
                   </tr>
                   )}

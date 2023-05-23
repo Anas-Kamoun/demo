@@ -8,8 +8,8 @@ const App = () => (
   <Result
     status="404"
     title="404"
-    subTitle="Sorry, the page you visited does not exist."
-    extra={<Button type="primary" href='/'>Back Home</Button>}
+    subTitle="Désolé, la page que vous avez visitée n'existe pas."
+    extra={<Button type="primary" href='/'>Retour accueil</Button>}
   />
 );
 

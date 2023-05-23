@@ -52,7 +52,7 @@ export default function Login() {
     <div className="login-signup-form animated fadeInDown">
       <div className="form">
         <form onSubmit={onSubmit}>
-          <h1 className="title">Login into your account</h1>
+          <h1 className="title">Connecter à votre compte</h1>
           {errors && (
             <div className="alert">
               {Object.keys(errors).map((key) => (
@@ -71,7 +71,7 @@ export default function Login() {
           <TextField
             inputRef={passwordRef}
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            placeholder="Mot de passe"
             variant="outlined"
             fullWidth
             margin="normal"
@@ -90,9 +90,9 @@ export default function Login() {
             }}
           />
           &nbsp;
-          <button className="btn btn-block">Login</button>
+          <button className="btn btn-block">Se connecter</button>
           <p className="message">
-            Not Registred ? <Link to="/signup">Create an account</Link>
+            Pas inscrit ? <Link to="/signup">S'inscrire</Link>
           </p>
         </form>
       </div>

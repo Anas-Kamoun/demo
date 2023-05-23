@@ -75,7 +75,7 @@ function Dashboard() {
 
   const infos = [
     {
-      title: <p className="pp">Total Users</p>,
+      title: <p className="pp">Total utilisateur</p>,
       icon: (
         <TeamOutlined
           style={{
@@ -90,7 +90,7 @@ function Dashboard() {
       data: count_users
     },
     {
-      title: <p className="pp">Total Demande Congee</p>,
+      title: <p className="pp">Total demande Congé</p>,
       icon: (
         <PlusCircleOutlined
           style={{
@@ -105,7 +105,7 @@ function Dashboard() {
       data: count_demandes
     },
     {
-      title: <p className="pp">Total Contrats</p>,
+      title: <p className="pp">Total contrats</p>,
       icon: (
         <CheckCircleOutlined
           style={{
@@ -120,7 +120,7 @@ function Dashboard() {
       data: count_contrats
     },
     {
-      title: <p className="pp">Total Postes</p>,
+      title: <p className="pp">Total postes</p>,
       icon: (
         <SyncOutlined
           style={{
@@ -140,7 +140,6 @@ function Dashboard() {
     {
       title: (
         <p className="ppp" style={{ marginLeft: "-35px" }}>
-          Administrateur
         </p>
       )
     }
@@ -156,7 +155,7 @@ function Dashboard() {
           marginLeft: "15px"
         }}
       >
-        <h1>OverView</h1>{" "}
+        <h1>Vue d'ensemble</h1>{" "}
       </div>
       <div className="all-mini-cart" style={{ marginLeft: "-15px" }}>
         {infos.map(items => (

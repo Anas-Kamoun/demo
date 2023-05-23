@@ -97,7 +97,7 @@ export default function UserForm() {
       axiosClient
         .post(`/users/`, userValue)
         .then(() => {
-          setNotification("User was created successfully");
+          setNotification("Utilisateur créer avec succés");
           navigate("/users");
         })
         .catch((err) => {
@@ -112,10 +112,10 @@ export default function UserForm() {
 
   return (
     <div>
-      {userValue.id && <h1>Update User : {userValue.name}</h1>}
-      {!userValue.id && <h1>New User</h1>}
+      {userValue.id && <h1>Modifier Utilisateur : {userValue.name}</h1>}
+      {!userValue.id && <h1>Nouveau Utilisateur</h1>}
       <div className="card animated fadeInDown">
-        {loading && <div className="text-center">Loading...</div>}
+        {loading && <div className="text-center">Chargement...</div>}
         {errors && (
           <div className="alert">
             {Object.keys(errors).map((key) => (
@@ -131,7 +131,7 @@ export default function UserForm() {
                 setUser({ ...userValue, name: ev.target.value })
               }
               value={userValue.name}
-              placeholder="Name"
+              placeholder="Nom"
             />
             <input
               type="email"
@@ -152,7 +152,7 @@ export default function UserForm() {
                   password: ev.target.value,
                 })
               }
-              placeholder="Password"
+              placeholder="Mot de passe"
             />
             <input
               type="password"
@@ -162,7 +162,7 @@ export default function UserForm() {
                   password_confirmation: ev.target.value,
                 })
               }
-              placeholder="Password Confirmation"
+              placeholder="Confirmation mot passe"
             />
             <div>
               <FormControl fullWidth>
@@ -172,7 +172,7 @@ export default function UserForm() {
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={userValue.role}
-                  placeholder="Role"
+                  placeholder="Rôle"
                   onChange={(ev) =>
                     setUser({
                       ...userValue,
@@ -183,9 +183,9 @@ export default function UserForm() {
                   <MenuItem value="" disabled>
                     Role ?
                   </MenuItem>
-                  <MenuItem value={"user"}>Simple User</MenuItem>
-                  <MenuItem value={"admin"}>Admin</MenuItem>
-                  <MenuItem value={"super_admin"}>Super Admin</MenuItem>
+                  <MenuItem value={"user"}>Utilisateur</MenuItem>
+                  <MenuItem value={"admin"}>Administrateur</MenuItem>
+                  <MenuItem value={"super_admin"}>Super-administrateur</MenuItem>
                 </Select>
               </FormControl>
               &nbsp;
@@ -240,7 +240,7 @@ export default function UserForm() {
                   }
                 >
                   <MenuItem value="" disabled>
-                    Type Postes ?
+                    Type postes ?
                   </MenuItem>
                   {Poste.map((c) => {
                     return (
@@ -261,10 +261,10 @@ export default function UserForm() {
                     tel: ev.target.value
                   })
                 }
-                placeholder="Numero Telephone"
+                placeholder="Numéro de téléphone"
               />
             </div>
-            <button className="btn">Save</button>
+            <button className="btn">Enregistrer</button>
           </form>
         )}
       </div>

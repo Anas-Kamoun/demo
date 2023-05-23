@@ -18,12 +18,12 @@ export default function Contrat(){
     },[])
 
     const onDelete=(u)=>{
-        if(!window.confirm("Are you sure you want to delet this Poste ?")){
+        if(!window.confirm("Voulez-vous vraiment supprimer ce poste? ?")){
             return
         }
         axiosClient.delete(`postes/${u.id}`)
         .then(()=>{
-            setNotification('Postes was deleted successfully')
+            setNotification('Poste créer avec succés')
             getPoste()
         })
     }
@@ -43,23 +43,23 @@ export default function Contrat(){
     return(
         <div>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                <h1>Types Des Postes</h1>
-                {user.role == 'super_admin' ||  'admin' && <Link to="/poste/new" className="btn-add">Add New</Link>}
+                <h1>Types des postes</h1>
+                {<Link to="/poste/new" className="btn-add">Ajouter</Link>}
             </div>
             <div className="card animated fadeInDown">
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th>
-                            <th>Create Date</th>
+                            <th>Nom</th>
+                            <th>Date de création</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     {loading && <tbody>
                         <tr>
                             <td colSpan="5" className="text-center">
-                            Loading...
+                            Chargement...
                             </td>
                         </tr>
                     </tbody>
@@ -71,9 +71,9 @@ export default function Contrat(){
                                 <td>{u.name}</td>
                                 <td>{u.created_at}</td>
                                 <td>
-                                    <Link className="btn-edit" to={'/poste/'+u.id}>Edit</Link>
+                                    <Link className="btn-edit" to={'/poste/'+u.id}>Modifier</Link>
                                     &nbsp;
-                                    <button onClick={ev=>onDelete(u)}className="btn-delete">Delete</button>
+                                    <button onClick={ev=>onDelete(u)}className="btn-delete">Supprimer</button>
                                 </td>
                             </tr>
                         ))}

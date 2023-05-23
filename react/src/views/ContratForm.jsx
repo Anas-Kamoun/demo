@@ -73,10 +73,10 @@ export default function ContratForm() {
 
   return (
     <div>
-      {contratValue.id && <h1>Update Contrat : {contratValue.name}</h1>}
-      {!contratValue.id && <h1>New Contrat</h1>}
+      {contratValue.id && <h1>Modifier Contrat : {contratValue.name}</h1>}
+      {!contratValue.id && <h1>Nouveau Contrat</h1>}
       <div className="card animated fadeInDown">
-        {loading && <div className="text-center">Loading...</div>}
+        {loading && <div className="text-center">Chargement...</div>}
         {errors && (
           <div className="alert">
             {Object.keys(errors).map((key) => (
@@ -92,7 +92,7 @@ export default function ContratForm() {
                 setContrat({ ...contratValue, name: ev.target.value })
               }
               value={contratValue.name}
-              placeholder="Name"
+              placeholder="Nom"
             />
             <input
               type="number"
@@ -100,7 +100,7 @@ export default function ContratForm() {
                 setContrat({ ...contratValue, soldec: ev.target.value })
               }
               value={contratValue.soldec}
-              placeholder="solde/jrs"
+              placeholder="Jours par mois"
             />
              <input
               type="time"
@@ -110,7 +110,7 @@ export default function ContratForm() {
               value={contratValue.autorisation}
               placeholder="autorisation/heure"
             />
-            <button className="btn">Save</button>
+            <button className="btn">Enregistrer</button>
           </form>
         )}
       </div>

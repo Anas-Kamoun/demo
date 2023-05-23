@@ -43,7 +43,7 @@ export default function ContratForm() {
       axiosClient
         .put(`/postes/${PosteValue.id}`, PosteValue)
         .then(() => {
-          setNotification("Poste was updated successfully");
+          setNotification("Poste modifié avec succés");
           navigate("/postes");
         })
         .catch((err) => {
@@ -56,7 +56,7 @@ export default function ContratForm() {
       axiosClient
         .post("/postes", PosteValue)
         .then(() => {
-          setNotification("Poste was created successfully");
+          setNotification("Poste créer avec succés ");
           navigate("/postes");
         })
         .catch((err) => {
@@ -70,10 +70,10 @@ export default function ContratForm() {
 
   return (
     <div>
-      {PosteValue.id && <h1>Update Poste : {PosteValue.name}</h1>}
-      {!PosteValue.id && <h1>New Poste</h1>}
+      {PosteValue.id && <h1>Modifier Poste : {PosteValue.name}</h1>}
+      {!PosteValue.id && <h1>Nouveau Poste</h1>}
       <div className="card animated fadeInDown">
-        {loading && <div className="text-center">Loading...</div>}
+        {loading && <div className="text-center">Chargement...</div>}
         {errors && (
           <div className="alert">
             {Object.keys(errors).map((key) => (
@@ -91,7 +91,7 @@ export default function ContratForm() {
               value={PosteValue.name}
               placeholder="Name"
             />
-            <button className="btn">Save</button>
+            <button className="btn">Enregistrer</button>
           </form>
         )}
       </div>

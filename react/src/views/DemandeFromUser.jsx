@@ -159,7 +159,7 @@ export default function DemandeFromUser() {
         console.log(info.file, info.fileList);
       }
       if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
+        message.success(`${info.file.name} Le fichier a été téléchargé avec succès.`);
         setConge({
           ...DCongeeValue,
           file: `${import.meta.env.VITE_API_BASE_URL}/storage/${
@@ -168,7 +168,7 @@ export default function DemandeFromUser() {
         });
       } else if (status === "error") {
         message.error(
-          `${info.file.response.errors.image[1]} file upload failed.`
+          `${info.file.response.errors.image[1]} échec du chargement du fichier.`
         );
       }
     },
@@ -180,9 +180,9 @@ export default function DemandeFromUser() {
   return (
     <div>
       {DCongeeValue.id && <h1>Update {DCongeeValue.type}</h1>}
-      {!DCongeeValue.id && <h1>New Demande Conge</h1>}
+      {!DCongeeValue.id && <h1>Nouvelle demande conge</h1>}
       <div className="card animated fadeInDown">
-        {loading && <div className="text-center">Loading...</div>}
+        {loading && <div className="text-center">Chargement...</div>}
         {errors && (
           <div className="alert">
             {Object.keys(errors).map(key => (
@@ -216,10 +216,10 @@ export default function DemandeFromUser() {
                   }
                 >
                   <MenuItem value="" disabled>
-                    Type Demande ?
+                    Type demande ?
                   </MenuItem>
                   <MenuItem value={"autorisation"}>Autorisation</MenuItem>
-                  <MenuItem value={"Congee"}>Congee</MenuItem>
+                  <MenuItem value={"Congee"}>Congé</MenuItem>
                 </Select>
               </FormControl>
               &nbsp;
@@ -275,7 +275,7 @@ export default function DemandeFromUser() {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={DCongeeValue.conge_id}
-                    placeholder="TypeCongee"
+                    placeholder="Type congé"
                     onChange={ev =>
                       setConge({
                         ...DCongeeValue,
@@ -284,7 +284,7 @@ export default function DemandeFromUser() {
                     }
                   >
                     <MenuItem value="" disabled>
-                      Type Congee ?
+                      Type congé ?
                     </MenuItem>
                     {conges.map(c => (
                       <MenuItem value={c.id} key={c.id}>
@@ -327,11 +327,7 @@ export default function DemandeFromUser() {
                         <InboxOutlined />
                       </p>
                       <p className="ant-upload-text">
-                        Click or drag file to this area to upload
-                      </p>
-                      <p className="ant-upload-hint">
-                        Support for a single or bulk upload. Strictly prohibited
-                        from uploading company data or other banned files.
+                      Cliquez ou faites glisser le fichier vers cette zone pour le télécharger
                       </p>
                     </Dragger>
                   </div>
@@ -339,7 +335,7 @@ export default function DemandeFromUser() {
                 </div>
               )}
             </div>
-            <button className="btn">Save</button>
+            <button className="btn">Enregistrer</button>
           </form>
         )}
       </div>

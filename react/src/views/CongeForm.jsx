@@ -132,7 +132,7 @@ export default function CongeForm() {
       {CongeValue.id && <h1>Update Conge : {CongeValue.name}</h1>}
       {!CongeValue.id && <h1>New Conge</h1>}
       <div className="card animated fadeInDown">
-        {loading && <div className="text-center">Loading...</div>}
+        {loading && <div className="text-center">Chargement...</div>}
         {errors && (
           <div className="alert">
             {Object.keys(errors).map(key => (
@@ -151,7 +151,7 @@ export default function CongeForm() {
                 })
               }
               value={CongeValue.name}
-              placeholder="Name"
+              placeholder="Nom"
             />
             <div>
               <FormControl fullWidth>
@@ -216,7 +216,7 @@ export default function CongeForm() {
               &nbsp;
               <br />
             </div>
-            <button className="btn">Save</button>
+            <button className="btn">Enregistrer</button>
           </form>
         )}
       </div>

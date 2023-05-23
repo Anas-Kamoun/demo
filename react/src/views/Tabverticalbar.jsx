@@ -27,8 +27,8 @@ const GenderFilterOptions = [
 
 
 const DateFilterOptions = [
-  { label: 'Last 7 Days', value: 'days' },
-  { label: 'Last 12 Months', value: 'months' },
+  { label: '7 derniers jours', value: 'days' },
+  { label: '12 derniers mois', value: 'months' },
  
 ];
 
