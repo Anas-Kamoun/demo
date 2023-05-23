@@ -146,22 +146,40 @@ class DemandeCongesController extends Controller
             'etat' => $request['etat'],
             'description' => $request['description'],
         ]);
-        if($demande_conges->etat=='Annulee'){
-            if($demande_conges->type=='Congee'){
-                {
+        if ($demande_conges->etat == 'Annulee') {
+            if ($demande_conges->type == 'Congee') { {
                     $usersolde = DB::table('users')
                         ->where('id', '=', $request['user_id'])
                         ->pluck('solde')
                         ->first();
-        
+
                     $start = Carbon::parse($request['start_date']);
                     $end = Carbon::parse($request['end_date']);
                     $numberOfDays = $start->diffInDays($end);
-                    $usersolde = $usersolde + $numberOfDays;
+                    $usersolde = ($usersolde + $numberOfDays) + 1;
                     DB::table('users')
                         ->where('id', '=', $request['user_id'])
                         ->update(['solde' => $usersolde]);
+                    return response()->json("", 269);
                 }
+            } elseif ($demande_conges->type == 'autorisation') {
+                $usersolde = DB::table('users')
+                    ->where('id', '=', $request['user_id'])
+                    ->pluck('autorisation')
+                    ->first();
+
+                $dataAutorisation = $demande_conges->autorisation;
+
+                $usersoldeTimestamp = strtotime($usersolde);
+                $dataAutorisationTimestamp = strtotime($dataAutorisation);
+
+                $sumTimestamp = $usersoldeTimestamp + $dataAutorisationTimestamp;
+                $sumTime = date('H:i', $sumTimestamp);
+
+                DB::table('users')
+                    ->where('id', '=', $request['user_id'])
+                    ->update(['autorisation' => $sumTime]);
+                return response()->json("", 269);
             }
         }
         return response()->json("", 204);
