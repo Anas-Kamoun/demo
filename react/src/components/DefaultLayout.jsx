@@ -66,12 +66,14 @@ export default function DefaultLayout() {
   return (
     <div id="defaultLayout">
       <aside>
+        {user.role == "admin" && (
         <Link to="/dashboard">
           <Stack direction="row" alignItems="center">
             <DashboardIcon className="link-icons" />
             <span className="link-text">Dashboard</span>
           </Stack>
         </Link>
+        )}
         {user.role == "super_admin" && (
           <Link to="/users">
             <Stack direction="row" alignItems="center">

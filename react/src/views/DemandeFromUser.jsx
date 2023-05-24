@@ -130,7 +130,7 @@ export default function DemandeFromUser() {
       axiosClient
         .post(`/dconges/`, DCongeeValue)
         .then(() => {
-          setNotification("Demnade Conge was created successfully");
+          setNotification("Demande Conge a été créé avec succès");
           navigate("/demandeuser");
         })
         .catch(err => {
