@@ -1,4 +1,5 @@
 import Cardeverticalbar from "./Cardeverticalbar";
+import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../Contexts/ContextProvider";
 import "../views/css/style.css";
 import "./css/DashCSS.css";
@@ -40,6 +41,7 @@ function Dashboard() {
   const [count_demandes, setcount_demandes] = useState([]);
   const [count_demandesv, setcount_demandesv] = useState([]);
   const [count_demandesp, setcount_demandesp] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     if (user.role === "user") {
       navigate("/demandeuser");
