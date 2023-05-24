@@ -46,6 +46,7 @@ export const ContextProvider = ({ children }) => {
         user,
         token,
         setUser,
+        setToken,
         updateToken,
         notification,
         setNotification: setNotificationWithTimeout

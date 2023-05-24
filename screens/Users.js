@@ -379,8 +379,8 @@
 
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, StyleSheet } from "react-native";
-import axiosClient from "./axios";
-import { useStateContext } from "./ContextProvider";
+import axiosClient from "../axios";
+import { useStateContext } from "../ContextProvider";
 import { Link } from 'react-router-native';
 
 export default function Users() {
