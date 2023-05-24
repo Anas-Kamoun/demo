@@ -41,7 +41,11 @@ function Dashboard() {
   const [count_demandesv, setcount_demandesv] = useState([]);
   const [count_demandesp, setcount_demandesp] = useState([]);
   useEffect(() => {
-    
+    if (user.role === "user") {
+      navigate("/demandeuser");
+    } else if (user.role === "super_admin") {
+      navigate("/demande");
+    }
     getData();
   }, []);
 
@@ -139,10 +143,7 @@ function Dashboard() {
 
   const infobare = [
     {
-      title: (
-        <p className="ppp" style={{ marginLeft: "-35px" }}>
-        </p>
-      )
+      title: <p className="ppp" style={{ marginLeft: "-35px" }}></p>
     }
   ];
 
