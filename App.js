@@ -13,12 +13,15 @@ import Conges from "./screens/Conges";
 import Contrats from "./screens/Contrats";
 import Header from "./components/Header";
 import Demandes from "./screens/Demandes";
+import Constants from "expo-constants";
+import ContratsForm from "./screens/ContratsForm";
 import {
   Entypo,
   FontAwesome,
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import PostesForm from "./screens/PostesForm";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,8 +29,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigation = () => {
   const { user } = useStateContext();
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      <StatusBar />
+    <View flex={1}>
       <Header />
       <Tab.Navigator
         screenOptions={{
@@ -55,6 +57,24 @@ const TabNavigation = () => {
         <Tab.Screen
           options={{
             tabBarIcon: ({ focused, color, size }) => (
+              <FontAwesome5 name="file-invoice" size={22} color={color} />
+            ),
+          }}
+          name="Contrats"
+          component={Contrats}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <Entypo name="man" size={22} color={color} />
+            ),
+          }}
+          name="Postes"
+          component={Postes}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
               <MaterialCommunityIcons
                 name="alpha-d-circle"
                 size={22}
@@ -74,24 +94,6 @@ const TabNavigation = () => {
           name="Conges"
           component={Conges}
         />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <FontAwesome5 name="file-invoice" size={22} color={color} />
-            ),
-          }}
-          name="Contrats"
-          component={Contrats}
-        />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused, color, size }) => (
-              <Entypo name="man" size={22} color={color} />
-            ),
-          }}
-          name="Postes"
-          component={Postes}
-        />
       </Tab.Navigator>
     </View>
   );
@@ -102,12 +104,22 @@ const App = () => {
     <ContextProvider>
       <NavigationContainer>
         <NativeBaseProvider>
-          <StatusBar />
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Signup" component={Signup} />
-            <Stack.Screen name="TabNavigation" component={TabNavigation} />
-          </Stack.Navigator>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "white",
+              marginTop: Platform.OS == "ios" ? Constants.statusBarHeight : 0,
+            }}
+          >
+            <StatusBar />
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Signup" component={Signup} />
+              <Stack.Screen name="TabNavigation" component={TabNavigation} />
+              <Stack.Screen name="ContratsForm" component={ContratsForm} />
+              <Stack.Screen name="PostesForm" component={PostesForm} />
+            </Stack.Navigator>
+          </View>
         </NativeBaseProvider>
       </NavigationContainer>
     </ContextProvider>

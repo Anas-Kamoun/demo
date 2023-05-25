@@ -1,16 +1,23 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { useStateContext } from '../ContextProvider';
-
+import { SafeAreaView, StyleSheet } from "react-native";
+import React from "react";
+import { Text } from "native-base";
 const Demandes = () => {
-    const { user } = useStateContext();
   return (
-    <SafeAreaView style={{flex:1,backgroundColor:'white'}}>
-      <Text>{user.name}</Text>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Text textAlign="center" fontSize={20} color="muted.500">
+        WORK IN PROGRESS ...
+      </Text>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Demandes
+export default Demandes;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

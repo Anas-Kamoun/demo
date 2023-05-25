@@ -1,15 +1,15 @@
-import { StyleSheet,SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
-import { InputText } from '../components/Inputs';
-import { Icon,View,Text } from 'native-base';
-import  Feather  from '@expo/vector-icons/Feather';
-import {  SolidButton } from '../components/Buttons';
-import axios from 'axios';
-import { useStateContext } from '../ContextProvider';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, SafeAreaView } from "react-native";
+import React, { useState } from "react";
+import { InputText } from "../components/Inputs";
+import { Icon, View, Text } from "native-base";
+import Feather from "@expo/vector-icons/Feather";
+import { SolidButton } from "../components/Buttons";
+import axios from "axios";
+import { useStateContext } from "../ContextProvider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axiosClient from "../axios";
 
-const SIgnup = ({navigation}) => {
-  const URL = 'https://f4e6-197-11-155-66.ngrok-free.app/api'
+const SIgnup = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,34 +18,46 @@ const SIgnup = ({navigation}) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loader, setLoader] = useState(false);
 
-  const {setUser,setToken} =useStateContext()
+  const { setUser, setToken } = useStateContext();
 
   const signupHandler = async () => {
-    setLoader(true)
-   axios.post(`${URL}/signup`,{
-    name,
-    email,
-    password,
-    password_confirmation :confirmPassword,
-   }).then(async res => {
-    setUser(res.data.user)
-    await AsyncStorage.setItem('ACCESS_TOKEN',res.data.token)
-    await AsyncStorage.setItem('user',JSON.stringify(res.data.user))
-    setToken(res.data.token)
-    navigation.replace('TabNavigation')
-      setLoader(false)
-   }).catch(err => {
-    console.log(err)
-    setLoader(false)
-
-   })  }
+    setLoader(true);
+    axiosClient
+      .post("/signup", {
+        name,
+        email,
+        password,
+        password_confirmation: confirmPassword,
+      })
+      .then(async (res) => {
+        setUser(res.data.user);
+        await AsyncStorage.setItem("ACCESS_TOKEN", res.data.token);
+        await AsyncStorage.setItem("user", JSON.stringify(res.data.user));
+        setToken(res.data.token);
+        navigation.replace("TabNavigation");
+        setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoader(false);
+      });
+  };
 
   return (
-    <SafeAreaView style={{flex:1,}}>
-     <View style={styles.container}>
-    <Text  style={{fontWeight:'700', fontSize:22, marginVertical : 15,textAlign:'center'}}>Sign Up</Text>
-    <View alignItems="center" px='4'>
-    <InputText
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Text
+          style={{
+            fontWeight: "700",
+            fontSize: 22,
+            marginVertical: 15,
+            textAlign: "center",
+          }}
+        >
+          Sign Up
+        </Text>
+        <View alignItems="center" px="4">
+          <InputText
             value={name}
             setValue={setName}
             placeholder="Name"
@@ -59,7 +71,7 @@ const SIgnup = ({navigation}) => {
               />
             }
           />
-    <InputText
+          <InputText
             value={email}
             setValue={setEmail}
             placeholder="Mail address"
@@ -145,24 +157,37 @@ const SIgnup = ({navigation}) => {
               )
             }
           />
-      <View mt='3' w="full">
-          <SolidButton onPress={signupHandler} isLoading={loader} isLoadingText='Creating user'>Signup</SolidButton>
-            <Text textAlign='center' fontSize='md' mt="4">Already Registred ? <Text onPress={() => navigation.navigate('Login')} color='indigo.700'>Sign in</Text></Text>
+          <View mt="3" w="full">
+            <SolidButton
+              onPress={signupHandler}
+              isLoading={loader}
+              isLoadingText="Creating user"
+            >
+              Signup
+            </SolidButton>
+            <Text textAlign="center" fontSize="md" mt="4">
+              Already Registred ?{" "}
+              <Text
+                onPress={() => navigation.navigate("Login")}
+                color="indigo.700"
+              >
+                Sign in
+              </Text>
+            </Text>
+          </View>
+        </View>
       </View>
-
-</View>
-     </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default SIgnup
+export default SIgnup;
 
 const styles = StyleSheet.create({
-  container : {
-    backgroundColor:'white',
-    flex:1,
-    justifyContent:"center",
-    marginTop:-30
-  }
-})
+  container: {
+    backgroundColor: "white",
+    flex: 1,
+    justifyContent: "center",
+    marginTop: -30,
+  },
+});
