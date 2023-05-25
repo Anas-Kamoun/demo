@@ -17,26 +17,23 @@ export default function UserForm() {
     password: "",
     password_confirmation: "",
     role: "",
-    poste_id:"",
-    contrat_id:"",
+    poste_id: "",
+    contrat_id: ""
   });
-
 
   const [ContratValue, setContrat] = useState("");
   const [Contrats, setContrats] = useState([]);
   const currentContrat = Contrats.find(
-    (el) => el.id === userValue.contrat_id
+    el => el.id === userValue.contrat_id
   ) || {
     name: "",
-    id: "",
+    id: ""
   };
   const [PosteValue, setPoste] = useState("");
-  const [Poste,setPostes]= useState([]);
-  const currentPoste= Poste.find(
-    (el) => el.id === userValue.poste_id
-  ) || {
+  const [Poste, setPostes] = useState([]);
+  const currentPoste = Poste.find(el => el.id === userValue.poste_id) || {
     name: "",
-    id: "",
+    id: ""
   };
   useEffect(() => {
     setLoading(true);
@@ -57,27 +54,27 @@ export default function UserForm() {
         setLoading(false);
       }
     }
-    axiosClient.get('/contrats')
-    .then(({data})=>{
+    axiosClient
+      .get("/contrats")
+      .then(({ data }) => {
         setLoading(false);
-        setContrats(data.data)
-    })
-    .catch(()=>{
+        setContrats(data.data);
+      })
+      .catch(() => {
         setLoading(false);
-    })
-    axiosClient.get('/postes')
-    .then(({data})=>{
+      });
+    axiosClient
+      .get("/postes")
+      .then(({ data }) => {
         setLoading(false);
-        setPostes(data.data)
-    })
-    .catch(()=>{
+        setPostes(data.data);
+      })
+      .catch(() => {
         setLoading(false);
-    })
-  }
-  , [id, user]);
+      });
+  }, [id, user]);
 
-
-  const onSubmit = (ev) => {
+  const onSubmit = ev => {
     ev.preventDefault();
     if (userValue.id) {
       axiosClient
@@ -86,7 +83,7 @@ export default function UserForm() {
           setNotification("User was updated successfully");
           navigate("/users");
         })
-        .catch((err) => {
+        .catch(err => {
           const response = err.response;
           if (response && response.status === 422) {
             setErrors(response.data.errors);
@@ -95,12 +92,12 @@ export default function UserForm() {
         });
     } else {
       axiosClient
-        .post(`/users/`, userValue)
+        .post(`/users`, userValue)
         .then(() => {
           setNotification("Utilisateur créer avec succés");
           navigate("/users");
         })
-        .catch((err) => {
+        .catch(err => {
           const response = err.response;
           if (response && response.status === 422) {
             setErrors(response.data.errors);
@@ -118,7 +115,7 @@ export default function UserForm() {
         {loading && <div className="text-center">Chargement...</div>}
         {errors && (
           <div className="alert">
-            {Object.keys(errors).map((key) => (
+            {Object.keys(errors).map(key => (
               <p key={key}>{errors[key][0]}</p>
             ))}
           </div>
@@ -127,18 +124,16 @@ export default function UserForm() {
           <form onSubmit={onSubmit}>
             <input
               type="text"
-              onChange={(ev) =>
-                setUser({ ...userValue, name: ev.target.value })
-              }
+              onChange={ev => setUser({ ...userValue, name: ev.target.value })}
               value={userValue.name}
               placeholder="Nom"
             />
             <input
               type="email"
-              onChange={(ev) =>
+              onChange={ev =>
                 setUser({
                   ...userValue,
-                  email: ev.target.value,
+                  email: ev.target.value
                 })
               }
               value={userValue.email}
@@ -146,20 +141,20 @@ export default function UserForm() {
             />
             <input
               type="password"
-              onChange={(ev) =>
+              onChange={ev =>
                 setUser({
                   ...userValue,
-                  password: ev.target.value,
+                  password: ev.target.value
                 })
               }
               placeholder="Mot de passe"
             />
             <input
               type="password"
-              onChange={(ev) =>
+              onChange={ev =>
                 setUser({
                   ...userValue,
-                  password_confirmation: ev.target.value,
+                  password_confirmation: ev.target.value
                 })
               }
               placeholder="Confirmation mot passe"
@@ -173,10 +168,10 @@ export default function UserForm() {
                   id="demo-simple-select"
                   value={userValue.role}
                   placeholder="Rôle"
-                  onChange={(ev) =>
+                  onChange={ev =>
                     setUser({
                       ...userValue,
-                      role: ev.target.value,
+                      role: ev.target.value
                     })
                   }
                 >
@@ -185,7 +180,9 @@ export default function UserForm() {
                   </MenuItem>
                   <MenuItem value={"user"}>Utilisateur</MenuItem>
                   <MenuItem value={"admin"}>Administrateur</MenuItem>
-                  <MenuItem value={"super_admin"}>Super-administrateur</MenuItem>
+                  <MenuItem value={"super_admin"}>
+                    Super-administrateur
+                  </MenuItem>
                 </Select>
               </FormControl>
               &nbsp;
@@ -198,11 +195,11 @@ export default function UserForm() {
                   id="demo-simple-select"
                   value={currentContrat.id}
                   placeholder="type contrat"
-                  onChange={(ev) =>
+                  onChange={ev =>
                     setUser(
                       {
                         ...userValue,
-                        contrat_id: ev.target.value,
+                        contrat_id: ev.target.value
                       },
                       setContrat(ev.target.value)
                     )
@@ -211,7 +208,7 @@ export default function UserForm() {
                   <MenuItem value="" disabled>
                     Type contrat ?
                   </MenuItem>
-                  {Contrats.map((c) => {
+                  {Contrats.map(c => {
                     return (
                       <MenuItem value={c.id} key={c.id}>
                         {c.name}
@@ -229,11 +226,11 @@ export default function UserForm() {
                   id="demo-simple-select"
                   value={currentPoste.id}
                   placeholder="type contrat"
-                  onChange={(ev) =>
+                  onChange={ev =>
                     setUser(
                       {
                         ...userValue,
-                        poste_id: ev.target.value,
+                        poste_id: ev.target.value
                       },
                       setPoste(ev.target.value)
                     )
@@ -242,7 +239,7 @@ export default function UserForm() {
                   <MenuItem value="" disabled>
                     Type postes ?
                   </MenuItem>
-                  {Poste.map((c) => {
+                  {Poste.map(c => {
                     return (
                       <MenuItem value={c.id} key={c.id}>
                         {c.name}

@@ -43,13 +43,16 @@ function Dashboard() {
   const [count_demandesp, setcount_demandesp] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    if (user.role === "user") {
-      navigate("/demandeuser");
-    } else if (user.role === "super_admin") {
-      navigate("/demande");
+    if (user.role) {
+      if (user.role === "user") {
+        navigate("/demandeuser");
+      } else if (user.role == "super_admin") {
+        navigate("/demande");
+      }
+    } else {
+      getData();
     }
-    getData();
-  }, []);
+  }, [user]);
 
   const getData = () => {
     axiosClient
@@ -148,7 +151,9 @@ function Dashboard() {
       title: <p className="ppp" style={{ marginLeft: "-35px" }}></p>
     }
   ];
-
+  if (user.role == undefined) {
+    return null;
+  }
   return (
     <>
       <div

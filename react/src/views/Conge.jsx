@@ -10,11 +10,16 @@ export default function Conge() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user.role != "super_admin") {
-      navigate("/dashboard");
+    if (user.role != undefined) {
+      if (user.role === "user") {
+        navigate("/demandeuser");
+      } else if (user.role == "admin") {
+        navigate("/demande");
+      }
     } else {
-    getConge();}
-  }, []);
+      getConge();
+    }
+  }, [user]);
 
   const onDelete = u => {
     if (!window.confirm("Are you sure you want to delet this Conge ?")) {
@@ -39,7 +44,9 @@ export default function Conge() {
         setLoading(false);
       });
   };
-
+  if (user.role == undefined) {
+    return null;
+  }
   return (
     <div>
       <div
