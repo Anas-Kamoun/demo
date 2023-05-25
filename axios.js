@@ -2,7 +2,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const axiosClient = axios.create({
-  baseURL: "https://a630-197-10-117-4.ngrok-free.app/api",
+  baseURL: "https://back-end-grh.alwaysdata.net/api",
 });
 
 axiosClient.interceptors.request.use(async (config) => {

@@ -62,7 +62,7 @@ const PostesForm = ({ navigation, route }) => {
         });
     } else {
       axiosClient
-        .post(`/postes/`, contratValue)
+        .post(`/postes`, contratValue)
         .then(() => {
           setNotification("Conge was created successfully");
           navigation.goBack();
@@ -73,6 +73,7 @@ const PostesForm = ({ navigation, route }) => {
             setErrors(response.data.errors);
             console.log(response.data.errors);
           }
+          console.log(err);
         });
     }
   };

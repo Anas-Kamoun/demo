@@ -22,6 +22,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import PostesForm from "./screens/PostesForm";
+import UsersForm from "./screens/UsersForm";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -118,6 +119,7 @@ const App = () => {
               <Stack.Screen name="TabNavigation" component={TabNavigation} />
               <Stack.Screen name="ContratsForm" component={ContratsForm} />
               <Stack.Screen name="PostesForm" component={PostesForm} />
+              <Stack.Screen name="UsersForm" component={UsersForm} />
             </Stack.Navigator>
           </View>
         </NativeBaseProvider>

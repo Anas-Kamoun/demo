@@ -51,7 +51,7 @@ const ContratForm = ({ navigation, route }) => {
       axiosClient
         .put(`/contrats/${contratValue.id}`, contratValue)
         .then(() => {
-          setNotification("Conge was updated successfully");
+          setNotification("Contrat was updated successfully");
           navigation.goBack();
         })
         .catch((err) => {
@@ -63,9 +63,9 @@ const ContratForm = ({ navigation, route }) => {
         });
     } else {
       axiosClient
-        .post(`/contrats/`, contratValue)
+        .post(`/contrats`, contratValue)
         .then(() => {
-          setNotification("Conge was created successfully");
+          setNotification("Contrat was created successfully");
           navigation.goBack();
         })
         .catch((err) => {

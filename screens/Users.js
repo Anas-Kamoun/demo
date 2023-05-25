@@ -11,9 +11,8 @@ import {
 } from "react-native";
 import axiosClient from "../axios";
 import { useStateContext } from "../ContextProvider";
-import { Link } from "react-router-native";
 
-export default function Users() {
+export default function Users({ navigation }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user, setNotification } = useStateContext();
@@ -25,8 +24,15 @@ export default function Users() {
   }, []);
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+      getUsers();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   const onDelete = (u) => {
     Alert.alert("Delete User", "Are you sure you want to delete this user?", [
@@ -73,6 +79,7 @@ export default function Users() {
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           onPress={() => {
+            navigation.navigate("UsersForm", item);
             // Navigation logic for Edit screen
           }}
           style={styles.editButton}
@@ -93,11 +100,14 @@ export default function Users() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Users</Text>
-        {users.role === "super_admin" && (
-          <Link to="/users/new" style={styles.addButton}>
-            <Text style={styles.addButtonText}>Add New</Text>
-          </Link>
-        )}
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("UsersForm");
+          }}
+          style={styles.editButton}
+        >
+          <Text style={styles.buttonText}>Ajouter</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.userList}>
         {loading ? (
@@ -126,6 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: "#ffffff",
   },
   header: {
     flexDirection: "row",

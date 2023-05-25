@@ -84,3 +84,42 @@ export const InputText = ({
   );
 };
 
+export const SelectInput = ({
+  value,
+  setValue,
+  options,
+
+  placeholder,
+}) => {
+  return (
+    <FormControl w="full">
+      <Select
+        selectedValue={value}
+        _item={{
+          bg: "transparent",
+          _text: { fontSize: "sm", color: "indigo.700" },
+          _pressed: { bg: "gray.100" },
+        }}
+        h="12"
+        size={Platform.OS == "android" ? "md" : "lg"}
+        onValueChange={(val) => setValue(val)}
+        placeholder={placeholder}
+        _selectedItem={{
+          bg: "indigo.500",
+          _text: { color: "white", fontSize: "sm" },
+          endIcon: <CheckIcon color="white" size={5} />,
+          _pressed: { bg: "indigo.400" },
+        }}
+        mt="2"
+      >
+        {options.map((option) => (
+          <Select.Item
+            key={option.value}
+            label={option.label}
+            value={option.value}
+          />
+        ))}
+      </Select>
+    </FormControl>
+  );
+};
