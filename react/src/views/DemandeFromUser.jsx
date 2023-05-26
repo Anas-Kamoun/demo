@@ -42,17 +42,17 @@ export default function DemandeFromUser() {
   const [value, setValue] = useState(null);
   const disabledDate = current => {
     const today = moment(); // Get the current day using moment.js
-  
+
     if (!dates) {
       return false;
     }
-  
+
     const tooLate = dates[0] && current.diff(dates[0], "days") >= user.solde;
     const tooEarly = dates[1] && dates[1].diff(current, "days") >= user.solde;
-  
+
     // Disable dates before the current day
     const beforeToday = current.isBefore(today, "day");
-  
+
     return !!tooEarly || !!tooLate || beforeToday;
   };
   const onOpenChange = open => {
@@ -82,13 +82,15 @@ export default function DemandeFromUser() {
 
   useEffect(() => {
     setLoading(true);
-    if ((user.role =="super_admin")) {
+    if (user.role == "super_admin") {
       navigate("/dashboard");
     } else {
-      axiosClient.get(`/getcongebycontrat/${user.contrat_id}`).then(({ data }) => {
-        setConges(data);
-        console.log(data);
-      });
+      axiosClient
+        .get(`/getcongebycontrat/${user.contrat_id}`)
+        .then(({ data }) => {
+          setConges(data);
+          console.log(data);
+        });
       if (id) {
         axiosClient
           .get(`/dconges/${id}`)
@@ -121,14 +123,14 @@ export default function DemandeFromUser() {
               setErrors(response.data.errors);
             } else {
               setErrors({
-                err: [response.data.message],
+                err: [response.data.message]
               });
             }
           }
         });
     } else {
       axiosClient
-        .post(`/dconges/`, DCongeeValue)
+        .post(`/dconges`, DCongeeValue)
         .then(() => {
           setNotification("Demande Conge a été créé avec succès");
           navigate("/demandeuser");
@@ -140,7 +142,7 @@ export default function DemandeFromUser() {
               setErrors(response.data.errors);
             } else {
               setErrors({
-                err: [response.data.message],
+                err: [response.data.message]
               });
             }
           }
@@ -159,7 +161,9 @@ export default function DemandeFromUser() {
         console.log(info.file, info.fileList);
       }
       if (status === "done") {
-        message.success(`${info.file.name} Le fichier a été téléchargé avec succès.`);
+        message.success(
+          `${info.file.name} Le fichier a été téléchargé avec succès.`
+        );
         setConge({
           ...DCongeeValue,
           file: `${import.meta.env.VITE_API_BASE_URL}/storage/${
@@ -239,8 +243,11 @@ export default function DemandeFromUser() {
 
                       <TimePicker
                         format={format}
-                        onChange={(time, timeString) =>{
-                          const formattedTime = moment(timeString, format).format("HH:mm:ss");
+                        onChange={(time, timeString) => {
+                          const formattedTime = moment(
+                            timeString,
+                            format
+                          ).format("HH:mm:ss");
                           setConge({
                             ...DCongeeValue,
                             autorisation: formattedTime
@@ -327,7 +334,8 @@ export default function DemandeFromUser() {
                         <InboxOutlined />
                       </p>
                       <p className="ant-upload-text">
-                      Cliquez ou faites glisser le fichier vers cette zone pour le télécharger
+                        Cliquez ou faites glisser le fichier vers cette zone
+                        pour le télécharger
                       </p>
                     </Dragger>
                   </div>

@@ -52,7 +52,7 @@ export default function CongeForm() {
       target: { value }
     } = event;
     const contratIds = value.reduce((ids, name) => {
-      const contrat = contrats.find((contrat) => contrat.name === name);
+      const contrat = contrats.find(contrat => contrat.name === name);
       if (contrat) {
         ids.push(contrat.id);
       }
@@ -75,7 +75,7 @@ export default function CongeForm() {
     if (user.role != "super_admin") {
       navigate("/dashboard");
     } else {
-      axiosClient.get(`/contrats/`).then(({ data }) => {
+      axiosClient.get(`/contrats`).then(({ data }) => {
         setLoading(false);
         setContrats(data.data);
       });
@@ -113,7 +113,7 @@ export default function CongeForm() {
         });
     } else {
       axiosClient
-        .post(`/conges/`, CongeValue)
+        .post(`/conges`, CongeValue)
         .then(() => {
           setNotification("Conge was created successfully");
           navigate("/conge");
@@ -183,7 +183,7 @@ export default function CongeForm() {
                     );
                   })}
                 </Select> */}
-                <InputLabel id="demo-multiple-chip-label" >Contrats</InputLabel>
+                <InputLabel id="demo-multiple-chip-label">Contrats</InputLabel>
                 <Select
                   labelId="demo-multiple-chip-label"
                   id="demo-multiple-chip"

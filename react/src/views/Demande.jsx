@@ -63,9 +63,11 @@ export default function DemnadeUser() {
   }
 
   useEffect(() => {
-    if ((user.role ==="user")) {
+    if (user.role === "user") {
       navigate("/dashboard");
-    }else{getDCongee();}
+    } else {
+      getDCongee();
+    }
   }, []);
 
   const onDelete = u => {
@@ -82,55 +84,53 @@ export default function DemnadeUser() {
     if (!window.confirm("Voulez-vous validez cette demande !")) {
       return;
     }
-    if(user.role=='super_admin'){
+    if (user.role == "super_admin") {
       u.etat = "Validee";
-    axiosClient.put(`dconges/${u.id}`, u).then(() => {
-      setNotification("Demnade Congee Validee !");
-      getDCongee();
-    });
-    }else{
+      axiosClient.put(`dconges/${u.id}`, u).then(() => {
+        setNotification("Demnade Congee Validee !");
+        getDCongee();
+      });
+    } else {
       u.etat = "Accepte";
-    axiosClient.put(`dconges/${u.id}`, u).then(() => {
-      setNotification("Demnade Congee Validee !");
-      getDCongee();
-    });
+      axiosClient.put(`dconges/${u.id}`, u).then(() => {
+        setNotification("Demnade Congee Validee !");
+        getDCongee();
+      });
     }
   };
   const getDCongee = () => {
     setLoading(true);
-    if(user.role=='super_admin'){
+    if (user.role == "super_admin") {
       axiosClient
-      .get(`/getSuper`)
-      .then(({ data }) => {
-        setLoading(false);
-        setDCongee(data.data);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-    }else{
+        .get(`/getSuper`)
+        .then(({ data }) => {
+          setLoading(false);
+          setDCongee(data.data);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    } else {
       axiosClient
-      .get(`/dconges`)
-      .then(({ data }) => {
-        setLoading(false);
-        setDCongee(data.data);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
+        .get(`/dconges`)
+        .then(({ data }) => {
+          setLoading(false);
+          setDCongee(data.data);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     }
-    
   };
 
   ////////////////////////////////////////////
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
-  const [openImage,setOpenImage] = useState([])
-  const images = [
-  ];
+  const [openImage, setOpenImage] = useState([]);
+  const images = [];
 
-  const openImageViewer = (img) => {
-    setOpenImage([img])
+  const openImageViewer = img => {
+    setOpenImage([img]);
     setCurrentImage(1);
     setIsViewerOpen(true);
   };
@@ -196,20 +196,25 @@ export default function DemnadeUser() {
                     <PageviewIcon onClick={ev => toggleModal(u)} />
                   </td>
                   <td>
-                  {(u.etat === "Accepte") || (u.etat == "En Cours" )&& (
-                    <button onClick={ev => onValidate(u)} className="btn-add">
-                      Valider
-                    </button>
-                    )}
+                    {u.etat === "Accepte" ||
+                      (u.etat == "En Cours" && (
+                        <button
+                          onClick={ev => onValidate(u)}
+                          className="btn-add"
+                        >
+                          Valider
+                        </button>
+                      ))}
                     &nbsp;
-                    {(u.etat === "Accepte") || (u.etat == "En Cours" )&& (
-                      <button
-                        onClick={ev => onDelete(u)}
-                        className="btn-delete"
-                      >
-                        Annuler
-                      </button>
-                    )}
+                    {u.etat === "Accepte" ||
+                      (u.etat == "En Cours" && (
+                        <button
+                          onClick={ev => onDelete(u)}
+                          className="btn-delete"
+                        >
+                          Annuler
+                        </button>
+                      ))}
                   </td>
                 </tr>
               ))}
@@ -233,7 +238,7 @@ export default function DemnadeUser() {
                   <tr>
                     <td>
                       <h3>
-                      État : <a className="btn-add">{selectedConge.etat}</a>
+                        État : <a className="btn-add">{selectedConge.etat}</a>
                       </h3>
                     </td>
                   </tr>
@@ -257,7 +262,7 @@ export default function DemnadeUser() {
                   <tr>
                     <td>
                       <h3>
-                      Date début :{" "}
+                        Date début :{" "}
                         {selectedConge.conge_id
                           ? selectedConge.start_date
                           : selectedConge.start_autorisation}
@@ -267,7 +272,7 @@ export default function DemnadeUser() {
                   <tr>
                     <td>
                       <h3>
-                      Date fin :{" "}
+                        Date fin :{" "}
                         {selectedConge.combined_date
                           ? moment(selectedConge.combined_date).format(
                               "YYYY-MM-DD HH:mm:ss"
@@ -284,32 +289,30 @@ export default function DemnadeUser() {
                       </td>
                     </tr>
                   )}
-                  {selectedConge.file &&(
+                  {selectedConge.file && (
                     <tr>
-                    <td>
-                      <h3>Photo :</h3>
-                    </td>
-                  </tr>
+                      <td>
+                        <h3>Photo :</h3>
+                      </td>
+                    </tr>
                   )}
-                  {selectedConge.file &&(
-                  <tr>
-                    <td>
-                      <img
-                        src={selectedConge.file}
-                        onClick={() => openImageViewer(selectedConge.file)}
-                        width="250"
-                        height="250"
-                        key={1}
-                        style={{ margin: "2px" }}
-                        alt=""
-                      />
-                    </td>
-                  </tr>
+                  {selectedConge.file && (
+                    <tr>
+                      <td>
+                        <img
+                          src={selectedConge.file}
+                          onClick={() => openImageViewer(selectedConge.file)}
+                          width="250"
+                          height="250"
+                          key={1}
+                          style={{ margin: "2px" }}
+                          alt=""
+                        />
+                      </td>
+                    </tr>
                   )}
-
                 </table>
               </div>
-              
               <button
                 className="close-modal"
                 onClick={() => {
@@ -323,18 +326,18 @@ export default function DemnadeUser() {
           </div>
         )}
         {isViewerOpen && (
-                <ImageViewer
-                  src={openImage}
-                  currentIndex={currentImage}
-                  onClose={closeImageViewer}
-                  disableScroll={false}
-                  backgroundStyle={{
-                    backgroundColor: "rgba(0,0,0,0.9)",
-                    height: '100%%'
-                  }}
-                  closeOnClickOutside={true}
-                />
-              )}
+          <ImageViewer
+            src={openImage}
+            currentIndex={currentImage}
+            onClose={closeImageViewer}
+            disableScroll={false}
+            backgroundStyle={{
+              backgroundColor: "rgba(0,0,0,0.9)",
+              height: "100%%"
+            }}
+            closeOnClickOutside={true}
+          />
+        )}
       </div>
     </div>
   );
