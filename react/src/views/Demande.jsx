@@ -196,8 +196,8 @@ export default function DemnadeUser() {
                     <PageviewIcon onClick={ev => toggleModal(u)} />
                   </td>
                   <td>
-                    {u.etat === "Accepte" ||
-                      (u.etat == "En Cours" && (
+                    {u.etat === "En Cours" ||
+                      (u.etat === "Accepte" && (
                         <button
                           onClick={ev => onValidate(u)}
                           className="btn-add"
@@ -206,8 +206,8 @@ export default function DemnadeUser() {
                         </button>
                       ))}
                     &nbsp;
-                    {u.etat === "Accepte" ||
-                      (u.etat == "En Cours" && (
+                    {u.etat === "En Cours" ||
+                      (u.etat === "Accepte" && (
                         <button
                           onClick={ev => onDelete(u)}
                           className="btn-delete"
