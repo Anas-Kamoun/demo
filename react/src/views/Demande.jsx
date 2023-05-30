@@ -196,25 +196,24 @@ export default function DemnadeUser() {
                     <PageviewIcon onClick={ev => toggleModal(u)} />
                   </td>
                   <td>
-                    {u.etat === "En Cours" ||
-                      (u.etat === "Accepte" && (
-                        <button
-                          onClick={ev => onValidate(u)}
-                          className="btn-add"
-                        >
-                          Valider
-                        </button>
-                      ))}
+                    {((u.etat === "En Cours" && user.role === "admin") ||
+                      (u.etat === "Accepte" &&
+                        user.role === "super_admin")) && (
+                      <button onClick={ev => onValidate(u)} className="btn-add">
+                        Valider
+                      </button>
+                    )}
                     &nbsp;
-                    {u.etat === "En Cours" ||
-                      (u.etat === "Accepte" && (
-                        <button
-                          onClick={ev => onDelete(u)}
-                          className="btn-delete"
-                        >
-                          Annuler
-                        </button>
-                      ))}
+                    {((u.etat === "En Cours" && user.role === "admin") ||
+                      (u.etat === "Accepte" &&
+                        user.role === "super_admin")) && (
+                      <button
+                        onClick={ev => onDelete(u)}
+                        className="btn-delete"
+                      >
+                        Annuler
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
